@@ -1,0 +1,223 @@
+<configuration>
+	
+	
+	<variables>
+		<bounded_int_variable name="air" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="a" increase_by="10"></increase_actuator>
+				<decrease_actuator key="q" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+					<bounded_int_variable name="eau" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="z" increase_by="10"></increase_actuator>
+				<decrease_actuator key="s" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+					<bounded_int_variable name="pression" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="e" increase_by="10"></increase_actuator>
+				<decrease_actuator key="d" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+					<bounded_int_variable name="temperature" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="r" increase_by="10"></increase_actuator>
+				<decrease_actuator key="f" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+					<bounded_int_variable name="recyclage" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="t" increase_by="10"></increase_actuator>
+				<decrease_actuator key="g" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+					<bounded_int_variable name="secours" min_value="0" max_value="300" initial_value="300">
+			<keyboard_actuators>
+				<increase_actuator key="y" increase_by="10"></increase_actuator>
+				<decrease_actuator key="h" decrease_by="10"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+			<boolean_variable name="surcharge_air" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="w"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			<boolean_variable name="surcharge_eau" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="x"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			<boolean_variable name="surcharge_pression" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="c"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			<boolean_variable name="surcharge_temperature" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="v"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			<boolean_variable name="surcharge_recyclage" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="b"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			<boolean_variable name="surcharge_secours" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="n"></switch_actuator></keyboard_actuators></boolean_variable>
+			
+			</variables>
+							
+				
+	<displayed_objects>
+		<bar>
+			<variable name="air"></variable>
+			<position x="260" y="499"></position>
+			<dimensions width="33" height="180"></dimensions>
+			<color value='#006e6e'></color></bar>
+		
+		<bar>
+		<variable name="eau"></variable>
+		<position x="393" y="499"></position>
+		<dimensions width="33" height="180"></dimensions><color value='#006e6e'></color></bar>
+		
+		<bar>
+		<variable name="pression"></variable>
+		<position x="525" y="499"></position>
+		<dimensions width="33" height="180"></dimensions><color value='#006e6e'></color></bar>
+		
+		<bar>
+		<variable name="temperature"></variable>
+		<position x="658" y="499"></position>
+		<dimensions width="33" height="180"></dimensions><color value='#006e6e'></color></bar>
+		
+		<bar>
+		<variable name="recyclage"></variable>
+		<position x="790" y="499"></position>
+		<dimensions width="33" height="180"></dimensions><color value='#006e6e'></color></bar>
+		
+		<bar>
+		<variable name="secours"></variable>
+		<position x="924" y="499"></position>
+		<dimensions width="33" height="180"></dimensions><color value='#006e6e'></color></bar>
+		
+		<blinking_shape>
+		<variable name="surcharge_air"></variable>
+		<points>
+			<point x = "300" y="457"></point>
+			<point x = "329" y="457"></point>
+			<point x = "329" y="500"></point>
+			<point x = "300" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_eau"></variable>
+		<points>
+			<point x = "434" y="457"></point>
+			<point x = "461" y="457"></point>
+			<point x = "461" y="500"></point>
+			<point x = "434" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_pression"></variable>
+		<points>
+			<point x = "566" y="457"></point>
+			<point x = "594" y="457"></point>
+			<point x = "594" y="500"></point>
+			<point x = "566" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_temperature"></variable>
+		<points>
+			<point x = "700" y="457"></point>
+			<point x = "727" y="457"></point>
+			<point x = "727" y="500"></point>
+			<point x = "700" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_recyclage"></variable>
+		<points>
+			<point x = "834" y="457"></point>
+			<point x = "861" y="457"></point>
+			<point x = "861" y="500"></point>
+			<point x = "834" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_secours"></variable>
+		<points>
+			<point x = "967" y="457"></point>
+			<point x = "994" y="457"></point>
+			<point x = "994" y="500"></point>
+			<point x = "967" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		<blinking_shape>
+		<variable name="surcharge_air"></variable>
+		<points>
+			<point x = "12" y="134"></point>
+			<point x = "179" y="134"></point>
+			<point x = "179" y="203"></point>
+			<point x = "12" y="203"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+				<blinking_shape>
+		<variable name="surcharge_eau"></variable>
+		<points>
+			<point x = "12" y="227"></point>
+			<point x = "179" y="227"></point>
+			<point x = "179" y="296"></point>
+			<point x = "12" y="296"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+				<blinking_shape>
+		<variable name="surcharge_pression"></variable>
+		<points>
+			<point x = "12" y="319"></point>
+			<point x = "179" y="319"></point>
+			<point x = "179" y="387"></point>
+			<point x = "12" y="387"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+				<blinking_shape>
+		<variable name="surcharge_temperature"></variable>
+		<points>
+			<point x = "12" y="409"></point>
+			<point x = "179" y="409"></point>
+			<point x = "179" y="479"></point>
+			<point x = "12" y="479"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+				<blinking_shape>
+		<variable name="surcharge_recyclage"></variable>
+		<points>
+			<point x = "12" y="501"></point>
+			<point x = "179" y="501"></point>
+			<point x = "179" y="571"></point>
+			<point x = "12" y="571"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+				<blinking_shape>
+		<variable name="surcharge_secours"></variable>
+		<points>
+			<point x = "12" y="591"></point>
+			<point x = "179" y="591"></point>
+			<point x = "179" y="661"></point>
+			<point x = "12" y="661"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		
+		
+		<background>
+		<filename name="systemes support vie.png"></filename></background></displayed_objects></configuration>

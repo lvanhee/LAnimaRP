@@ -1,0 +1,38 @@
+<configuration>
+	
+	
+	<variables>
+		<bounded_int_variable name="heartbeat_pace" min_value="0" max_value="120" initial_value="60">
+			<keyboard_actuators>
+				<increase_actuator key="a" increase_by="60"></increase_actuator>
+				<decrease_actuator key="q" decrease_by="60"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+			<boolean_variable name="heartbeat_regularity" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="w"></switch_actuator></keyboard_actuators></boolean_variable>
+			</variables>
+	<displayed_objects>
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="115" y="150"></position>
+			<dimensions width="835" height="180"></dimensions>
+			<color value='#00AAAA'></color></heartbeat_monitor>
+		<background>
+		<filename name="input/images/medical_bay.png"></filename></background>
+		
+		<variable_printer>
+			<variable name="heartbeat_pace"></variable>
+			<pre_text value="heartbeat pace: "></pre_text>
+			<position x="115" y="370"></position>
+		</variable_printer>
+		
+		<variable_printer>
+			<variable name="heartbeat_regularity"></variable>
+			<pre_text value="irregularity: "></pre_text>
+			<position x="115" y="350"></position>
+		</variable_printer>
+	</displayed_objects>
+	
+	</configuration>

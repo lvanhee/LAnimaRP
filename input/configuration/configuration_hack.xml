@@ -1,0 +1,11 @@
+<configuration>
+	<displayed_objects>
+		<hacking_frame>
+			<position x="115" y="150"></position>
+			<dimensions width="835" height="180"></dimensions>
+			<color value='#00AAAA'></color></hacking_frame>
+		<background>
+		<filename name="input/images/medical_bay.png"></filename></background>
+	</displayed_objects>
+	
+	</configuration>
