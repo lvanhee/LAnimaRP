@@ -1,6 +1,8 @@
 package input;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,16 +28,20 @@ public class ProcessXML {
 		Document document=null;
 		SAXBuilder sxb = new SAXBuilder();
 		File configFile = null;
+
+		configFile = FileManagerUtils.getLocalFileFor("configuration.xml");
+
 		try
 		{
-			configFile = FileManagerUtils.getLocalFileFor("configuration.xml");
-
 			document = sxb.build(configFile);
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			throw new Error("Erreur au chargement de "+configFile);
-			
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			throw new Error(sw.toString()+"\n"+"Erreur au chargement de "+configFile);
+
 		}
 
 		Element racine = document.getRootElement();
