@@ -13,6 +13,7 @@ import org.jdom2.input.SAXBuilder;
 
 import draw.displayItems.BackgroundImage;
 import draw.displayItems.BarDisplayer;
+import draw.displayItems.ImageDisplayer;
 import draw.displayItems.TextPrinter;
 import draw.displayItems.VariablePrinter;
 import logic.BlinkingShape;
@@ -20,15 +21,22 @@ import logic.variables.VariableModifierFunction;
 
 public class ProcessXML {
 
-	public static void loadXML() {
+	public static void loadXML(){
 		//On crée une instance de SAXBuilder
 		Document document=null;
 		SAXBuilder sxb = new SAXBuilder();
+		File configFile = null;
 		try
 		{
-			document = sxb.build(new File("configuration.xml"));
+			configFile = FileManagerUtils.getLocalFileFor("configuration.xml");
+
+			document = sxb.build(configFile);
 		}
-		catch(Exception e){}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new Error("Erreur au chargement de "+configFile);
+			
+		}
 
 		Element racine = document.getRootElement();
 
@@ -58,7 +66,8 @@ public class ProcessXML {
 			case "blinking_shape": DisplayedItemsManager.add(BlinkingShape.generate(e));break;
 			case "heartbeat_monitor": DisplayedItemsManager.add(HeartBeatMonitor.generate(e));break;
 			case "variable_printer":DisplayedItemsManager.add(VariablePrinter.generate(e)); break;
-			case "hacking_frame": DisplayedItemsManager.add(TextPrinter.newInstance(e));
+		//	case "hacking_frame": DisplayedItemsManager.add(TextPrinter.newInstance(e));break;
+			case "image": DisplayedItemsManager.add(ImageDisplayer.newInstance(e));break;
 			default: throw new Error("Unknown object:"+e.getName());
 			}
 	}

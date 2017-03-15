@@ -1,0 +1,39 @@
+<configuration>
+	
+	
+	<variables>
+		<bounded_int_variable name="heartbeat_pace" min_value="0" max_value="120" initial_value="60">
+			<keyboard_actuators>
+				<increase_actuator key="a" increase_by="60"></increase_actuator>
+				<decrease_actuator key="q" decrease_by="60"></decrease_actuator></keyboard_actuators>
+			</bounded_int_variable>
+			
+			<boolean_variable name="heartbeat_regularity" initial_value="false">
+			<keyboard_actuators>
+			<switch_actuator key="w"></switch_actuator></keyboard_actuators></boolean_variable>
+	</variables>
+	
+	
+	<displayed_objects>
+		<image>
+			<file_location value="input/images/wanted_face.jpg"></file_location>
+			<position x="161" y="93"></position>
+			<dimensions width="360" height="420"></dimensions>
+			<refresh_rate value="1000"></refresh_rate>
+			<on_update>
+				<display_image>
+					<file_location value="input/images/message_patientez.jpg"></file_location>
+					<position x="0" y="0"></position>
+					<dimensions width="960" height="720"></dimensions>
+					<duration value = "2000"></duration>
+					<fading_away value = "true"></fading_away>
+				</display_image>
+			</on_update>
+		</image>
+
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+	</displayed_objects>
+	
+	</configuration>

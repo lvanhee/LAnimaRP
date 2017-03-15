@@ -13,10 +13,13 @@ import java.io.StringWriter;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
+import draw.DrawingUtils;
 import main.DisplayWindow;
 
 public class BackgroundImage implements DisplayableItems {
@@ -25,14 +28,10 @@ public class BackgroundImage implements DisplayableItems {
 	
 	public BackgroundImage(String fileName)
 	{
-		try {
-			File file = new File(fileName); // I have bear.jpg in my working directory  
-		    FileInputStream fis = new FileInputStream(file);  
-			background = ImageIO.read(fis);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new Error();
-		}
+		
+			background = DrawingUtils.loadImage(fileName);
+			
+		
 	}
 
 

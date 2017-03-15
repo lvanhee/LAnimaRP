@@ -1,6 +1,5 @@
 <configuration>
 	
-	
 	<variables>
 		<bounded_int_variable name="heartbeat_pace" min_value="0" max_value="120" initial_value="60">
 			<keyboard_actuators>

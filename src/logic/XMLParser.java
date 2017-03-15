@@ -6,13 +6,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.io.File;
 
 import org.jdom2.Element;
 
+import draw.displayItems.TransitionAnimation;
 import input.BooleanVariable;
 import input.Variable;
 import input.VariableManager;
 import logic.variables.BoundedIntegerVariable;
+import main.DisplayWindow;
 
 public class XMLParser {
 
@@ -42,6 +45,8 @@ public class XMLParser {
 	}
 
 	public static Rectangle parseRectangle(Element e) {
+		if(e.getChild("full_screen")!=null)
+			return new Rectangle(0, 0, DisplayWindow.getWindowWidth(), DisplayWindow.getWindowHeight());
 		Point position = parsePosition(e); 
 		Dimension dimensions = new Dimension(
 				Integer.parseInt(e.getChild("dimensions").getAttributeValue("width")),
@@ -84,6 +89,31 @@ public class XMLParser {
 
 	public static String getPreText(Element e) {
 		return e.getChild(PRE_TEXT_NAME).getAttributeValue(VALUE_NAME);
+	}
+
+	public static File parseFile(Element e) {
+		return new File(e.getChild("file_location").getAttributeValue("value"));
+	}
+
+	public static int parseRefreshRate(Element e) {
+		return Integer.parseInt(e.getChild("refresh_rate").getAttributeValue("value"));
+	}
+
+	public static TransitionAnimation getTransitionAnimation(Element e) {
+		e=e.getChild("on_update").getChild("display_image");
+		File f = parseFile(e);
+		Rectangle r = parseRectangle(e);
+		int duration = parseDuration(e);
+		boolean fadeAway = parseFadeAway(e);
+		return TransitionAnimation.newInstance(f,r,duration,fadeAway);
+	}
+
+	private static boolean parseFadeAway(Element e) {
+		return Boolean.parseBoolean(e.getChild("fading_away").getAttributeValue("value"));
+	}
+
+	private static int parseDuration(Element e) {
+		return Integer.parseInt(e.getChild("duration").getAttributeValue("value"));
 	}
 
 }

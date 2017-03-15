@@ -15,6 +15,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,6 +26,7 @@ import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -52,17 +55,17 @@ public class DisplayWindow {
 		
 		//itemsToDisplay.add(new BackgroundImage("DNAsampler.png"));
 		
+		try
+		{
 		ProcessXML.loadXML();
+		
 		
 		
 
 		JFrame app = new JFrame();
 		app.setLocation(0, 0);
-
 		app.setIgnoreRepaint( true );
-
 		app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		
 		
 		
 		canvas.addKeyListener(KeyMonitorer.getInstance());
@@ -108,14 +111,6 @@ public class DisplayWindow {
 
 		Graphics2D g2d = null;
 
-
-		int fps = 0;
-		int frames = 0;
-		long totalTime = 0;
-		long curTime = System.currentTimeMillis();
-		long lastTime = curTime;
-
-		long lastSecondTicked = 0;
 		while( true ) {
 			BufferedImage bi = gc.createCompatibleImage( canvas.getWidth(), canvas.getHeight());
 			
@@ -125,34 +120,7 @@ public class DisplayWindow {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			double currentTime = System.currentTimeMillis();
-			boolean newSecondTicked = currentTime/1000 !=lastSecondTicked;
-				lastSecondTicked = System.currentTimeMillis()/1000;
-
-				lastTime = curTime;
-
-				curTime = System.currentTimeMillis();
-
-				totalTime += curTime - lastTime;
-
-				if( totalTime > 1000 ) {
-
-					totalTime -= 1000;
-
-					fps = frames;
-
-					frames = 0;
-
-				} 
-
-				++frames;
-
-
-
-				// clear back buffer...
-
 				g2d = bi.createGraphics();
-				
 				g2d.setTransform(AffineTransform.getScaleInstance(getScalingX(),getScalingY()));
 				for(DisplayableItems di:DisplayedItemsManager.getItemsToDisplay())
 				{
@@ -161,33 +129,26 @@ public class DisplayWindow {
 				
 				
 				graphics = buffer.getDrawGraphics();
-
 				graphics.drawImage( bi, 0, 0, null );
 
 				if( !buffer.contentsLost() )
 
 					buffer.show();
 
-
-
-				// Let the OS have a little time...
-
 				Thread.yield();
 
-			/* finally {
-
-				// release resources
-
-				if( graphics != null ) 
-
-					graphics.dispose();
-
-				if( g2d != null ) 
-
-					g2d.dispose();
-
-			}*/
-
+		}
+		}
+		catch(Error e)
+		{
+			e.printStackTrace();
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			
+		    String message = sw.toString();
+		        JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+		            JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
