@@ -1,0 +1,144 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+%\usepackage[T1]{fontenc}
+\usepackage{fourier}
+\usepackage[latin1]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}													% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+\usepackage{verbatim}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{LAnimaRP -- Manuel d'utilisation} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge {Manuel d'utilisation de LAnimaRP} \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont
+        Loïs Vanhée\\[-3pt]		\normalsize
+}
+
+\begin{document}
+\maketitle
+
+LAnimaRP est un outil pour concevoir et afficher facilement des animations dans le cadre d'un jeu de rôle grandeur nature.
+
+Très concretement, ce logiciel permet d'\emph{enrichir l'ambiance} du jeu, en affichant des animations d'ambiance sur des terminaux (GN contemporain ou futuriste) ou via des affichages cachés (ex : bassin de divination pour un med-fan). Ce logiciel sert comme un \emph{outil de coordination}. Le logiciel, laissé à la main des joueurs, leur permet de mieux se concerter afin de gérer une situation donnée. Par exemple, il a été utilisé pour signaler une situation d'alerte (ex : attaque en cours; rassemblement dans la pièce centrale) et pour informer (ex : informations produites par des journalistes en jeu). Le logiciel peut aussi servir à assigner des ressources ou à voter. LAnimaRP peut aussi être utilisé comme \emph{outil d'action}, permettant aux joueurs de concrétiser leurs actions. Par exemple, pour du SF, il peut être utilisé par l'ingénieur de vol pour indiquer la quantité d'énergie allouée aux boucliers, aux armes de tir et aux propulseurs. Cette information peut alors être utilisée par l'organisation pour simuler l'environnement. Enfin, LAnimaRP peut être utilisé comme \emph{outil d'information}, permettant aux organisateurs d'indiquer l'état de l'environnement dans le but de faire réagir les joueurs (ex : menaces à proximité, le réacteur est touché, incendie en salle trois). LAnimaRP est principalement un outil d'animation/affichage. Cependant, il conçu pour être facilement manipulé par les utilisateurs et connecté à des outils de simulation.
+
+Ces animations sont dites ``passives". Elles sont sous l'entier contrôle de l'utilisateur, via le clavier ou des fichiers. Les animations peuvent comporter des éléments ``dynamiques", comme barre qui se remplit ou un rythme cardiaque. Néanmoins, mais LAnimaRP ne vise pas à créer une simulation élaborée et automatisée du monde : ce pouvoir est laissé entre les mains de l'organisateur (ou d'un module externe). Le logiciel est donc piloté de l'extérieur, par l'organisation ou les joueurs. Pour ce faire, ils peuvent appuyer sur des touches du clavier qui vont influence l'affichage (ex : illuminer ou éteindre une pièce pour indiquer qu'elle a un incendie en son sein).
+
+Ce document décrit comment utiliser LAnimaRP. Il introduit comment lancer une animation existante mais permet aussi de créer ses propres animations.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/background}
+\caption{Animation informative: l'organisation peut signaler la présence d'un incendie en faisant clignotter en rouge une pièce du vaisseau.}
+\label{fig:background}
+\end{figure}
+
+Des utilisations concrètes sont détaillées en Section \ref{section:exemples}.
+
+\section{Conditions générales d'utilisation}
+
+Je développe ce logiciel pour servir la communauté GNiste en lui fournissant des outils pratiques. Bien que je ne demande aucune rémunération pour ce travail, je vous demande de me tenir au courant de son utilisation. D'une part, parce que ça me fait plaisir de savoir que mon travail est utilisé pour un jeu, d'autre part afin d'en garder trace pour le perfectionner et le rendre accessible à d'autres joueurs/organisateurs.
+
+La licence classique est la licence ``\emph{beerware}" : mon logiciel vous a été utile et qu'on a l'occasion de se croiser, offrez-moi une bière (ou plutôt un jus de fruit) et racontez-moi comment vous l'avez utilisé. Je vous demande aussi de me remplir un \emph{petit résumé} pour me dire ce que vous en avez fait. Pas grand chose : quelques lignes pour décrire son utilisation dans le jeu, quelques photos ou vidéos de son utilisation en jeu et un petit retour d'apprentissage (a-t-il été utile ? Aurait-il pu être mieux exploité ? Avez-vous été gêné par une limitation). Si vous voulez me faire vraiment plaisir, partagez-moi vos fichiers de configuration et images, afin que d'autres puisse en disposer par la suite. L'objectif est de constituer une petite base de d'exemples pour montrer les utilisations possibles de l'outil et favoriser son utilisation par la suite.
+
+Je suis aussi très ouvert aux collaborations. N'hésitez pas à prendre me contacter si vous souhaitez intégérer une animation dans votre jeu ou si vous souhaitez des fonctionnalités supplémentaires pour le logiciel. Je suis enclin à vous apporter mon soutien à mettre ça en place.
+
+\section{Démarrage}
+
+\subsection{Pré-requis}
+
+Java 1.8 (ou plus) doit être installé sur votre machine. Il est téléchargeable depuis cette adresse : \url{https://www.java.com/fr/download/}. Si vous utilisez le module pour afficher une vidéo, il faut que VLC soit installé sur votre machine. VLC est disponible ici \url{https://www.videolan.org/vlc/index.fr.html}.
+
+\subsection{Lancement}
+
+Il suffit de double-cliquer sur ``demo.jar". Cette animation va alors charger l'animation depuis le fichier ``configuration.xml" dans le même répertoire. A défaut, il faut faire un clic droit ``ouvrir avec Java 1.8" (ou équivalent).
+
+En ligne de commande, il suffit de taper :
+\begin{verbatim}
+java -jar demo.jar
+\end{verbatim}
+
+\section{Créer sa propre animation}
+
+A venir.
+
+\begin{tiny}
+\subsection{Quelques concepts clefs}
+
+Afin de bien comprendre comment ce logiciel peut être utilisé, voici quelques concepts clefs.
+
+
+
+Comment ça marche, plus précisément ? Dans le détail, l'affichage est composé d'un ensemble d'\emph{animations unitaires} (ex : un moniteur cardiaque, une pièce qui s'illumine, une barre plus ou moins remplie etc). Certaines animations peuvent dépendre de \emph{variables} (ex : est-ce qu'une pièce est allumée ou non, le taux de remplissage pour une barre). Ces variables sont mises à jour par des \emph{commandes} (ex : la pression d'un bouton augmente la valeur d'une variable). Ainsi, en appuyant sur ``+", le taux de remplissage monte d'un cran et la barre affichée est mise à jour. Voilà, c'est à peu près tout ce qu'il y a savoir !
+
+Maintenant que vous savez ça, vous avez les outils nécessaires pour comprendre comment le logiciel fonctionne... Voire à créer vos propres animations à partir de l'existant !
+
+\end{tiny}
+
+\section{Exemples de déploiements}
+\label{section:exemples}
+
+\subsection{GN ``De Charybde de Cylon" (2015)}
+
+Deux animations ont été réalisées pour ce GN. La première est l'afficheur d'alertes en Figure \ref{figure:alerte_charybde}. Une vidéo de l'animation est disponible ici : \url{https://www.youtube.com/watch?v=MQtKcjKdw_Y}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\linewidth]{images/background}
+\includegraphics[width=0.45\linewidth]{images/charybde}
+\caption{Affichage des salles en état d'alerte, déploiement en jeu (rétroprojeté au dessus d'une scène dans la pièce commune, l'affichage, très visible en jeu, est occulté par la puissance du flash du photographe)}
+\label{figure:alerte_charybde}
+\end{figure}
+
+La seconde constitue une base de donnée (vérification de mots de passe, système de hacking avec mini-jeu). La base était déployée sur des machines locales et permettait d'accéder à des informations cachées ou personnelles d'autres personnages. Un tutoriel de l'animation est disponible ici \url{https://www.youtube.com/watch?v=Fo7fqtNnpPQ}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\linewidth]{images/base_de_donnee_charybde}
+\includegraphics[width=0.45\linewidth]{images/hack}
+\caption{Base de donnée et système de hack (De Charybde en Cylon)}
+\label{figure:base_de_donnees_charybde}
+\end{figure}
+
+
+\subsection{GN Clones, Echo (2017)}
+
+Animation salle principale.
+
+DNASCA.
+
+
+\end{document}
