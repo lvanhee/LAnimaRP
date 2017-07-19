@@ -1,0 +1,39 @@
+<configuration>
+	<variables>
+		<variable name="path_to_image">
+			<variable_type type = "path_variable"></variable_type>
+			<initial_value value = "input/images/message_patientez.jpg">
+				</initial_value>
+			<variable_actuators>
+				<synchronize_from_file_actuator>
+					<periodic_refresh 
+						period = "1000">
+					</periodic_refresh>
+					<file_location>
+						<hard_path path= "input/paths/image_file_path.txt">
+							</hard_path>
+					</file_location>
+				</synchronize_from_file_actuator>
+			</variable_actuators>
+		</variable>
+	</variables>
+	
+	<displayed_objects>
+		<image>
+			<file_location>
+				<variable_name name="path_to_image"></variable_name>
+			</file_location>
+			<position x="161" y="93"></position>
+			<dimensions width="360" height="420"></dimensions>
+			<periodic_refresh 
+				period = "1000">
+			</periodic_refresh>
+		</image>
+		
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+		
+	</displayed_objects>
+	
+	</configuration>

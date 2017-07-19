@@ -1,0 +1,18 @@
+<configuration>
+	
+	<displayed_objects>
+		<image>
+			<file_location>
+				<hard_path path = "input/images/gits.gif">
+				</hard_path>
+			</file_location>
+			<position x="161" y="93"></position>
+			<dimensions width="360" height="420"></dimensions>
+		</image>
+		
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+	</displayed_objects>
+	
+	</configuration>

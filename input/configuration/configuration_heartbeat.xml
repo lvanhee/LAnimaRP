@@ -2,16 +2,25 @@
 	
 	
 	<variables>
-		<bounded_int_variable name="heartbeat_pace" min_value="0" max_value="120" initial_value="60">
-			<keyboard_actuators>
-				<increase_actuator key="a" increase_by="60"></increase_actuator>
-				<decrease_actuator key="q" decrease_by="60"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
-			
-			<boolean_variable name="heartbeat_regularity" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="w"></switch_actuator></keyboard_actuators></boolean_variable>
-			</variables>
+		<variable name="heartbeat_pace">
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="120"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable name = "heartbeat_regularity">
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+	</variables>
+	
 	<displayed_objects>
 		<heartbeat_monitor>
 			<variable name="heartbeat_pace" function = "pace"></variable>
@@ -19,6 +28,7 @@
 			<position x="115" y="150"></position>
 			<dimensions width="835" height="180"></dimensions>
 			<color value='#00AAAA'></color></heartbeat_monitor>
+			
 		<background>
 		<filename name="input/images/medical_bay.png"></filename></background>
 		

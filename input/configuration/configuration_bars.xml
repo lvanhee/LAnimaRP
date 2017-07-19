@@ -2,67 +2,128 @@
 	
 	
 	<variables>
-		<bounded_int_variable name="air" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="a" increase_by="10"></increase_actuator>
-				<decrease_actuator key="q" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
+		<variable>
+			<variable_name name = "air"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "eau"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "pression"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "temperature"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "recyclage"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "secours"></variable_name>
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="300"> </range>
+			<initial_value value = "250"> </initial_value>
+			<variable_actuators>
+				<key_increase_actuator key="a" increase_by="10"></key_increase_actuator>
+				<key_increase_actuator key="q" increase_by="-10"></key_increase_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "surcharge_air"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "surcharge_eau"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+		
+					
+		<variable>
+			<variable_name name = "surcharge_pression"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable>
+			<variable_name name = "surcharge_temperature"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
 			
-					<bounded_int_variable name="eau" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="z" increase_by="10"></increase_actuator>
-				<decrease_actuator key="s" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
+		<variable>
+			<variable_name name = "surcharge_recyclage"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
 			
-					<bounded_int_variable name="pression" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="e" increase_by="10"></increase_actuator>
-				<decrease_actuator key="d" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
+		<variable>
+			<variable_name name = "surcharge_secours"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
 			
-					<bounded_int_variable name="temperature" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="r" increase_by="10"></increase_actuator>
-				<decrease_actuator key="f" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
-			
-					<bounded_int_variable name="recyclage" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="t" increase_by="10"></increase_actuator>
-				<decrease_actuator key="g" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
-			
-					<bounded_int_variable name="secours" min_value="0" max_value="300" initial_value="300">
-			<keyboard_actuators>
-				<increase_actuator key="y" increase_by="10"></increase_actuator>
-				<decrease_actuator key="h" decrease_by="10"></decrease_actuator></keyboard_actuators>
-			</bounded_int_variable>
-			
-			<boolean_variable name="surcharge_air" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="w"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			<boolean_variable name="surcharge_eau" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="x"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			<boolean_variable name="surcharge_pression" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="c"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			<boolean_variable name="surcharge_temperature" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="v"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			<boolean_variable name="surcharge_recyclage" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="b"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			<boolean_variable name="surcharge_secours" initial_value="false">
-			<keyboard_actuators>
-			<switch_actuator key="n"></switch_actuator></keyboard_actuators></boolean_variable>
-			
-			</variables>
+	</variables>
 							
 				
 	<displayed_objects>
@@ -220,4 +281,4 @@
 		
 		
 		<background>
-		<filename name="systemes support vie.png"></filename></background></displayed_objects></configuration>
+		<filename name="input/images/systemes support vie.png"></filename></background></displayed_objects></configuration>

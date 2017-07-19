@@ -1,0 +1,31 @@
+<configuration>
+	<displayed_objects>
+
+		<video>
+			<file_location>
+				<hard_path path = "input/videos/gattaca.mp4">
+				</hard_path>
+			</file_location>
+			<position x="500" y="100"></position>
+			<dimensions width="300" height="300"></dimensions>
+		</video>
+		
+		<video>
+			<file_location>
+				<hard_path path = "input/videos/island.mp4">
+				</hard_path>
+			</file_location>
+			<position x="100" y="100"></position>
+			<dimensions width="300" height="300"></dimensions>
+		</video>
+		
+		
+		
+
+		
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+	</displayed_objects>
+	
+</configuration>

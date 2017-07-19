@@ -1,0 +1,30 @@
+<configuration>
+	<variables>
+		<variable>
+			<variable_type type="string"></variable_type>
+			<variable_name name="news"> </variable_name>
+			<initial_value value="This is the content of the news ticker"></initial_value>
+		</variable>
+	</variables>
+	<displayed_objects>
+		<fps>
+			<position x="10" y="10"></position>
+		</fps>
+		<news_ticker>
+			<text_source>
+				<variable_based_text_source>
+					<variable name="news"></variable>
+				</variable_based_text_source>
+			</text_source>
+			<height y = "670"></height>
+			<scrolling_speed
+				pixel_per_second = "20">
+			</scrolling_speed>
+		</news_ticker>
+		
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+	</displayed_objects>
+	
+	</configuration>

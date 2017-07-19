@@ -1,0 +1,22 @@
+<configuration>
+	<displayed_objects>
+
+
+		<slideshow>
+			<folder_location>
+				<hard_link path = "input/images"></hard_link>
+			</folder_location>
+			<periodic_refresh period = "2000">
+			</periodic_refresh>
+			<position x="200" y = "200"></position>
+			<dimensions width="200" height="300"></dimensions>
+			
+		</slideshow>
+
+		
+		<background>
+			<filename name="input/images/wanted.png"></filename>
+		</background>
+	</displayed_objects>
+	
+	</configuration>

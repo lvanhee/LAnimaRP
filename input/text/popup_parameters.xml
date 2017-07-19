@@ -1,0 +1,50 @@
+<configuration>	
+	<displayed_animations>
+	
+	<popup>
+		<displayed_animations>
+		
+			<image>
+				<file_location>
+					<hard_path path="input/images/wanted.png"></hard_path>
+				</file_location>
+				<position x="0" y="0"></position>
+				<dimensions width="1170" height="700"></dimensions>	
+			</image>
+			<image>
+				<file_location>
+					<hard_path path="input/images/mdm2.jpg"></hard_path>
+				</file_location>
+				<position x="200" y="90"></position>
+				<dimensions width="400" height="380"></dimensions>	
+			</image>
+			
+			<sound>
+				<file_location>
+					<hard_path path="input/sound/alerte_insurge.wav"></hard_path>
+				</file_location>
+				<position x="200" y="90"></position>
+				<dimensions width="400" height="380"></dimensions>	
+			</sound>
+		</displayed_animations>
+		
+			<animation_specific_variable_actuator>
+				<variable name="pausing_because_of_popup"></variable>
+				<animation_trigger cause = "is_visible"></animation_trigger>
+			</animation_specific_variable_actuator>
+			
+		<initial_display_time value = "20000">
+		</initial_display_time>
+			
+		<period_on>
+			<periodic_refresh period = "20000"></periodic_refresh>
+		</period_on>	
+		
+		<period_off>
+			<periodic_refresh period = "5000"></periodic_refresh>
+		</period_off>		
+	</popup>
+	
+	</displayed_animations>
+	
+</configuration>

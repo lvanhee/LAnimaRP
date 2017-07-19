@@ -1,0 +1,94 @@
+<configuration>
+    <variables>
+        <variable name = "news_ticker_contents">
+            <variable_type type = "string"></variable_type>
+            <initial_value value = "Pas de nouvelles"> </initial_value>
+            <variable_actuators>
+                <synchronize_from_file_actuator>
+                    <periodic_refresh
+                        period = "1000">
+                    </periodic_refresh>
+                    <file_location>
+                        <hard_path path = "input/text/content_news_ticker.txt"></hard_path>
+                    </file_location>
+                </synchronize_from_file_actuator>
+            </variable_actuators>
+        </variable>
+        
+        <variable name = "pausing_because_of_popup">
+            <variable_type type = "boolean"></variable_type>
+            <initial_value value = "false"> </initial_value>
+            
+            <variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+        </variable>
+    </variables>
+     
+    <displayed_animations>
+    
+        <image>
+				<file_location>
+					<hard_path path="input/images/background_clones.jpg"></hard_path>
+				</file_location>
+				<stretching>
+					<mode value = "stretch"></mode>
+				</stretching>
+				<position x="0" y="0"></position>
+				<dimensions width="1120" height="700"></dimensions>	
+		</image>   
+ 
+        <slideshow>
+            <folder_location>
+                <hard_link path = "input/images"></hard_link>
+            </folder_location>
+            <periodic_refresh period = "4000">
+            </periodic_refresh>
+            <position x="50" y = "50"></position>
+            <dimensions width="450" height="450"></dimensions>
+            <stretching>
+					<mode value = "scale_no_stretch_no_bands"></mode>
+			</stretching>
+        </slideshow>
+         
+      
+         
+        <news_ticker>
+            <text_source>
+                <variable_based_text_source>
+                    <variable name="news_ticker_contents"></variable>
+                </variable_based_text_source>
+            </text_source>
+            <height y = "670"></height>
+            <scrolling_speed>
+            	<speed value = "100"></speed>
+            </scrolling_speed>
+        </news_ticker>
+       
+        <video>
+            <folder_location>
+                <hard_link path = "input/videos/">
+                </hard_link>
+            </folder_location>
+            <position x="620" y="50"></position>
+            <dimensions width="450" height="450"></dimensions>
+            <pause_trigger>
+            	<variable_based>
+                    <variable name="pausing_because_of_popup"></variable>
+                </variable_based>
+            </pause_trigger>
+        </video>
+        
+       <generic_displayer>
+            <file_location>
+                <hard_path path= "input/text/popup_parameters.xml">
+                            </hard_path>
+            </file_location>
+            <periodic_refresh period = "1000">
+            </periodic_refresh>
+        </generic_displayer>
+
+
+    </displayed_animations>
+     
+    </configuration>

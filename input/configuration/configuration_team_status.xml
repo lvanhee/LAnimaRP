@@ -1,0 +1,408 @@
+<configuration>
+	
+	
+	<variables>
+		<variable name="heartbeat_pace_60">
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="120"> </range>
+			<initial_value value = "60"> </initial_value>
+		</variable>
+		
+		
+		<variable name="heartbeat_pace_100">
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="120"> </range>
+			<initial_value value = "100"> </initial_value>
+		</variable>
+		
+		<variable name="heartbeat_pace_0">
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="120"> </range>
+			<initial_value value = "0"> </initial_value>
+		</variable>
+		
+		<variable name="heartbeat_pace_120">
+			<variable_type type = "bounded_int"></variable_type>
+			<range min_value="0" max_value="120"> </range>
+			<initial_value value = "120"> </initial_value>
+		</variable>
+		
+		<variable name = "heartbeat_regularity">
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+		</variable>
+	</variables>
+	
+	<displayed_animations>
+		<image>
+			<file_location>
+				<hard_path path="input/images/trombi.jpg"></hard_path>
+			</file_location>
+			<stretching>
+				<mode value = "stretch"></mode>
+			</stretching>
+			<position x="0" y="0"></position>
+			<dimensions width="1090" height="700"></dimensions>	
+		</image>   
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="10" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>
+		
+				<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="110" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="210" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="310" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="410" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="505" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="600" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="700" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="800" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="890" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="990" y="178"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="10" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>
+		
+				<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="110" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="210" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="310" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="410" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="505" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="600" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="700" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="800" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="890" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="990" y="318"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="10" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>
+		
+				<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="110" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="210" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="310" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="410" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="505" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="600" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="700" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="800" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="890" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="990" y="470"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="10" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>
+		
+				<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="110" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>
+		
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="210" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="310" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="410" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="505" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_60" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="600" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#00AAAA'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_0" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="700" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#AA0000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_120" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="800" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FF8000'></color>
+		</heartbeat_monitor>	
+		
+		<heartbeat_monitor>
+			<variable name="heartbeat_pace_100" function = "pace"></variable>
+			<variable name="heartbeat_regularity" function = "irregularity"></variable>
+			<position x="890" y="630"></position>
+			<dimensions width="85" height="50"></dimensions>
+			<color value='#FFFF00'></color>
+		</heartbeat_monitor>	
+		
+
+		
+		
+	</displayed_animations>
+	
+	</configuration>

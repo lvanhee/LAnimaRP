@@ -1,16 +1,12 @@
 package main;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.KeyListener;
+import java.awt.Toolkit;
+import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -18,155 +14,42 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.function.Predicate;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-
-import draw.displayItems.BarDisplayer;
-import draw.displayItems.DNAMatcher;
-import draw.displayItems.DisplayableItems;
-import draw.displayItems.VariableDisplayer;
-import input.DisplayedItemsManager;
-import input.KeyMonitorer;
-import input.ProcessXML;
-import logic.BlinkingShape;
-import logic.variables.BoundedIntegerVariable;
-import logic.variables.DecreaseVariableFunction;
-import logic.variables.IncreaseVariableFunction;
-import logic.variables.ThresholdVariable;
+import draw.displayItems.DisplayableItem;
+import input.configuration.ProcessXML;
+import input.events.publishers.KeyMonitorer;
+import logic.data.fileLocators.FileManagerUtils;
 
 public class DisplayWindow {
 	
-	private static final Dimension INITIAL_DIMENSIONS = new Dimension((int)(1.6*700),700);
+	private static final Dimension INITIAL_WINDOW_DIMENSIONS = new Dimension((int)(1.6*700),700);
 	
+	//private static final Canvas canvas = new Canvas();
 	private static final Canvas canvas = new Canvas();
+	
+	private static JFrame app=null;
 
-	public static void main( String[] args ) {
-		
-		//itemsToDisplay.add(new BackgroundImage("DNAsampler.png"));
-		
-		try
-		{
-		ProcessXML.loadXML();
-		
-		
-		
-
-		JFrame app = new JFrame();
-		app.setLocation(0, 0);
-		app.setIgnoreRepaint( true );
-		app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		
-		
-		canvas.addKeyListener(KeyMonitorer.getInstance());
-		
-		canvas.setIgnoreRepaint( true );
-
-		canvas.setSize(INITIAL_DIMENSIONS);
-
-
-
-		// Add canvas to game window...
-
-		app.add( canvas );
-
-		app.pack();
-
-		app.setVisible( true );
-
-
-
-		// Create BackBuffer...
-
-		canvas.createBufferStrategy( 2 );
-
-		BufferStrategy buffer = canvas.getBufferStrategy();
-
-
-
-		// Get graphics configuration...
-
-		GraphicsEnvironment ge = 
-				GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		GraphicsConfiguration gc = gd.getDefaultConfiguration();
-
-
-
-
-
-		// Objects needed for rendering...
-
-		Graphics graphics = null;
-
-		Graphics2D g2d = null;
-
-		while( true ) {
-			BufferedImage bi = gc.createCompatibleImage( canvas.getWidth(), canvas.getHeight());
-			
-			//System.out.println(canvas.getWidth());
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-				g2d = bi.createGraphics();
-				g2d.setTransform(AffineTransform.getScaleInstance(getScalingX(),getScalingY()));
-				for(DisplayableItems di:DisplayedItemsManager.getItemsToDisplay())
-				{
-					di.drawMe(g2d);
-				}
-				
-				
-				graphics = buffer.getDrawGraphics();
-				graphics.drawImage( bi, 0, 0, null );
-
-				if( !buffer.contentsLost() )
-
-					buffer.show();
-
-				Thread.yield();
-
-		}
-		}
-		catch(Error e)
-		{
-			e.printStackTrace();
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			
-		    String message = sw.toString();
-		        JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
-		            JOptionPane.ERROR_MESSAGE);
-		}
-
+	/**
+	 * VM parameters
+	 * -Djna.nosys=true -DVLCJ_INITX=no
+	 * @param args
+	 */
+	public static void main( String[] args ){
+		newDisplay(FileManagerUtils.getLocalFileFor("configuration.xml"));
 	}
+
+
+
 
 
 
 	private static double getScalingY() {
-		if(DisplayedItemsManager.hasBackground())
-			return (double)getWindowHeight()/(double)DisplayedItemsManager.getBackground().getImage().getHeight();
-		else
-			return (double)getWindowHeight()/(double)INITIAL_DIMENSIONS.getHeight();
+		return (double)getWindowHeight()/(double)INITIAL_WINDOW_DIMENSIONS.getHeight();
 	}
 
 	private static double getScalingX() {
-		if(DisplayedItemsManager.hasBackground())
-			return (double)getWindowWidth()/(double)DisplayedItemsManager.getBackground().getImage().getWidth();
-		else
-			return (double)getWindowWidth()/(double)INITIAL_DIMENSIONS.getWidth();
+		return (double)getWindowWidth()/(double)getWindowUntransformedWidth();
 	}
 
 
@@ -177,6 +60,116 @@ public class DisplayWindow {
 
 	public static int getWindowHeight() {
 		return canvas.getHeight();
+	}
+
+
+
+	public static JFrame getFrame() {
+		return app;
+	}
+
+
+
+	public static int getWindowUntransformedWidth() {
+			return (int) INITIAL_WINDOW_DIMENSIONS.getWidth();
+	}
+
+
+
+	public static AffineTransform getTransformScaledToWindow() {
+		AffineTransform at = new AffineTransform();
+		at.scale(getScalingX(), getScalingY());
+		return at;
+	}
+
+	public static void newDisplay(File inputFile) {
+		try
+		{
+			Collection<DisplayableItem>itemsToDisplay = ProcessXML.loadXML(inputFile);
+			app = new JFrame();
+			app.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+	        		(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+	                
+			app.setUndecorated(true);
+			app.setResizable(false);
+			app.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+			GraphicsEnvironment ge=GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice vc=app.getGraphicsConfiguration().getDevice();
+			vc.setFullScreenWindow(app);
+		
+			
+			app.setVisible(true);
+			app.setLocationRelativeTo(null);  
+			app.setLocation(0, 0);
+			app.setIgnoreRepaint( true );
+			app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+			
+			canvas.addKeyListener(KeyMonitorer.getInstance());
+			canvas.setIgnoreRepaint( true );
+			canvas.setSize(INITIAL_WINDOW_DIMENSIONS);
+
+			app.add( canvas );
+			app.setVisible( true );
+
+			// Create BackBuffer...
+			canvas.createBufferStrategy( 2 );
+			BufferStrategy buffer = canvas.getBufferStrategy();
+
+
+
+			// Get graphics configuration...
+			ge = 
+					GraphicsEnvironment.getLocalGraphicsEnvironment();			
+			// Objects needed for rendering...
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Thread.currentThread().setName("MainLoop for:"+inputFile);
+
+					Graphics2D g2d = null;
+					while( app.isShowing() ) {
+						
+
+						try {
+							Thread.sleep(5);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+						do{
+							do {
+								g2d = (Graphics2D) buffer.getDrawGraphics();
+								g2d.setTransform(AffineTransform.getScaleInstance(getScalingX(),getScalingY()));
+								for(DisplayableItem di:itemsToDisplay)
+								{
+									di.drawMe(g2d);
+								}
+								g2d.dispose();
+							}
+							while(buffer.contentsRestored());
+
+
+							buffer.show();
+						}while(buffer.contentsLost());
+					}
+				}
+			}).start();
+
+			
+		}
+		catch(Error e)
+		{
+			e.printStackTrace();
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+
+			String message = sw.toString();
+			JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+					JOptionPane.ERROR_MESSAGE);
+			throw new Error(message);
+		}
 	}
 
 }
