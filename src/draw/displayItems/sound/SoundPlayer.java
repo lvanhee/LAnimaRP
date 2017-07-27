@@ -14,6 +14,7 @@ import draw.displayItems.DisplayableItem;
 import draw.utils.SoundUtils;
 import input.configuration.XMLParser;
 import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.StaticFileLocator;
 
 public class SoundPlayer implements DisplayableItem {
 
@@ -41,6 +42,14 @@ public class SoundPlayer implements DisplayableItem {
 
 	@Override
 	public void terminate() {
+	}
+
+	public static SoundPlayer newInstance(String string) {
+		return newInstance(StaticFileLocator.newInstance(string));
+	}
+
+	public static SoundPlayer newInstance(FileLocator newInstance) {
+		return new SoundPlayer(newInstance);
 	}
 
 }

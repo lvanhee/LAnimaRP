@@ -14,7 +14,7 @@ public class VariableBasedPauseTrigger implements PauseTrigger, LAnimaRPEventLis
 	private final BooleanVariable pauseRequested ;
 	
 	public VariableBasedPauseTrigger(BooleanVariable parseVariable) {
-		listener = GenericLAnimaRPEventListener.newInstance(parseVariable);
+		listener = GenericLAnimaRPEventListener.newInstance(parseVariable, x->{});
 		pauseRequested = parseVariable;
 		
 	}

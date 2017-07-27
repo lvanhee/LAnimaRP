@@ -19,8 +19,11 @@ public class GenericPublisher<ET extends LAnimaRPEvent> implements LAnimaRPEvent
 	}
 
 	public void publish(ET newInstance) {
-		new Thread( ()->listeners.stream().forEach(x->x.handleEvent(newInstance))).start();
-		
+		new Thread( ()->
+		{
+			Thread.currentThread().setName("Event:"+newInstance);
+			listeners.stream().forEach(x->x.handleEvent(newInstance));
+		}).start();
 	}
 
 	@Override

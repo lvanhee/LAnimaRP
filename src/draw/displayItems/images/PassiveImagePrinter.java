@@ -8,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import javax.sql.rowset.CachedRowSet;
 import javax.swing.ImageIcon;
 import draw.displayItems.DisplayableItem;
+import draw.utils.DrawingUtils;
 import logic.data.drawing.StretchingType;
 import main.DisplayWindow;
 
@@ -82,6 +83,10 @@ public class PassiveImagePrinter implements DisplayableItem {
 
 	@Override
 	public void terminate() {
+	}
+
+	public static PassiveImagePrinter newInstance(String string, Rectangle bounds, StretchingType stretch) {
+		return newInstance(DrawingUtils.loadImage(string), bounds, stretch);
 	}
 
 }

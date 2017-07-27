@@ -11,8 +11,11 @@ public class GenericLAnimaRPEventListener<T extends LAnimaRPEvent> implements LA
 	
 	private Consumer<T> reaction = (x->{});
 
-	public GenericLAnimaRPEventListener(LAnimaRPEventPublisher<T> parseVariable) {
+	private GenericLAnimaRPEventListener(LAnimaRPEventPublisher<T> parseVariable,
+			Consumer<T>reaction
+			) {
 		parseVariable.subscribe(this);
+		this.reaction = reaction;
 	}
 
 	@Override
@@ -21,8 +24,8 @@ public class GenericLAnimaRPEventListener<T extends LAnimaRPEvent> implements LA
 	}
 
 	public static <T extends LAnimaRPEvent> GenericLAnimaRPEventListener<T>
-	newInstance(LAnimaRPEventPublisher<T> parseVariable) {
-		return new GenericLAnimaRPEventListener<T>(parseVariable);
+	newInstance(LAnimaRPEventPublisher<T> parseVariable,Consumer<T> reaction) {
+		return new GenericLAnimaRPEventListener<T>(parseVariable, reaction);
 	}
 
 	public void setAction(Consumer<T> object) {

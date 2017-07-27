@@ -1,4 +1,4 @@
-package draw.displayItems.shapes;
+package draw.displayItems.shapes.bars;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,36 +7,41 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding.ParameterStyle;
+
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.shapes.bars.PassiveBar.FillDirection;
 import input.configuration.XMLParser;
+import input.events.eventTypes.VariableEvolvedEvent;
+import input.events.listeners.GenericLAnimaRPEventListener;
+import input.events.listeners.LAnimaRPEventListener;
 import logic.variables.management.VariableManager;
 import logic.variables.variableTypes.BoundedIntegerVariable;
 
 public class BarDisplayer implements DisplayableItem {
-
+	
+	private final PassiveBar pb;
 	private static final Color DEFAULT_COLOR = Color.white;
-	BoundedIntegerVariable bv;
-	Rectangle position;
-	private Color displayColor= DEFAULT_COLOR;
-	public BarDisplayer(BoundedIntegerVariable boundedVariable, Rectangle rectangle) {
-		position = rectangle;
-		bv = boundedVariable;
+	
+	private final LAnimaRPEventListener<VariableEvolvedEvent> listener;
+			
+	
+
+	private BarDisplayer(BoundedIntegerVariable boundedVariable, Rectangle rectangle) {
+		this(boundedVariable, rectangle, DEFAULT_COLOR);
+	}
+
+	private BarDisplayer(final BoundedIntegerVariable biv, Rectangle rectangle, Color displayColor) {
+		pb = PassiveBar.newInstance((float)biv.getRatio(),rectangle,displayColor, FillDirection.VERTICAL);
 		
+		listener =GenericLAnimaRPEventListener.newInstance(biv,
+				x->pb.setRatio((float)biv.getRatio())
+				);
 	}
 
-	public BarDisplayer(BoundedIntegerVariable biv, Rectangle rectangle, Color displayColor) {
-		this(biv,rectangle);
-		this.displayColor=displayColor;
-	}
 
-	@Override
-	public void drawMe(Graphics2D g) {
-		g.setColor(displayColor);
-		g.fillRect(position.x, position.y, position.width, (int)(position.getHeight()*bv.getRatio()));
-		g.draw(position);
-	}
 
 	public static BarDisplayer generate(List<Element> list) {
 		BoundedIntegerVariable biv = null;
@@ -65,6 +70,11 @@ public class BarDisplayer implements DisplayableItem {
 
 	@Override
 	public void terminate() {
+	}
+
+	@Override
+	public void drawMe(Graphics2D g) {
+		pb.drawMe(g);
 	}
 	
 

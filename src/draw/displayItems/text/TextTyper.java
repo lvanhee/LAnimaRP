@@ -13,9 +13,13 @@ import org.w3c.dom.css.Rect;
 import com.sun.jna.platform.KeyboardUtils;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import input.configuration.XMLParser;
 import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.LAnimaRPKeyEvent;
+import input.events.listeners.GenericLAnimaRPEventListener;
 import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.KeyMonitorer;
 import input.events.publishers.LAnimaRPEventPublisher;
@@ -35,52 +39,26 @@ import java.util.EventListener;
 import java.util.Random;
 
 
-public class TextTyper implements DisplayableItem, 
-LAnimaRPEventListener<LAnimaRPEvent> {
+public class TextTyper implements DisplayableItem {
 
-	private String hackingText="";	
-	private final PassiveTextAreaDrawer drawer;
+	private final PreSetPassiveAppendTextAreaDrawer drawer;
+	private final AppendTypes appendType;
 	
 	
 	private TextTyper(Rectangle r, 
 			FileLocator textFile, 
-			LAnimaRPEventPublisher<LAnimaRPEvent> um){
-		drawer = PassiveTextAreaDrawer.newInstance(r);
+			LAnimaRPEventPublisher<?> um, AppendTypes oneChar){
+		drawer = PreSetPassiveAppendTextAreaDrawer.newInstance(r, textFile);
+		
+		GenericLAnimaRPEventListener.newInstance(um,
+				x->handleEvent(x));
+		
+		appendType = oneChar;
 
-		
-		hackingText = readText(textFile.getFile());
-		
-		um.subscribe(this);
-	
-		
-	/*	new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				throw new Error();
-			}
-		}).start();*/
-	}
-		
-	private String readText(File f) {
-		try {
-		  BufferedReader br = new BufferedReader(new FileReader(f));
-		    
-		        StringBuilder sb = new StringBuilder();
-		        String line = br.readLine();
 
-		        while (line != null) {
-		            sb.append(line);
-		            sb.append(System.lineSeparator());
-		            line = br.readLine();
-		        }
-		        br.close();
-		        return sb.toString();
-		    } catch (IOException e) {
-				e.printStackTrace();
-				throw new Error();
-			}
+
 	}
+
 	
 	@Override
 	public void drawMe(Graphics2D g) {
@@ -91,12 +69,12 @@ LAnimaRPEventListener<LAnimaRPEvent> {
 	public static DisplayableItem newInstance(Element e) {
 		Rectangle r = XMLParser.parseRectangle(e);
 		FileLocator f = XMLParser.parseFileLocator(e);
-		LAnimaRPEventPublisher<? extends LAnimaRPKeyEvent> um = XMLParser.parseKeyboardUpdateMechanism(e);
+		LAnimaRPEventPublisher<? extends LAnimaRPKeyEvent> um = 
+				XMLParser.parseKeyboardUpdateMechanism(e);
 		
-		return new TextTyper(r,f,(LAnimaRPEventPublisher<LAnimaRPEvent>)um);
+		return new TextTyper(r,f,(LAnimaRPEventPublisher<LAnimaRPEvent>)um, AppendTypes.ONE_CHAR);
 	}
 	
-	@Override
 	public synchronized void handleEvent(LAnimaRPEvent event) {
 		if(event instanceof LAnimaRPKeyEvent)
 		{
@@ -105,12 +83,19 @@ LAnimaRPEventListener<LAnimaRPEvent> {
 			if(ke.getKeyEvent().getID()==KeyEvent.KEY_RELEASED) return;
 			
 		}
-
-		drawer.append(""+hackingText.substring(0,1));
-		hackingText = hackingText.substring(1);
+		drawer.append(appendType);
 	}
 
 	@Override
 	public void terminate() {
+	}
+
+
+	public static TextTyper newInstance(Rectangle rectangle, FileLocator newInstance, AppendTypes oneChar) {
+		return new TextTyper(
+				rectangle, 
+				newInstance, 
+				KeyMonitorer.getInstance(),
+				oneChar);
 	}
 }

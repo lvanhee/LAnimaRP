@@ -1,21 +1,75 @@
 package draw.displayItems.advanced.chromatograph;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.images.PassiveImagePrinter;
+import draw.displayItems.shapes.bars.PassiveBar;
+import draw.displayItems.sound.SoundPlayer;
+import draw.displayItems.text.TextPrompt;
+import draw.displayItems.text.TextTyper;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import logic.data.drawing.StretchingType;
+import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.StaticFileLocator;
+import main.DisplayWindow;
 
 public class Chromatographer implements DisplayableItem {
 	
 	//image à afficher dans ton DrawMe.
 	private BufferedImage imageToDisplay;
 	
+	private PassiveImagePrinter back = PassiveImagePrinter.newInstance(
+			"input/images/background_clones.jpg",
+			new Rectangle(0, 0, 1000, 600), 
+			StretchingType.STRETCH);
+	
+	private PassiveBar passiveBar = PassiveBar.newInstance(0, new Rectangle(10, 10, 100, 30), Color.GREEN,
+			PassiveBar.FillDirection.HORIZONTAL);
+	
+	private TextTyper textTyper = TextTyper.newInstance(
+			new Rectangle(500, 200, 300, 300),
+			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
+			AppendTypes.ONE_CHAR
+			);
+	
+	private TextPrompt tp = TextPrompt.newInstance(
+			new Rectangle(10, 200, 300, 300),
+			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
+			20,
+			AppendTypes.ONE_CHAR			
+			);
+	
+	private SoundPlayer sp = SoundPlayer.newInstance("input/sound/alerte_insurge.wav");
+	
 	private Chromatographer() {
 		//constructueur
 		//Normalement, c'est d'ici que tu lances les threads relatifs à la logique de ton chromatographe (ex : boucle d'exécution du système)
 		//Ces threads doivent normalement mettre à jour "imageToDisplay"
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				for(int i = 0 ; i < 100 ; i++)
+				{
+					passiveBar.setRatio((float)i/100);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+		
+		
 	}
 	
 	/**
@@ -60,7 +114,13 @@ public class Chromatographer implements DisplayableItem {
 		//cette fonction doit etre exécutée très rapidement (elle fait partie de la boucle d'affichage)
 		//mon implémentation du DNASCA n'est pas très bonne à cet égard (elle date d'une ancienne version)
 		//par contre "PassiveVideoDisplayer" est plus approprié.
-		g.drawString("C'est moi Clippy!", 50, 50);
+		back.drawMe(g);
+		g.drawString("C'est moi Clippy!", 60, 60);
+		passiveBar.drawMe(g);
+		tp.drawMe(g);
+		sp.drawMe(g);
+		textTyper.drawMe(g);
+		
 		
 	}
 

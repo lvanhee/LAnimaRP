@@ -6,7 +6,7 @@ public class StaticFileLocator implements FileLocator {
 	
 	private final File f;
 
-	public StaticFileLocator(File localFileFor) {
+	private StaticFileLocator(File localFileFor) {
 		f = localFileFor;
 	}
 
@@ -22,6 +22,10 @@ public class StaticFileLocator implements FileLocator {
 	public String toString()
 	{
 		return f.getAbsolutePath();
+	}
+
+	public static FileLocator newInstance(File localFileFor) {
+		return new StaticFileLocator(localFileFor);
 	}
 
 }

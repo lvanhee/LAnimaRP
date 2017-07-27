@@ -1,4 +1,4 @@
-package draw.displayItems.text;
+package draw.displayItems.text.textprinter;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,23 +11,23 @@ import javax.swing.SwingUtilities;
 import draw.displayItems.DisplayableItem;
 import main.DisplayWindow;
 
-public class PassiveTextAreaDrawer implements DisplayableItem{
+public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	
 	private JTextArea jtf = new JTextArea(10,20);
 	private Rectangle drawingRectangle;
 	
 
-	private PassiveTextAreaDrawer(Rectangle drawingRectangle) {
+	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle) {
 		this.drawingRectangle = drawingRectangle;
 		jtf.setOpaque(false);
 		jtf.setForeground(Color.GREEN);
 		jtf.setFont(new Font("Courier New", Font.PLAIN, 10));
 	}
 
-	public static PassiveTextAreaDrawer newInstance(
+	public static PassiveAppendTextAreaDrawer newInstance(
 			Rectangle drawingRectangle)
 	{
-		return new PassiveTextAreaDrawer(drawingRectangle);
+		return new PassiveAppendTextAreaDrawer(drawingRectangle);
 	}
 
 	@Override
