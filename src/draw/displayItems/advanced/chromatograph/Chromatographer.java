@@ -34,13 +34,13 @@ public class Chromatographer implements DisplayableItem {
 			PassiveBar.FillDirection.HORIZONTAL);
 	
 	private TextTyper textTyper = TextTyper.newInstance(
-			new Rectangle(500, 200, 300, 300),
+			new Rectangle(500, 200, 100, 100),
 			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
 			AppendTypes.ONE_CHAR
 			);
 	
 	private TextPrompt tp = TextPrompt.newInstance(
-			new Rectangle(10, 200, 300, 300),
+			new Rectangle(10, 200, 100, 100),
 			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
 			20,
 			AppendTypes.ONE_CHAR			

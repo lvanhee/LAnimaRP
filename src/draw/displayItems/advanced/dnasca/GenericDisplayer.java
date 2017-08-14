@@ -49,11 +49,9 @@ public class GenericDisplayer implements DisplayableItem, LAnimaRPEventListener<
 
 	@Override
 	public synchronized void handleEvent(StringEvolvedEvent event) {
-	//	System.out.println("Generic displayer has received:"+event);
 		itemsToDisplay.stream().forEach(x->x.terminate());
 		itemsToDisplay.clear();
 		Collection<DisplayableItem>temp = ProcessXML.getDisplayableItemFromString(event.toString());
-	//	System.out.println(temp);
 		itemsToDisplay.addAll(temp);
 	}
 

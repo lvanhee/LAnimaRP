@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.channels.ReadPendingException;
+
+import com.sun.jna.platform.FileUtils;
 
 import draw.displayItems.DisplayableItem;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
@@ -18,15 +21,24 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 		ONE_CHAR
 	}
 	
-	
+	public enum RepetitionMode
+	{
+		REPEAT_FOREVER
+	}
 	private final PassiveAppendTextAreaDrawer drawer;
 	
 	private String text="";	
+	private String resetText="";
+	
+	private final FileLocator resetter;
+
+	private RepetitionMode repetition=RepetitionMode.REPEAT_FOREVER;
 
 	
 	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl)
 	{
 		drawer = PassiveAppendTextAreaDrawer.newInstance(r);
+		resetter = fl;
 		text = readText(fl.getFile());
 	}
 	
@@ -64,8 +76,10 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 		return new PreSetPassiveAppendTextAreaDrawer(r,textFile);
 	}
 
-	public void append(AppendTypes oneChar) {
-		switch (oneChar) {
+	public void append(AppendTypes type) {
+		if(text.isEmpty()&&repetition==RepetitionMode.REPEAT_FOREVER)
+			text = readText(resetter.getFile());
+		switch (type) {
 		case ONE_CHAR:
 			drawer.append(""+text.substring(0,1));
 			text = text.substring(1);
