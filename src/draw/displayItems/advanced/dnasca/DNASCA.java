@@ -149,13 +149,12 @@ public class DNASCA implements DisplayableItem {
 	}
 
 
-	long nextIteration = System.currentTimeMillis()+15000; 
+	long nextIteration = System.currentTimeMillis()+0; 
 	
 	ProcessingModes currentMode = ProcessingModes.INITIALIZING;
 	@Override
 	public void drawMe(Graphics2D g2d) {
 		
-		localSort();
 		boolean updating=false;
 		if(System.currentTimeMillis()>nextIteration)
 		{
@@ -168,6 +167,8 @@ public class DNASCA implements DisplayableItem {
 			{
 				currentMode=ProcessingModes.SAMPLING;
 				nextIteration=(long)(System.currentTimeMillis()+2000);
+				localSort();
+
 			}
 			else
 				{

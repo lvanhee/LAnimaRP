@@ -1,0 +1,69 @@
+<configuration>
+	<display_parameters>
+		<screen_size>
+			<position x="0" y="0"></position>
+			<dimensions width = "1000" height = "700"></dimensions>
+		</screen_size>
+		
+	</display_parameters>
+	
+	<variables>
+		<variable name="visibility_hacking">
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "true"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator keycode="10"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+	</variables>
+	
+	<displayed_animations>
+    	<image>
+				<file_location>
+					<hard_path path="input/images/wanted.png"></hard_path>
+				</file_location>
+				<stretching>
+					<mode value = "stretch"></mode>
+				</stretching>
+				<position x="0" y="0"></position>
+				<dimensions width="1120" height="700"></dimensions>	
+		</image> 
+		
+		<image>
+				<file_location>
+					<hard_path path="background_clones.gif"></hard_path>
+				</file_location>
+				<stretching>
+					<mode value = "stretch"></mode>
+				</stretching>
+				<position x="0" y="0"></position>
+				<dimensions width="1120" height="700"></dimensions>	
+				
+				<visibility>
+                    <variable name="visibility_hacking"></variable>
+                </visibility>
+		</image> 
+		
+		<text_typer>
+			<position x="115" y="150"></position>
+			<dimensions width="835" height="500"></dimensions>
+			<color value='#00FF00'></color>
+			
+			<visibility>
+                    <variable name="visibility_hacking"></variable>
+            </visibility>
+            
+            <text_typing_speed value = "one_word_per_event">
+            </text_typing_speed>
+            
+			<file_location>
+				<hard_path path = "hack.txt"></hard_path>
+			</file_location>
+			<update_mechanism name = "key_pressed"></update_mechanism>
+		</text_typer>
+		
+		
+		
+	</displayed_animations>
+     
+</configuration>

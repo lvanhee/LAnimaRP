@@ -21,6 +21,7 @@ import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
 import draw.displayItems.text.TextTyper;
 import draw.displayItems.text.VariablePrinter;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import draw.displayItems.videos.VideoDisplayer;
 import logic.variables.variableTypes.VariableType;
 
@@ -49,7 +50,19 @@ public enum XMLKeywords {
 	IS_VISIBLE("is_visible"), 
 	PAUSE_TRIGGER("pause_trigger"), 
 	VARIABLE_BASED("variable_based"),
-	CHROMATOGRAPHER("chromatographer");
+	BACKGROUND("background"),
+	DNASCA("dnasca"),
+	CHROMATOGRAPHER("chromatographer"), DISPLAY_PARAMETERS("display_parameters"), 
+	SCREEN_SIZE("screen_size"),
+	VISIBILITY("visibility"), 
+	ANYKEY_INCREASE_ACTUATOR("anykey_increase_actuator"),
+	KEYCODE("keycode"), 
+	TEXT_TYPING_SPEED("text_typing_speed"),
+	ONE_WORD_PER_PRESS("one_word_per_event"), 
+	SOUND_MODE("sound_mode"),
+	REPEAT_FORVER_WHEN_VISIBLE("repeat_forever_when_visible"),
+	ONE_SHOT("one_shot")
+	;
 	
 	private final String keyName;
 	private XMLKeywords(String s)

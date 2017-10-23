@@ -51,13 +51,13 @@
 \begin{document}
 \maketitle
 
-Ce document donne les concepts et les commandes clefs pour comprendre comment utiliser LAnimaRP.
+LAnimaRP est un outil pour concevoir et afficher facilement des animations dans le cadre d'un jeu de rôle grandeur nature.
 
-\section{But du logiciel}
+Très concretement, ce logiciel permet d'\emph{enrichir l'ambiance} du jeu, en affichant des animations d'ambiance sur des terminaux (GN contemporain ou futuriste) ou via des affichages cachés (ex : bassin de divination pour un med-fan). Ce logiciel sert comme un \emph{outil de coordination}. Le logiciel, laissé à la main des joueurs, leur permet de mieux se concerter afin de gérer une situation donnée. Par exemple, il a été utilisé pour signaler une situation d'alerte (ex : attaque en cours; rassemblement dans la pièce centrale) et pour informer (ex : informations produites par des journalistes en jeu). Le logiciel peut aussi servir à assigner des ressources ou à voter. LAnimaRP peut aussi être utilisé comme \emph{outil d'action}, permettant aux joueurs de concrétiser leurs actions. Par exemple, pour du SF, il peut être utilisé par l'ingénieur de vol pour indiquer la quantité d'énergie allouée aux boucliers, aux armes de tir et aux propulseurs. Cette information peut alors être utilisée par l'organisation pour simuler l'environnement. Enfin, LAnimaRP peut être utilisé comme \emph{outil d'information}, permettant aux organisateurs d'indiquer l'état de l'environnement dans le but de faire réagir les joueurs (ex : menaces à proximité, le réacteur est touché, incendie en salle trois). LAnimaRP est principalement un outil d'animation/affichage. Cependant, il conçu pour être facilement manipulé par les utilisateurs et connecté à des outils de simulation.
 
-LAnimaRP est un programme qui est conçu dans le but de permettre de concevoir et d'afficher des animations. 
+Ces animations sont dites ``passives". Elles sont sous l'entier contrôle de l'utilisateur, via le clavier ou des fichiers. Les animations peuvent comporter des éléments ``dynamiques", comme barre qui se remplit ou un rythme cardiaque. Néanmoins, mais LAnimaRP ne vise pas à créer une simulation élaborée et automatisée du monde : ce pouvoir est laissé entre les mains de l'organisateur (ou d'un module externe). Le logiciel est donc piloté de l'extérieur, par l'organisation ou les joueurs. Pour ce faire, ils peuvent appuyer sur des touches du clavier qui vont influence l'affichage (ex : illuminer ou éteindre une pièce pour indiquer qu'elle a un incendie en son sein).
 
-Très concretement, ce logiciel est adéquat et a été utilisé à plusieurs fins utiles. La première est pour \emph{enrichir l'ambiance}, par exemple en affichant un visuel d'ambiance sur des terminaux (GN contemporain ou futuriste) ou via des affichages détournés (ex : bassin de divination pour un med-fan). La seconde utilisation du logiciel est comme un \emph{outil de coordination}. Le logiciel, laissé à la main des joueurs, leur permet de travailler de concert pour une situation donnée. Par exemple, il peut être utilisé pour signaler une situation d'alerte (ex : attaque en cours; rassemblement dans la pièce centrale); assigner des ressources; voter. LAnimaRP peut aussi être utilisé comme \emph{outil d'action}, pour que les joueurs concrétisent et valident leurs actions. Par exemple, pour du SF, il peut être utilisé par l'ingénieur de vol pour indiquer la quantité d'énergie allouée aux boucliers, aux armes de tir et aux propulseurs. Cette information peut alors être utilisée par l'organisation pour simuler l'environnement. Enfin, LAnimaRP peut être utilisé comme \emph{outil d'information}, permettant aux organisateurs d'indiquer l'état de l'environnement dans le but de faire réagir les joueurs (ex : menaces à proximité, le réacteur est touché, incendie en salle trois).
+Ce document décrit comment utiliser LAnimaRP. Il introduit comment lancer une animation existante mais permet aussi de créer ses propres animations.
 
 \begin{figure}
 \centering
@@ -68,7 +68,35 @@ Très concretement, ce logiciel est adéquat et a été utilisé à plusieurs fins uti
 
 Des utilisations concrètes sont détaillées en Section \ref{section:exemples}.
 
-\section{Quelques concepts clefs}
+\section{Conditions générales d'utilisation}
+
+Je développe ce logiciel pour servir la communauté GNiste en lui fournissant des outils pratiques. Bien que je ne demande aucune rémunération pour ce travail, je vous demande de me tenir au courant de son utilisation. D'une part, parce que ça me fait plaisir de savoir que mon travail est utilisé pour un jeu, d'autre part afin d'en garder trace pour le perfectionner et le rendre accessible à d'autres joueurs/organisateurs.
+
+La licence classique est la licence ``\emph{beerware}" : mon logiciel vous a été utile et qu'on a l'occasion de se croiser, offrez-moi une bière (ou plutôt un jus de fruit) et racontez-moi comment vous l'avez utilisé. Je vous demande aussi de me remplir un \emph{petit résumé} pour me dire ce que vous en avez fait. Pas grand chose : quelques lignes pour décrire son utilisation dans le jeu, quelques photos ou vidéos de son utilisation en jeu et un petit retour d'apprentissage (a-t-il été utile ? Aurait-il pu être mieux exploité ? Avez-vous été gêné par une limitation). Si vous voulez me faire vraiment plaisir, partagez-moi vos fichiers de configuration et images, afin que d'autres puisse en disposer par la suite. L'objectif est de constituer une petite base de d'exemples pour montrer les utilisations possibles de l'outil et favoriser son utilisation par la suite.
+
+Je suis aussi très ouvert aux collaborations. N'hésitez pas à prendre me contacter si vous souhaitez intégérer une animation dans votre jeu ou si vous souhaitez des fonctionnalités supplémentaires pour le logiciel. Je suis enclin à vous apporter mon soutien à mettre ça en place.
+
+\section{Démarrage}
+
+\subsection{Pré-requis}
+
+Java 1.8 (ou plus) doit être installé sur votre machine. Il est téléchargeable depuis cette adresse : \url{https://www.java.com/fr/download/}. Si vous utilisez le module pour afficher une vidéo, il faut que VLC soit installé sur votre machine. VLC est disponible ici \url{https://www.videolan.org/vlc/index.fr.html}.
+
+\subsection{Lancement}
+
+Il suffit de double-cliquer sur ``demo.jar". Cette animation va alors charger l'animation depuis le fichier ``configuration.xml" dans le même répertoire. A défaut, il faut faire un clic droit ``ouvrir avec Java 1.8" (ou équivalent).
+
+En ligne de commande, il suffit de taper :
+\begin{verbatim}
+java -jar demo.jar
+\end{verbatim}
+
+\section{Créer sa propre animation}
+
+A venir.
+
+\begin{tiny}
+\subsection{Quelques concepts clefs}
 
 Afin de bien comprendre comment ce logiciel peut être utilisé, voici quelques concepts clefs.
 
@@ -80,22 +108,15 @@ Comment ça marche, plus précisément ? Dans le détail, l'affichage est composé d'
 
 Maintenant que vous savez ça, vous avez les outils nécessaires pour comprendre comment le logiciel fonctionne... Voire à créer vos propres animations à partir de l'existant !
 
-\section{Avant de parler de technique}
 
-Utiliser ce logiciel demande une contribution de votre part. Point d'argent, mais plutôt des actions et rien qui ne prendra des heures.
 
-Mon objectif est de développer un outil pour répondre à des besoins de la communauté GNiste, avec pour ambition de l'améliorer avec le temps par moi-même et avec les retours d'utilisateurs. Ainsi, si vous utilisez ce logiciel, je vous demande de :
-\begin{enumerate}
-\item partager vos animations (fichiers de configuration et de ressource) de sorte que d'autres puissent les utiliser à leur tour (envoyez moi vos fichiers je m'occupe de la publication). Des clauses de confidentialité temporaires sont négociables.
-\item écrivez moi une documentation de son utilisation. Rien d'énorme, quelques lignes. Indiquez ce à quoi il sert pour le jeu, comment il est utilisé, s'il a été utile, s'il y a des pistes d'améliorations, quelques photos de l'animation ``en contexte". Les éléments pertinents
-\item un peu de publicité, car un outil n'a aucune valeur s'il n'est pas connu. Là aussi, rien d'énorme : une mention du logiciel dans les docs de jeu ``techniques" et une mention pendant le débrief final.
-\item si on se croise, venez m'en parler.  Votre feedback direct est une source d'information primordiale pour améliorer le logiciel.
-\item optionnel : donnez-moi un souvenir physique de petite taille (petit mot, goodies, objet de jeu qui ne servira plus). J'ai une collection d'objets pour me souvenir que mes contributions ont aidé à un projet que j'aime remplir.
-\end{enumerate}
-
-En retour de quoi, je vous offre mon soutien. Tout d'abord, par un libre accès au logiciel. Ensuite, en faisant de la publicité pour votre jeu : la collaboration sera présentée sur les médias relatifs à LAnimaRP, des vidéos présentant les animations de votre jeu, etc. Enfin, en étendant les fonctionnalités pour contribuer à vos besoins particuliers (plus de simulations, connexions à d'autres services etc).
-
-\section{Démarrage}
+\begin{figure}
+\centering
+\includegraphics[width=0.45\linewidth]{images/background}
+\includegraphics[width=0.45\linewidth]{images/charybde}
+\caption{Affichage des salles en état d'alerte, déploiement en jeu (rétroprojeté au dessus d'une scène dans la pièce commune, l'affichage, très visible en jeu, est occulté par la puissance du flash du photographe)}
+\label{figure:alerte_charybde}
+\end{figure}
 
 \section{Créer ma propre animation}
 

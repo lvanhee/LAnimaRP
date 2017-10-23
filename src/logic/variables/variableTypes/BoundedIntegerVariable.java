@@ -87,6 +87,5 @@ public class BoundedIntegerVariable implements DisplayableVariable<Integer> {
 		public void unsubscribe(LAnimaRPEventListener<VariableEvolvedEvent> el) {
 			publisher.unsubscribe(el);
 		}
-
 }
 

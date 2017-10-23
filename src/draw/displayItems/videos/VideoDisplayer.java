@@ -33,6 +33,7 @@ public class VideoDisplayer implements DisplayableItem {
 
 			@Override
 			public void run() {
+				Thread.currentThread().setName("Loop video slideshow");
 				while(!isTerminating && ifp.hasNext())
 				{
 					if(!vd.isPlaying() && !trigger.isPauseRequested())

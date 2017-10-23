@@ -61,12 +61,15 @@ public class Popup implements DisplayableItem {
 					try {
 						Thread.sleep(periodOn.getRefreshPeriod());
 					} catch (InterruptedException e) {e.printStackTrace();}
+					
 					if(isTerminating)break;
 					isDisplaying = false;
 					actuatorWhenDisplayed.setValue(false);
 					try {
 						Thread.sleep(periodOff.getRefreshPeriod());
 					} catch (InterruptedException e) {e.printStackTrace();}
+					
+					
 					if(isTerminating)break;
 					isDisplaying = true;
 					actuatorWhenDisplayed.setValue(true);

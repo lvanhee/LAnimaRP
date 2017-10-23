@@ -12,10 +12,10 @@ public class SwitchVariableActuator
 implements VariableActuator<BooleanVariable, Boolean>, LAnimaRPEventListener<LAnimaRPKeyEvent> {
 	
 	private BooleanVariable bv;
-	private char activationChar;
+	private int activationKeyCode;
 	
-	private SwitchVariableActuator(char charAt) {
-		activationChar = charAt;
+	private SwitchVariableActuator(int keyCodeTyped) {
+		activationKeyCode = keyCodeTyped;
 		KeyMonitorer.INSTANCE.subscribe(this);
 	}
 
@@ -24,14 +24,20 @@ implements VariableActuator<BooleanVariable, Boolean>, LAnimaRPEventListener<LAn
 		bv = (BooleanVariable)res;
 	}
 
-	public static SwitchVariableActuator newInstance(char charAt) {
-		return new SwitchVariableActuator(charAt);
+	public static SwitchVariableActuator newInstance(int keyCode) {
+		return new SwitchVariableActuator(keyCode);
 	}
 
 	@Override
 	public void handleEvent(LAnimaRPKeyEvent event) {
-		if(event.getKeyEvent().getKeyChar()==activationChar && event.getKeyEvent().getID()==KeyEvent.KEY_TYPED)
+		if(!(event.getKeyEvent().getID()==KeyEvent.KEY_PRESSED))return;
+		
+		//System.out.println(">"+event.getKeyEvent().getKeyCode());
+		if(event.getKeyEvent().getKeyCode()==activationKeyCode)
+		{
+		//	System.out.println(event.getKeyEvent().getKeyCode());
 			bv.switchValue();
+		}
 	}
 
 }

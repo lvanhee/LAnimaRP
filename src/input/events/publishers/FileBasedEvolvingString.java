@@ -16,12 +16,11 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 
 	private final PeriodicRefreshInfo pri;
 	private final FileLocator fl;
-	String lastString;
+	private String lastString;
 	private FileBasedEvolvingString(PeriodicRefreshInfo pri, FileLocator fl) {
 		this.pri = pri;
 		this.fl = fl;
 		lastString = FileManagerUtils.getContentsAsStringFrom(fl);
-		subscriber.publish(StringEvolvedEventImpl.newInstance(lastString));
 
 		
 		if(pri != PeriodicRefreshInfo.NEVER)

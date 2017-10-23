@@ -1,17 +1,20 @@
 <configuration>
-	<displayed_objects>
+	<displayed_animations>
+		<background>
+			<color value= '#000000'></color>
+		</background>
+		
 		<text_typer>
 			<position x="115" y="150"></position>
 			<dimensions width="835" height="180"></dimensions>
-			<color value='#00AAAA'></color>
+			<color value='#00FF00'></color>
 			<file_location>
 				<hard_path path = "input/text/hack.java">
 				</hard_path>
 			</file_location>
 			<update_mechanism name = "key_pressed"></update_mechanism>
 		</text_typer>
-		<background>
-		<filename name="input/images/medical_bay.png"></filename></background>
-	</displayed_objects>
+		
+	</displayed_animations>
 	
 </configuration>

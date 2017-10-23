@@ -18,12 +18,19 @@ public class SlideShow implements DisplayableItem {
 	private final PassiveImagePrinter id;
 	private boolean isTerminationRequested = false;
 	
-	public SlideShow(final FileLocator imageFolder, Rectangle pos, PeriodicRefreshInfo period, StretchingType st) {
+	public SlideShow(final FileLocator imageFolder, Rectangle pos, PeriodicRefreshInfo period, StretchingType st,
+			GenericParameters gp
+			) {
 		
-		id = PassiveImagePrinter.newInstance(DrawingUtils.loadImage(imageFolder.getFile().listFiles()[0]), pos, st);
+		if(!imageFolder.getFile().isDirectory()) 
+			throw new Error("Slideshow image folder is not a folder:"+imageFolder);
+		id = PassiveImagePrinter.newInstance(DrawingUtils.loadImage(imageFolder.getFile().listFiles()[0]), pos, st,
+				gp
+				);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				Thread.currentThread().setName("Slideshow updater");
 				while(!isTerminationRequested && period.isRefreshActive())
 				{
 					for(File f: imageFolder.getFile().listFiles())
@@ -49,7 +56,8 @@ public class SlideShow implements DisplayableItem {
 		Rectangle pos= XMLParser.parseRectangle(e);
 		PeriodicRefreshInfo period = XMLParser.parsePeriodicRefresh(e);
 		StretchingType st = XMLParser.parseStrechtingType(e);
-		return new SlideShow(imageFolder,pos,period,st);
+		GenericParameters gp = XMLParser.parseGenericParameters(e);
+		return new SlideShow(imageFolder,pos,period,st, gp);
 	}
 
 	@Override

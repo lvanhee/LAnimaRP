@@ -13,9 +13,11 @@ import org.w3c.dom.css.Rect;
 import com.sun.jna.platform.KeyboardUtils;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.images.GenericParameters;
 import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.LAnimaRPKeyEvent;
@@ -43,12 +45,17 @@ public class TextTyper implements DisplayableItem {
 
 	private final PreSetPassiveAppendTextAreaDrawer drawer;
 	private final AppendTypes appendType;
-	
+	private final GenericParameters gp;
 	
 	private TextTyper(Rectangle r, 
 			FileLocator textFile, 
-			LAnimaRPEventPublisher<?> um, AppendTypes oneChar){
-		drawer = PreSetPassiveAppendTextAreaDrawer.newInstance(r, textFile);
+			Color c,
+			LAnimaRPEventPublisher<?> um, 
+			AppendTypes oneChar,
+			GenericParameters gp
+			){
+		drawer = PreSetPassiveAppendTextAreaDrawer.newInstance(r, textFile, c, oneChar);
+		this.gp = gp;
 		
 		GenericLAnimaRPEventListener.newInstance(um,
 				x->handleEvent(x));
@@ -62,6 +69,7 @@ public class TextTyper implements DisplayableItem {
 	
 	@Override
 	public void drawMe(Graphics2D g) {
+		if(!gp.isDisplayed())return;
 		drawer.drawMe(g);
 	}
 
@@ -72,7 +80,13 @@ public class TextTyper implements DisplayableItem {
 		LAnimaRPEventPublisher<? extends LAnimaRPKeyEvent> um = 
 				XMLParser.parseKeyboardUpdateMechanism(e);
 		
-		return new TextTyper(r,f,(LAnimaRPEventPublisher<LAnimaRPEvent>)um, AppendTypes.ONE_CHAR);
+		Color c = XMLParser.parseColor(e);
+		
+		GenericParameters gp = XMLParser.parseGenericParameters(e);
+		
+		AppendTypes at = XMLParser.parseTextTypingSpeed(e);
+		
+		return new TextTyper(r,f,c,(LAnimaRPEventPublisher<LAnimaRPEvent>)um, at, gp);
 	}
 	
 	public synchronized void handleEvent(LAnimaRPEvent event) {
@@ -91,11 +105,13 @@ public class TextTyper implements DisplayableItem {
 	}
 
 
-	public static TextTyper newInstance(Rectangle rectangle, FileLocator newInstance, AppendTypes oneChar) {
+	public static TextTyper newInstance(Rectangle rectangle, FileLocator newInstance, AppendTypes oneChar, GenericParameters gp) {
 		return new TextTyper(
 				rectangle, 
 				newInstance, 
+				Color.green,
 				KeyMonitorer.getInstance(),
-				oneChar);
+				oneChar,
+				gp);
 	}
 }

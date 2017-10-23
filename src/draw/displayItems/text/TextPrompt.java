@@ -1,5 +1,6 @@
 package draw.displayItems.text;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.File;
@@ -16,7 +17,7 @@ public class TextPrompt implements DisplayableItem {
 
 	private TextPrompt(Rectangle rectangle, FileLocator localFileFor, int millisBetweenActions, 
 			PreSetPassiveAppendTextAreaDrawer.AppendTypes te) {
-		tp = PreSetPassiveAppendTextAreaDrawer.newInstance(rectangle, localFileFor);
+		tp = PreSetPassiveAppendTextAreaDrawer.newInstance(rectangle, localFileFor, Color.green);
 		
 		new Thread(
 				new Runnable() {

@@ -18,7 +18,7 @@ public class VariableManager {
 
 	public static Variable get(String attribute) {
 		if(!variables.containsKey(attribute))
-			throw new Error();
+			throw new Error("Variable:"+attribute+" unknown");
 		return variables.get(attribute);
 	}
 

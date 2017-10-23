@@ -33,6 +33,7 @@ public class NewsTicker implements DisplayableItem {
 
 			@Override
 			public void run() {
+				Thread.currentThread().setName("News ticker content updater");
 				while(! terminating)
 				{
 					while(!isTextFillingSpace())

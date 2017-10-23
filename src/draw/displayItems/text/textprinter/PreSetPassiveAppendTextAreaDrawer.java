@@ -1,5 +1,6 @@
 package draw.displayItems.text.textprinter;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
@@ -18,7 +19,8 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	
 	public enum AppendTypes
 	{
-		ONE_CHAR
+		ONE_CHAR, 
+		ONE_WORD_PER_PRESS
 	}
 	
 	public enum RepetitionMode
@@ -26,19 +28,18 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 		REPEAT_FOREVER
 	}
 	private final PassiveAppendTextAreaDrawer drawer;
-	
 	private String text="";	
-	private String resetText="";
-	
 	private final FileLocator resetter;
-
-	private RepetitionMode repetition=RepetitionMode.REPEAT_FOREVER;
+	private final RepetitionMode repetition=RepetitionMode.REPEAT_FOREVER;
+	private final AppendTypes at;
+	
 
 	
-	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl)
+	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl, Color c, AppendTypes at)
 	{
-		drawer = PassiveAppendTextAreaDrawer.newInstance(r);
+		drawer = PassiveAppendTextAreaDrawer.newInstance(r, c);
 		resetter = fl;
+		this.at = at;
 		text = readText(fl.getFile());
 	}
 	
@@ -72,8 +73,8 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			}
 	}
 
-	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, FileLocator textFile) {
-		return new PreSetPassiveAppendTextAreaDrawer(r,textFile);
+	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, FileLocator textFile, Color c, AppendTypes at) {
+		return new PreSetPassiveAppendTextAreaDrawer(r,textFile, c, at);
 	}
 
 	public void append(AppendTypes type) {
@@ -84,6 +85,12 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			drawer.append(""+text.substring(0,1));
 			text = text.substring(1);
 			break;
+			
+		case ONE_WORD_PER_PRESS:
+			int nextIndex = text.indexOf(" ")+1;
+			drawer.append(text.substring(0,nextIndex));
+			text = text.substring(nextIndex);
+		break;
 
 		default: throw new Error();
 		}

@@ -28,12 +28,15 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 	private final FileLocator fileToDisplay;
 		
 	private EventAdaptiveImageDisplayer(final FileLocator f, Rectangle displayZone, 
-			StretchingType dt) {
+			StretchingType dt,
+			GenericParameters gp
+			) {
 		this.fileToDisplay = f;
 		if(fileToDisplay instanceof LAnimaRPEventPublisher)
 			((LAnimaRPEventPublisher)fileToDisplay).subscribe(this);
+		
 		id= PassiveImagePrinter.newInstance(
-				new ImageIcon(), displayZone, dt);
+				new ImageIcon(), displayZone, dt, gp);
 		updateFile();
 	}
 
@@ -44,8 +47,10 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 		PeriodicRefreshInfo refreshRate;
 		StretchingType dt = XMLParser.parseStrechtingType(e);
 		
+		GenericParameters gp = XMLParser.parseGenericParameters(e);
 		
-		return new EventAdaptiveImageDisplayer(f,displayZone, dt);
+		
+		return new EventAdaptiveImageDisplayer(f,displayZone, dt, gp);
 	}
 
 	@Override
@@ -59,7 +64,7 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 	
 	public String toString()
 	{
-		return EventAdaptiveImageDisplayer.class.getTypeName()+":"+fileToDisplay;
+		return id+":"+fileToDisplay;
 	}
 
 	@Override
@@ -67,8 +72,8 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 		updateFile();
 	}
 
-	private void updateFile() {
-		
+	private void updateFile()
+	{
 		id.setImage(DrawingUtils.loadImage(FileManagerUtils.getLocalFileFor(fileToDisplay.toString())));
 	}
 }

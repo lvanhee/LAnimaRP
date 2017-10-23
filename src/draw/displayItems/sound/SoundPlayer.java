@@ -17,19 +17,108 @@ import logic.data.fileLocators.FileLocator;
 import logic.data.fileLocators.StaticFileLocator;
 
 public class SoundPlayer implements DisplayableItem {
-
-	private SoundPlayer(FileLocator parseFile) {
-		
-		SoundUtils.oneShotPlaySound(parseFile.getFile());
-		//clip.start();
+	
+	public static enum Mode {
+		ONE_SHOT,
+		FOREVER_WHEN_DRAWN
 	}
+	
+	private final Mode m;
+	
+	private long lastTimeDrawn=System.nanoTime();
+	
+	private Clip clip;
+	private boolean terminating = false;
+	private boolean isSoundStoppedBecauseNotDrawn = false;
+
+	private final FileLocator fl;
+	private SoundPlayer(FileLocator parseFile, Mode m) {
+		this.m =m;
+		fl = parseFile;
+		
+		File soundFile = parseFile.getFile();
+		clip = SoundUtils.loadSound(soundFile);
+		
+		
+		
+		
+		if(m== Mode.FOREVER_WHEN_DRAWN)
+		{
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			new Thread(new Runnable() {
+				public void run()
+				{
+					Thread.currentThread().setName(this.getClass().getTypeName()+": check for unplayed sound");
+					while(! terminating)
+					{
+						if(System.currentTimeMillis()> lastTimeDrawn+ 500 && !isSoundStoppedBecauseNotDrawn )
+						{
+							clip.stop();
+							isSoundStoppedBecauseNotDrawn = true;
+						}
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+		}
+		
+		while(! clip.isRunning())
+			clip.start();	
+		
+		if(m==Mode.ONE_SHOT)
+		new Thread(()->
+		{
+			while(clip.isRunning())
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}				
+			clip.close();
+		}).start();
+	}
+	
 
 	public static SoundPlayer newInstance(Element e) {
-		return new SoundPlayer(XMLParser.parseFileLocator(e));
+		Mode m = XMLParser.parseSoundMode(e);
+		return new SoundPlayer(XMLParser.parseFileLocator(e),m);
 	}
 
 	@Override
-	public void drawMe(Graphics2D g) {
+	public synchronized void drawMe(Graphics2D g) {
+		if(terminating) return;
+		lastTimeDrawn = System.currentTimeMillis();
+		
+		
+		if(m == Mode.FOREVER_WHEN_DRAWN && isSoundStoppedBecauseNotDrawn)
+		{
+			isSoundStoppedBecauseNotDrawn = false;
+			File soundFile = fl.getFile();
+			clip.stop();
+			clip.close();
+			clip = SoundUtils.loadSound(soundFile);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			while(! clip.isRunning())
+			{
+				clip.start();
+				Thread.yield();
+			}
+			
+			
+			
+		}
+		
+		
+		/*if(m == Mode.FOREVER_WHEN_DRAWN && ! isSoundStoppedBecauseNotDrawn && !clip.isActive())
+		{
+			clip.stop();
+			clip.start();
+		}*/
+		
 		//if(!irl.isRunning())
 		//{
 		//	clip.stop();
@@ -41,7 +130,10 @@ public class SoundPlayer implements DisplayableItem {
 	}
 
 	@Override
-	public void terminate() {
+	public synchronized void terminate() {
+		terminating = true;
+		clip.stop();
+		clip.close();
 	}
 
 	public static SoundPlayer newInstance(String string) {

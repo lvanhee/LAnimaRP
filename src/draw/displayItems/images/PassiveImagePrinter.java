@@ -17,19 +17,22 @@ public class PassiveImagePrinter implements DisplayableItem {
 	private ImageIcon image;
 	private Rectangle displayZone;
 	private StretchingType st;
-	private PassiveImagePrinter(ImageIcon image, Rectangle displayZone, StretchingType dt) {
+	private final GenericParameters gp;
+	private PassiveImagePrinter(ImageIcon image, Rectangle displayZone, StretchingType dt, GenericParameters gp) {
 		this.image = image;
 		this.displayZone = displayZone;
 		this.st = dt;
+		this.gp = gp;
 	}
 
-	public static PassiveImagePrinter newInstance(ImageIcon image, Rectangle displayZone, StretchingType stretch)
+	public static PassiveImagePrinter newInstance(ImageIcon image, Rectangle displayZone, StretchingType stretch, GenericParameters gp)
 	{
-		return new PassiveImagePrinter(image, displayZone,stretch);
+		return new PassiveImagePrinter(image, displayZone,stretch, gp);
 	}
 
 	@Override
 	public void drawMe(Graphics2D g) {
+		if(!gp.isDisplayed())return;
 		AffineTransform temp = g.getTransform();
 		AffineTransform at = new AffineTransform();
 		
@@ -85,8 +88,8 @@ public class PassiveImagePrinter implements DisplayableItem {
 	public void terminate() {
 	}
 
-	public static PassiveImagePrinter newInstance(String string, Rectangle bounds, StretchingType stretch) {
-		return newInstance(DrawingUtils.loadImage(string), bounds, stretch);
+	public static PassiveImagePrinter newInstance(String string, Rectangle bounds, StretchingType stretch, GenericParameters gp) {
+		return newInstance(DrawingUtils.loadImage(string), bounds, stretch, gp);
 	}
 
 }

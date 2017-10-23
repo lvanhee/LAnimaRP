@@ -16,19 +16,25 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.swing.KeyStroke;
+
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
 import draw.displayItems.advanced.Popup;
 import draw.displayItems.advanced.chromatograph.Chromatographer;
+import draw.displayItems.advanced.dnasca.DNASCA;
 import draw.displayItems.advanced.dnasca.GenericDisplayer;
 import draw.displayItems.advanced.dnasca.HeartBeatMonitor;
 import draw.displayItems.images.EventAdaptiveImageDisplayer;
+import draw.displayItems.images.GenericParameters;
 import draw.displayItems.images.SlideShow;
 import draw.displayItems.sound.SoundPlayer;
+import draw.displayItems.sound.SoundPlayer.Mode;
 import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
 import draw.displayItems.text.TextTyper;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import draw.displayItems.videos.VariableBasedPauseTrigger;
 import draw.displayItems.videos.VideoDisplayer;
 import input.events.eventTypes.LAnimaRPKeyEvent;
@@ -282,12 +288,30 @@ public class XMLParser {
 					);
 		
 		if(e2.getName().equals(XMLKeywords.SWITCH_ACTUATOR.getName()))
-			return SwitchVariableActuator.newInstance(e2.getAttributeValue(XMLKeywords.KEY.getName()).charAt(0));
+			return SwitchVariableActuator.newInstance(XMLParser.parseCharacter(e2));
 		
 		if(e2.getName().equals(XMLKeywords.SYNCHRONIZE_FROM_FILE_ACTUATOR.getName()))
 			return SynchronizeFromFileVariableActuator.newInstance(e2);
+		
+		/*if(e2.getName().equals(XMLKeywords.ANYKEY_INCREASE_ACTUATOR.getName()))
+			return IncreaseVariableActuator.newInstance(
+					KeyTypes.SpecialKeyTypes.WILDCARD,
+					Integer.parseInt(e2.getAttributeValue(XMLKeywords.INCREASE_BY.getName()))
+					);*/
 			
 			throw new Error();
+	}
+
+	private static int parseCharacter(Element e2) {
+		if(e2.getAttributeValue(XMLKeywords.KEY.getName())!= null)
+			return KeyStroke.getKeyStroke(e2.getAttributeValue(XMLKeywords.KEY.getName()).charAt(0)).getKeyCode();
+		
+		if(e2.getAttributeValue(XMLKeywords.KEYCODE.getName())!= null)
+			return Integer.parseInt(e2.getAttributeValue(XMLKeywords.KEYCODE.getName()));
+		
+		throw new Error();
+				
+		
 	}
 
 	public static boolean hasPeriodicRefreshInfos(Element e) {
@@ -339,6 +363,7 @@ public class XMLParser {
 	
 	private static final Map<XMLKeywords, Function<Element, DisplayableItem>> toDisplayableItems = 
 			new HashMap<XMLKeywords, Function<Element, DisplayableItem>>();
+	
 	static
 	{
 		toDisplayableItems.put(XMLKeywords.GENERIC_DISPLAYER, GenericDisplayer::newInstance);
@@ -352,6 +377,8 @@ public class XMLParser {
 		toDisplayableItems.put(XMLKeywords.SOUND, SoundPlayer::newInstance);
 		toDisplayableItems.put(XMLKeywords.HEARTBEAT_MONITOR, HeartBeatMonitor::newInstance);
 		toDisplayableItems.put(XMLKeywords.CHROMATOGRAPHER, Chromatographer::newInstance);
+		toDisplayableItems.put(XMLKeywords.BACKGROUND, FullScreenFiller::newInstance);
+		toDisplayableItems.put(XMLKeywords.DNASCA, DNASCA::newInstance);
 		
 		
 		/*
@@ -384,7 +411,8 @@ public class XMLParser {
 	}
 
 	public static Function<Element, DisplayableItem> getAnimationBuilder(XMLKeywords fromString) {
-		if(!toDisplayableItems.containsKey(fromString))throw new Error("No builder for:"+fromString);
+		if(!toDisplayableItems.containsKey(fromString))
+			throw new Error("No builder for:"+fromString);
 		return toDisplayableItems.get(fromString);
 	}
 
@@ -406,6 +434,42 @@ public class XMLParser {
 	public static PauseTrigger parsePauseTrigger(Element e) {
 		Element e2 = e.getChild(XMLKeywords.PAUSE_TRIGGER.getName());
 		return VariableBasedPauseTrigger.newInstance((BooleanVariable)parseVariable(e2.getChild(XMLKeywords.VARIABLE_BASED.getName())));
+	}
+
+	public static GenericParameters parseGenericParameters(Element e) {
+		if(e.getChild(XMLKeywords.VISIBILITY.getName())!=null)
+		{
+			Element visibilityElement = e.getChild(XMLKeywords.VISIBILITY.getName());
+			return GenericParameters.newInstance(
+					parseVariableName(visibilityElement.getChild(XMLKeywords.VARIABLE.getName())));
+		}
+		return GenericParameters.newInstance();
+	}
+
+	public static AppendTypes parseTextTypingSpeed(Element e) {
+		if(e.getChild(XMLKeywords.TEXT_TYPING_SPEED.getName())!=null)
+		{
+			Element tts = e.getChild(XMLKeywords.TEXT_TYPING_SPEED.getName());
+			
+			if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
+					.equals(XMLKeywords.ONE_WORD_PER_PRESS.getName()))
+				return AppendTypes.ONE_WORD_PER_PRESS;
+			else throw new Error();
+		}
+		return AppendTypes.ONE_CHAR;
+		
+	}
+
+	public static Mode parseSoundMode(Element e) {
+			Element tts = e.getChild(XMLKeywords.SOUND_MODE.getName());
+			
+			if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
+					.equals(XMLKeywords.REPEAT_FORVER_WHEN_VISIBLE.getName()))
+				return Mode.FOREVER_WHEN_DRAWN;
+			else if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
+					.equals(XMLKeywords.ONE_SHOT.getName()))
+				return Mode.ONE_SHOT;
+			else throw new Error();		
 	}
 
 

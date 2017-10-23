@@ -17,6 +17,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import draw.displayItems.DisplayableItem;
+import input.configuration.DisplaySetupParameters;
 import input.configuration.ProcessXML;
 import input.events.publishers.KeyMonitorer;
 import logic.data.fileLocators.FileManagerUtils;
@@ -24,10 +25,7 @@ import logic.data.fileLocators.FileManagerUtils;
 public class DisplayWindow {
 	
 	private static final Dimension INITIAL_WINDOW_DIMENSIONS = new Dimension((int)(1.6*700),700);
-	
-	//private static final Canvas canvas = new Canvas();
 	private static final Canvas canvas = new Canvas();
-	
 	private static JFrame app=null;
 
 	/**
@@ -38,11 +36,6 @@ public class DisplayWindow {
 	public static void main( String[] args ){
 		newDisplay(FileManagerUtils.getLocalFileFor("configuration.xml"));
 	}
-
-
-
-
-
 
 	private static double getScalingY() {
 		return (double)getWindowHeight()/(double)INITIAL_WINDOW_DIMENSIONS.getHeight();
@@ -85,22 +78,34 @@ public class DisplayWindow {
 	public static void newDisplay(File inputFile) {
 		try
 		{
-			Collection<DisplayableItem>itemsToDisplay = ProcessXML.loadXML(inputFile);
+			DisplaySetupParameters setupParameters = ProcessXML.loadXML(inputFile);
+			Collection<DisplayableItem>itemsToDisplay = setupParameters.getItemsToDisplay();
 			app = new JFrame();
-			app.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+			app.setLocationRelativeTo(null);
+			
+			if(setupParameters.getParameters().isFullScreen())
+			{
+			app.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
 	        		(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 	                
 			app.setUndecorated(true);
 			app.setResizable(false);
 			app.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-			GraphicsEnvironment ge=GraphicsEnvironment.getLocalGraphicsEnvironment();
+			
 			GraphicsDevice vc=app.getGraphicsConfiguration().getDevice();
 			vc.setFullScreenWindow(app);
+			app.setLocation(0, 0);
+			}
+			else
+			{
+				app.setSize((int)setupParameters.getParameters().getScreenWidth(),
+		        		(int)setupParameters.getParameters().getScreenHeight());
+				app.setLocation(setupParameters.getParameters().getPositionX(),
+						setupParameters.getParameters().getPositionY());
+			}
 		
 			
 			app.setVisible(true);
-			app.setLocationRelativeTo(null);  
-			app.setLocation(0, 0);
 			app.setIgnoreRepaint( true );
 			app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 			
@@ -115,24 +120,21 @@ public class DisplayWindow {
 			canvas.createBufferStrategy( 2 );
 			BufferStrategy buffer = canvas.getBufferStrategy();
 
-
-
-			// Get graphics configuration...
-			ge = 
-					GraphicsEnvironment.getLocalGraphicsEnvironment();			
+	
 			// Objects needed for rendering...
 			new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
-					Thread.currentThread().setName("MainLoop for:"+inputFile);
+					Thread.currentThread().setName(DisplayWindow.class.getTypeName());
 
 					Graphics2D g2d = null;
 					while( app.isShowing() ) {
+						Thread.yield();
 						
 
 						try {
-							Thread.sleep(5);
+							Thread.sleep(20);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

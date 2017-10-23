@@ -34,7 +34,7 @@ public class SoundUtils {
 	public static void oneShotPlaySound(File soundFile) {
 		Clip clip = loadSound(soundFile);
 		while(! clip.isRunning())
-		clip.start();		
+			clip.start();	
 		
 		new Thread(()->
 		{
@@ -48,7 +48,7 @@ public class SoundUtils {
 		}).start();
 	}
 
-	private static Clip loadSound(File soundFile) {
+	public static synchronized Clip loadSound(File soundFile) {
 		try{
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(soundFile));
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(in);

@@ -1,0 +1,33 @@
+<configuration>
+	<display_parameters>
+		<screen_size>
+			<position x="100" y="500"></position>
+			<dimensions width="700" height="400"></dimensions>
+		</screen_size>
+	</display_parameters>
+	
+	<displayed_animations>
+		<image>
+			<file_location>
+				<hard_path path = "input/images/DNAsampler.png">
+				</hard_path>
+			</file_location>
+			<position x="0" y="0"></position>
+			<dimensions width="1120" height="700"></dimensions>
+		</image>
+		
+		<dnasca>
+			<dna_basis>
+				<position x="70" y="200"></position>
+				<dimensions width="700" height="400"></dimensions>
+			</dna_basis>
+			
+			<sample_dna>
+				<position x="950" y="200"></position>
+				<dimensions width="50" height="400"></dimensions>
+			</sample_dna>
+		</dnasca>
+		
+	</displayed_animations>
+	
+</configuration>

@@ -44,12 +44,10 @@ import logic.variables.variableTypes.VariableType;
 
 public class ProcessXML {
 
-	public static Collection<DisplayableItem> loadXML(File configFile){
-		//On crée une instance de SAXBuilder
+	public static DisplaySetupParameters loadXML(File configFile){
 		Document document=null;
 		SAXBuilder sxb = new SAXBuilder();
-
-
+		
 		try
 		{
 			document = sxb.build(configFile);
@@ -63,10 +61,24 @@ public class ProcessXML {
 
 		}
 
-		Element racine = document.getRootElement();
+		Element root = document.getRootElement();
 
-		loadVariables(racine);
-		return getDisplayableItemsFrom(racine);
+		loadVariables(root);
+		return DisplaySetupParameters.newInstance(getDisplayParameters(root),getDisplayableItemsFrom(root));
+	}
+
+
+
+	private static DisplayParameters getDisplayParameters(Element root) {
+		DisplayParameters res = DisplayParameters.newInstance();
+		if(root.getChild(XMLKeywords.DISPLAY_PARAMETERS.getName())== null) return res;
+		
+		Element head = root.getChild(XMLKeywords.DISPLAY_PARAMETERS.getName());
+		Element screenSize = head.getChild(XMLKeywords.SCREEN_SIZE.getName());
+		res.setScreenSize(XMLParser.parseRectangle(screenSize));
+		
+		return res;
+		
 	}
 
 
@@ -128,6 +140,7 @@ public class ProcessXML {
 	}
 
 	public static Collection<DisplayableItem> getDisplayableItemsFrom(Element rootElement) {
+		//System.out.println("bing"+rootElement);
 		if(rootElement.getChild(XMLKeywords.DISPLAYED_ANIMATIONS.getName())==null)
 			throw new Error(rootElement+" must have a child:"+XMLKeywords.DISPLAYED_ANIMATIONS.getName());
 		return 

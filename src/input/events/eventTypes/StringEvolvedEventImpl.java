@@ -3,7 +3,7 @@ package input.events.eventTypes;
 public final class StringEvolvedEventImpl implements StringEvolvedEvent {
 
 	private final String newVal;
-	public StringEvolvedEventImpl(String newVal) {
+	private StringEvolvedEventImpl(String newVal) {
 		this.newVal = newVal; 
 	}
 

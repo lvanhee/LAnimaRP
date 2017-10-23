@@ -30,19 +30,23 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 
 
 	private Rectangle drawingRectangle;
-	private Font myFont = new Font("Courier New", Font.PLAIN, 10);
+	private final Font myFont = new Font("Courier New", Font.BOLD, 20);
 	
 	private List<String>stringPerLine = new LinkedList<>();	
+	
+	private final Color c;
 
-	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle) {
+	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle, Color c) {
 		this.drawingRectangle = drawingRectangle;
 		stringPerLine.add("");
+		this.c = c;
 	}
 
 	@Override
 	public synchronized void drawMe(Graphics2D g) {
 		g.setFont(myFont);
 		int i = 0;
+		g.setColor(c);
 		for(String s: stringPerLine)
 		{
 			g.drawString(s, drawingRectangle.x, drawingRectangle.y+getHeightPerLine()*i);
@@ -152,8 +156,8 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	
     
 
-	public static PassiveAppendTextAreaDrawer newInstance(Rectangle r) {
-		return new PassiveAppendTextAreaDrawer(r);
+	public static PassiveAppendTextAreaDrawer newInstance(Rectangle r, Color c) {
+		return new PassiveAppendTextAreaDrawer(r,c);
 	}
 
 }

@@ -100,11 +100,28 @@ A venir.
 
 Afin de bien comprendre comment ce logiciel peut être utilisé, voici quelques concepts clefs.
 
+Ces animations sont dites ``passives". Elles sont sous l'entier contrôle de l'utilisateur\footnote{Pour une version future, l'architecture peut être ouverte à d'autres programmes via des interfaces de communication}. Il peut y avoir des éléments ``dynamiques" au sein du logiciel (ex : une barre qui se remplit, un rythme cardiaque), mais ce logiciel ne vise pas à gérer une simulation élaborée du monde-- seulement à l'afficher.
 
+Le logiciel est donc piloté de l'extérieur, par l'organisation ou les joueurs. Pour ce faire, ils peuvent appuyer sur des touches du clavier qui vont influence l'affichage (ex : illuminer ou éteindre une pièce pour indiquer qu'elle a un incendie en son sein).
 
-Comment ça marche, plus précisément ? Dans le détail, l'affichage est composé d'un ensemble d'\emph{animations unitaires} (ex : un moniteur cardiaque, une pièce qui s'illumine, une barre plus ou moins remplie etc). Certaines animations peuvent dépendre de \emph{variables} (ex : est-ce qu'une pièce est allumée ou non, le taux de remplissage pour une barre). Ces variables sont mises à jour par des \emph{commandes} (ex : la pression d'un bouton augmente la valeur d'une variable). Ainsi, en appuyant sur ``+", le taux de remplissage monte d'un cran et la barre affichée est mise à jour. Voilà, c'est à peu près tout ce qu'il y a savoir !
+Comment ça marche, plus précisément ? Dans le détail, l'affichage est composé d'un ensemble d'\emph{animations unitaires} (ex : un moniteur cardiaque, une pièce qui s'illumine, une barre plus ou moins remplie etc). Certaines animations peuvent dépendre de \emph{variables} (ex : est-ce qu'une pièce est allumée ou non, le taux de remplissage pour une barre). Cette variable est ensuite reliée à des \emph{commandes} (ex : en appuyant sur ``+", le taux de remplissage de la barre monte d'un cran). Ainsi, en appuyant sur ``+", le taux de remplissage monte d'un cran et la barre affichée est mise à jour. Voilà, c'est à peu près tout ce qu'il y a savoir !
 
 Maintenant que vous savez ça, vous avez les outils nécessaires pour comprendre comment le logiciel fonctionne... Voire à créer vos propres animations à partir de l'existant !
+
+\section{Avant de parler de technique}
+
+Utiliser ce logiciel demande une contribution de votre part. Point d'argent, mais plutôt des actions et rien qui ne prendra des heures.
+
+Mon objectif est de développer un outil pour répondre à des besoins de la communauté GNiste, avec pour ambition de l'améliorer avec le temps par moi-même et avec les retours d'utilisateurs. Ainsi, si vous utilisez ce logiciel, je vous demande de :
+\begin{enumerate}
+\item partager vos animations (fichiers de configuration et de ressource) de sorte que d'autres puissent les utiliser à leur tour (envoyez moi vos fichiers je m'occupe de la publication). Des clauses de confidentialité temporaires sont négociables.
+\item écrivez moi une documentation de son utilisation. Rien d'énorme, quelques lignes. Indiquez ce à quoi il sert pour le jeu, comment il est utilisé, s'il a été utile, s'il y a des pistes d'améliorations, quelques photos de l'animation ``en contexte". Les éléments pertinents
+\item un peu de publicité, car un outil n'a aucune valeur s'il n'est pas connu. Là aussi, rien d'énorme : une mention du logiciel dans les docs de jeu ``techniques" et une mention pendant le débrief final.
+\item si on se croise, venez m'en parler.  Votre feedback direct est une source d'information primordiale pour améliorer le logiciel.
+\item optionnel : donnez-moi un souvenir physique de petite taille (petit mot, goodies, objet de jeu qui ne servira plus). J'ai une collection d'objets pour me souvenir que mes contributions ont aidé à un projet que j'aime remplir.
+\end{enumerate}
+
+En retour de quoi, je vous offre mon soutien. Tout d'abord, par un libre accès au logiciel. Ensuite, en faisant de la publicité pour votre jeu : la collaboration sera présentée sur les médias relatifs à LAnimaRP, des vidéos présentant les animations de votre jeu, etc. Enfin, en étendant les fonctionnalités pour contribuer à vos besoins particuliers (plus de simulations, connexions à d'autres services etc).
 
 \end{tiny}
 
@@ -140,5 +157,8 @@ Animation salle principale.
 
 DNASCA.
 
+\section{Remerciements}
+
+Je tiens à remercier Gilles Cruyplants et Mathieu Valcar pour avoir participé au développement de LAnimaRP, en me fournissant leur feedback détaillé.
 
 \end{document}
