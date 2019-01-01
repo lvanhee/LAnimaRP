@@ -7,19 +7,19 @@ import draw.displayItems.DisplayableItem;
 public class DisplaySetupParameters {
 
 	private final DisplayParameters displayParameters;
-	private final Collection<DisplayableItem> itemsToDisplay;
+	private final DisplayableItem itemsToDisplay;
 	public DisplaySetupParameters(DisplayParameters displayParameters,
-			Collection<DisplayableItem> displayableItemsFrom) {
+			DisplayableItem displayableItemsFrom) {
 		this.displayParameters = displayParameters;
 		this.itemsToDisplay = displayableItemsFrom;
 	}
 
 	public static DisplaySetupParameters newInstance(DisplayParameters displayParameters,
-			Collection<DisplayableItem> displayableItemsFrom) {
+			DisplayableItem displayableItemsFrom) {
 		return new DisplaySetupParameters(displayParameters, displayableItemsFrom);
 	}
 
-	public Collection<DisplayableItem> getItemsToDisplay() {
+	public DisplayableItem getItemsToDisplay() {
 		return itemsToDisplay;
 	}
 

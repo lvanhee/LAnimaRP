@@ -20,4 +20,8 @@ public class LAnimaRPKeyEventImpl implements LAnimaRPKeyEvent {
 		return ke.toString();
 	}
 
+	public boolean isKeyPressed() {
+		return ke.getID() == KeyEvent.KEY_PRESSED;
+	}
+
 }

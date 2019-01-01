@@ -1,0 +1,29 @@
+<configuration>
+	<variables>		
+		<variable>
+			<variable_name name = "blinking_on"></variable_name>
+			<variable_type type = "boolean"></variable_type>
+			<initial_value value = "false"> </initial_value>
+			<variable_actuators>
+				<key_switch_actuator key="w"></key_switch_actuator>
+			</variable_actuators>
+		</variable>
+	</variables>
+							
+				
+	<displayed_objects>		
+		<blinking_shape>
+		<variable name="blinking_on"></variable>
+		<points>
+			<point x = "300" y="457"></point>
+			<point x = "329" y="457"></point>
+			<point x = "329" y="500"></point>
+			<point x = "300" y="500"></point>
+		</points>
+		<color value='#cc0000'></color></blinking_shape>
+		
+		
+		<background>
+		<filename name="input/images/systemes support vie.png"></filename></background>
+	</displayed_objects>
+</configuration>

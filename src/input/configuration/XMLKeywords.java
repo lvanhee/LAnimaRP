@@ -1,6 +1,5 @@
 package input.configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -8,51 +7,73 @@ import java.util.stream.Collectors;
 
 import org.jdom2.Element;
 
-import draw.displayItems.advanced.Popup;
-import draw.displayItems.advanced.dnasca.DNASCA;
-import draw.displayItems.advanced.dnasca.GenericDisplayer;
-import draw.displayItems.advanced.dnasca.HeartBeatMonitor;
-import draw.displayItems.images.EventAdaptiveImageDisplayer;
-import draw.displayItems.images.SlideShow;
-import draw.displayItems.shapes.BlinkingShape;
-import draw.displayItems.shapes.bars.BarDisplayer;
-import draw.displayItems.sound.SoundPlayer;
-import draw.displayItems.text.FPSDisplayer;
-import draw.displayItems.text.NewsTicker;
-import draw.displayItems.text.TextTyper;
-import draw.displayItems.text.VariablePrinter;
-import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
-import draw.displayItems.videos.VideoDisplayer;
 import logic.variables.variableTypes.VariableType;
 
 public enum XMLKeywords {
+	//Variable keywords
 	VARIABLE_ACTUATORS("variable_actuators"),
 	VARIABLE("variable"),
 	VARIABLE_TYPE("variable_type"), 
 	TYPE("type"),
 	BOUNDED_INT_VARIABLE_TYPE("bounded_int"), 
-	RANGE("range"), INITIAL_VALUE("initial_value"),
-	VARIABLE_NAME("variable_name"), RANGE_MIN_VALUE("min_value"), 
+	RANGE("range"), 
+	INITIAL_VALUE("initial_value"),
+	VARIABLE_NAME("variable_name"),
+	RANGE_MIN_VALUE("min_value"), 
 	RANGE_MAX_VALUE("max_value"),
 	VALUE("value"),
-	KEY_INCREASE_ACTUATOR("key_increase_actuator"), 
-	KEY("key"), INCREASE_BY("increase_by"), BOOLEAN_VARIABLE_TYPE("boolean"), SWITCH_ACTUATOR("key_switch_actuator"), STRING_VARIABLE_TYPE("string"), 
-	SYNCHRONIZE_FROM_FILE_ACTUATOR("synchronize_from_file_actuator"), PATH_VARIABLE_TYPE("path_variable"), HARD_PATH("hard_path"), 
-	FILE_LOCATION("file_location"), NAME("name"), GENERIC_DISPLAYER("generic_displayer"), SLIDESHOW("slideshow"),
-	VIDEO_ANIMATION("video"), NEWS_TICKER("news_ticker"), IMAGE_ANIMATION("image"), 
-	FILE_BASED_PARAMETERS("file_based_parameters"), HEARTBEAT_MONITOR("heartbeat_monitor"), POPUP("popup"), PERIOD_ON("period_on"), 
-	PERIOD_OFF("period_off"), DISPLAYED_ANIMATIONS("displayed_animations"), INITIAL_DISPLAY_TIME("initial_display_time"), SOUND("sound"), 
-	IMAGE_STRETCHING_TYPE("stretching"), MODE("mode"), STRETCH_AND_BANDS("stretch_and_bands"), SCROLLING_SPEED ("scrolling_speed"), 
-	SPEED("speed"), SCALE_NO_STRECHT_NO_BAND("scale_no_stretch_no_bands"), STRETCH("stretch"), FPS("fps"), POSITION("position"),
-	TEXT_TYPER("text_typer"), INCREASE_ACTUATOR("increase_actuator"),
-	ANIMATION_SPECIFIC_VARIABLE_ACTUATOR("animation_specific_variable_actuator"), ANIMATION_TRIGGER("animation_trigger"), 
+	//Actuator keywords
+	KEY_INCREASE_ACTUATOR("key_increase_actuator"),
+	VARIABLE_BASED_SWITCHEABLE_ANIMATION("variable_based_switcheable_animation"),
+	KEY("key"), 
+	INCREASE_BY("increase_by"),
+	BOOLEAN_VARIABLE_TYPE("boolean"),
+	SWITCH_ACTUATOR("key_switch_actuator"), 
+	STRING_VARIABLE_TYPE("string"), 
+	SYNCHRONIZE_FROM_FILE_ACTUATOR("synchronize_from_file_actuator"),
+	PATH_VARIABLE_TYPE("path_variable"),
+	HARD_PATH("hard_path"),
+	FILE_LOCATION("file_location"), 
+	NAME("name"), 
+	DYNAMICALLY_UPDATABLE_ANIMATION("dynamically_updatable_animation_displayer"),
+	//Animation keywords
+	BOOLEAN_ANIMATION_DISPLAYER("boolean_animation_displayer"),
+	BLINKING_SHAPE("blinking_shape"),
+	FILE_SYSTEM("filesystem_displayer"),
+	GENERIC_MEDIUM_DISPLAYER("generic_medium_displayer"),
+	SLIDESHOW("slideshow"),
+	VIDEO_ANIMATION("video"), 
+	NEWS_TICKER("news_ticker"), 
+	IMAGE_ANIMATION("image"), 
+	FILE_BASED_PARAMETERS("file_based_parameters"), 
+	HEARTBEAT_MONITOR("heartbeat_monitor"), 
+	POPUP("popup"), 
+	PERIOD_ON("period_on"), 
+	PERIOD_OFF("period_off"),
+	DISPLAYED_ANIMATIONS("displayed_animations"), 
+	INITIAL_DISPLAY_TIME("initial_display_time"), 
+	SOUND("sound"), 
+	IMAGE_STRETCHING_TYPE("stretching"), 
+	MODE("mode"), 
+	STRETCH_AND_BANDS("stretch_and_bands"), 
+	SCROLLING_SPEED ("scrolling_speed"), 
+	SPEED("speed"), 
+	SCALE_NO_STRECHT_NO_BAND("scale_no_stretch_no_bands"), 
+	STRETCH("stretch"), 
+	FPS("fps"), 
+	POSITION("position"),
+	TEXT_TYPER("text_typer"), 
+	INCREASE_ACTUATOR("increase_actuator"),
+	ANIMATION_SPECIFIC_VARIABLE_ACTUATOR("animation_specific_variable_actuator"), 
+	ANIMATION_TRIGGER("animation_trigger"), 
 	CAUSE("cause"),
 	IS_VISIBLE("is_visible"), 
 	PAUSE_TRIGGER("pause_trigger"), 
 	VARIABLE_BASED("variable_based"),
 	BACKGROUND("background"),
 	DNASCA("dnasca"),
-	CHROMATOGRAPHER("chromatographer"), DISPLAY_PARAMETERS("display_parameters"), 
+	CHROMATOGRAPHER("chromatographer"), 
+	DISPLAY_PARAMETERS("display_parameters"), 
 	SCREEN_SIZE("screen_size"),
 	VISIBILITY("visibility"), 
 	ANYKEY_INCREASE_ACTUATOR("anykey_increase_actuator"),
@@ -61,7 +82,30 @@ public enum XMLKeywords {
 	ONE_WORD_PER_PRESS("one_word_per_event"), 
 	SOUND_MODE("sound_mode"),
 	REPEAT_FORVER_WHEN_VISIBLE("repeat_forever_when_visible"),
-	ONE_SHOT("one_shot")
+	ONE_SHOT("one_shot"),
+	FULLSCREEN("fullscreen"),
+	ENUM("enum"),
+	EVENT_PUBLISHERS("event_publishers"),
+	KEY_PRESSED_EVENT_PUBLISHER("key_pressed_event_publisher"),
+	SWITCHEABLE_ANIMATION("switcheable_animation"), 
+	TRIGGER("trigger"), 
+	EVENT_PRODUCER("event_producer"), 
+	REFRESH_PERIOD("refresh_period"),
+	DISPLAY_AREA("display_area"), 
+	X("x"), 
+	Y("y"), 
+	WIDTH("width"), 
+	HEIGHT("height"), 
+	IMAGE_WHEN_TYPING("image_when_typing_filename"),
+	FILENAME_QUERY_AREA("filename_query_area"), 
+	FAILURE_TEXT("failure_text_parameters"), 
+	COLOR("color"), 
+	TEXT_DISPLAYER_CONFIGURATION("text_displayer_configuration"), 
+	SOUND_ON_TYPE("sound_on_type"),
+	TEMPORARILY_DISPLAYED_ANIMATION("temporarily_displayed_animation"),
+	DURATION("duration"), 
+	BLINKING("blinking"), 
+	SOLID("solid")
 	;
 	
 	private final String keyName;
@@ -83,6 +127,7 @@ public enum XMLKeywords {
 		case BOOLEAN: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS,INITIAL_VALUE);
 		case STRING: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS, INITIAL_VALUE);
 		case PATH: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS, INITIAL_VALUE);
+		case ENUM: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME, VARIABLE_ACTUATORS, INITIAL_VALUE);
 		default: throw new Error();
 		}
 	}

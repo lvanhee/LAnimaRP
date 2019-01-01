@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.jdom2.Element;
 import draw.displayItems.DisplayableItem;
 import draw.utils.TextUtils;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 import logic.data.drawing.LocatedString;
 import logic.data.string.TextSource;
@@ -78,7 +79,7 @@ public class NewsTicker implements DisplayableItem {
 		t.start();
 	}
 
-	public static NewsTicker newInstance(Element e) {
+	public static NewsTicker newInstance(Element e, LAnimaRPContext context) {
 		int height = XMLParser.getHeight(e);
 		TextSource mts = XMLParser.getTextSource(e);
 		int scrollingSpeed = XMLParser.getScrollingSpeed(e);

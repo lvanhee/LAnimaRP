@@ -10,10 +10,11 @@ import org.jdom2.Element;
 import draw.displayItems.DisplayableItem;
 import draw.displayItems.images.PassiveImagePrinter;
 import draw.displayItems.shapes.bars.PassiveBar;
-import draw.displayItems.sound.SoundPlayer;
+import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.text.TextPrompt;
 import draw.displayItems.text.TextTyper;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import input.configuration.LAnimaRPContext;
 import logic.data.drawing.StretchingType;
 import logic.data.fileLocators.FileLocator;
 import logic.data.fileLocators.FileManagerUtils;
@@ -46,12 +47,12 @@ public class Chromatographer implements DisplayableItem {
 			AppendTypes.ONE_CHAR			
 			);
 	
-	private SoundPlayer sp = SoundPlayer.newInstance("input/sound/alerte_insurge.wav");
+	private SoundPlayerDisplayableItem sp = SoundPlayerDisplayableItem.newInstance("input/sound/alerte_insurge.wav");
 	
 	private Chromatographer() {
 		//constructueur
-		//Normalement, c'est d'ici que tu lances les threads relatifs à la logique de ton chromatographe (ex : boucle d'exécution du système)
-		//Ces threads doivent normalement mettre à jour "imageToDisplay"
+		//Normalement, c'est d'ici que tu lances les threads relatifs �� la logique de ton chromatographe (ex : boucle d'ex��cution du syst��me)
+		//Ces threads doivent normalement mettre �� jour "imageToDisplay"
 		
 		new Thread(new Runnable() {
 			
@@ -75,45 +76,45 @@ public class Chromatographer implements DisplayableItem {
 	/**
 	 * Salut Laurent,
 	 * 
-	 * Voici quelques idées préliminaires.
+	 * Voici quelques id��es pr��liminaires.
 	 * 
-	 * De mes premières études préliminaires, les paramètres importants sont
+	 * De mes premi��res ��tudes pr��liminaires, les param��tres importants sont
 	 * 	-le solvant
 	 *  -le support
 	 *  
-	 * Si je devais imaginer un système automatisé :
-	 * -il détermine un ensemble de molécules possibles (très grand ensemble)
-	 * -il lance une première chromato avec un couple (solvant,support) standard (5 min)
-	 * -il étudie le résultat (animation type scan + mesure)
-	 * -il réduit l'ensemble des molécules possibles
+	 * Si je devais imaginer un syst��me automatis�� :
+	 * -il d��termine un ensemble de mol��cules possibles (tr��s grand ensemble)
+	 * -il lance une premi��re chromato avec un couple (solvant,support) standard (5 min)
+	 * -il ��tudie le r��sultat (animation type scan + mesure)
+	 * -il r��duit l'ensemble des mol��cules possibles
 	 * -il relance une autre chromato avec un autre couple (solvant,support) qui permet de distinguer
-	 * au mieux entre les molécules restantes
-	 * -répétition des deux derniers points jusqu'à ce que l'ensemble des molécules possibles soit
+	 * au mieux entre les mol��cules restantes
+	 * -r��p��tition des deux derniers points jusqu'�� ce que l'ensemble des mol��cules possibles soit
 	 * relativement faible. 
-	 * -Le système s'arrete alors en indiquant que l'analyse ne peut aller plus loin, intervention de
-	 * l'humain nécessaire 
+	 * -Le syst��me s'arrete alors en indiquant que l'analyse ne peut aller plus loin, intervention de
+	 * l'humain n��cessaire 
 	 * 
 	 *  
-	 * Visuels intéressants :
+	 * Visuels int��ressants :
 	 * https://www.youtube.com/watch?v=ZCzgQXGz9Tg
 	 * https://www.youtube.com/watch?v=8Sq8k4_YYTQ
 	 * 
-	 * Conseil : utilises une image de fond pour tout ce qui n'est pas automatisé. Tu peux rajouter 
+	 * Conseil : utilises une image de fond pour tout ce qui n'est pas automatis��. Tu peux rajouter 
 	 * cette image depuis "configuration.xml". Tu trouveras des exemples de fichiers de config
-	 * depuis le répertoire input/configuration (je ne te garantis pas qu'ils soient tous opérationnels
-	 * le format du fichier texte a changé depuis leur création).
+	 * depuis le r��pertoire input/configuration (je ne te garantis pas qu'ils soient tous op��rationnels
+	 * le format du fichier texte a chang�� depuis leur cr��ation).
 	 * Pour l'image, vois par exemple input/images/DNAsampler.png pour le DNASCA. 
 	 * 
-	 * Le but du DNASCA est d'avoir un système d'animation aussi générique que possible, ça passe
+	 * Le but du DNASCA est d'avoir un syst��me d'animation aussi g��n��rique que possible, ��a passe
 	 * par une programmation via des fichiers de configuration.
 	 */
 
 	@Override
 	public void drawMe(Graphics2D g) {
-		//c'est ici que tu dois donner les instructions à afficher
-		//cette fonction doit etre exécutée très rapidement (elle fait partie de la boucle d'affichage)
-		//mon implémentation du DNASCA n'est pas très bonne à cet égard (elle date d'une ancienne version)
-		//par contre "PassiveVideoDisplayer" est plus approprié.
+		//c'est ici que tu dois donner les instructions �� afficher
+		//cette fonction doit etre ex��cut��e tr��s rapidement (elle fait partie de la boucle d'affichage)
+		//mon impl��mentation du DNASCA n'est pas tr��s bonne �� cet ��gard (elle date d'une ancienne version)
+		//par contre "PassiveVideoDisplayer" est plus appropri��.
 		back.drawMe(g);
 		g.drawString("C'est moi Clippy!", 60, 60);
 		passiveBar.drawMe(g);
@@ -126,7 +127,7 @@ public class Chromatographer implements DisplayableItem {
 
 	@Override
 	public void terminate() {
-		//ici, tu termines les différents threads relatifs à ton chromato et que tu vides la mémoire
+		//ici, tu termines les diff��rents threads relatifs �� ton chromato et que tu vides la m��moire
 		//si tu utilises des ressources externes
 		throw new Error();
 	}
@@ -136,8 +137,8 @@ public class Chromatographer implements DisplayableItem {
 	 * @param e XML element corresponding to the input of the current displayable item
 	 * @return a Chromatographer display object.
 	 */
-	public static DisplayableItem newInstance(Element e) {
-		//dis-moi si tu as besoin de plus de paramètres (ex : position des différents objets à afficher)
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
+		//dis-moi si tu as besoin de plus de param��tres (ex : position des diff��rents objets �� afficher)
 		return new Chromatographer();
 	}
 

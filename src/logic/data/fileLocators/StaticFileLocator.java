@@ -2,6 +2,9 @@ package logic.data.fileLocators;
 
 import java.io.File;
 
+import input.configuration.FileUpdatedEvent;
+import input.configuration.GenericEventPublisher;
+
 public class StaticFileLocator implements FileLocator {
 	
 	private final File f;
@@ -26,6 +29,11 @@ public class StaticFileLocator implements FileLocator {
 
 	public static FileLocator newInstance(File localFileFor) {
 		return new StaticFileLocator(localFileFor);
+	}
+
+	@Override
+	public GenericEventPublisher<FileUpdatedEvent> getEventPublisher() {
+		return new GenericEventPublisher<>();
 	}
 
 }

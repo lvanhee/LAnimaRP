@@ -1,0 +1,69 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+%\usepackage[T1]{fontenc}
+\usepackage{fourier}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}													% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+\usepackage{verbatim}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{LAnimaRP -- Note d'utilisation} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge {Note d'utilisation de LAnimaRP} \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont
+        Loïs Vanhée\\[-3pt]		\normalsize
+}
+
+\begin{document}
+\maketitle
+
+LAnimaRP est une application qui permet aux participants d'un GN (organisateur comme joueur) d'intégrer facilement en jeu des animations réactives et faciles à altérer pendant le jeu. Elle offre de nombreuses possibilités pratiques pour aux participants (outil pour descendre de l'information aux joueurs, indiquer les lieux d'événementiel, coordonner les joueurs, permettre aux joueurs de véhiculer de l'information en interne).
+
+Disclaimer, pour couvrir les questions que l'on me pose régulièrement. Ce logiciel reste un outil adaptable et à adapter pour votre jeu. En tant que le concepteur du logiciel, je vous offre de vous conseiller sur les utilisations possibles, les animations disponibles et d'étendre les fonctionnalités du logiciel pour correspondre à vos besoins. Je peux aussi parler de votre jeu sur les médias relatifs à LAnimaRP\footnote{\url{https://www.facebook.com/LAnimaRP/}}
+Cependant, même si je peux faire des suggestions à ce sujet, je n'offre pas de services de designer (concevoir la belle image de fond qui colle à votre jeu). De plus, ce logiciel n'est pas conçu pour simuler l'environnement de jeu (ex : simuler qu'un vaisseau a été endommagé). Néanmoins, si vous avez une simulation, je suis prêt à étendre mon logiciel pour créer des connections.
+
+En tant que concepteur, je réalise ce logiciel dans le but de servir la communauté du grandeur nature, comme un outil qui permette facilement d'agrémenter les jeux. Ainsi, ce logiciel est distribué gratuitement, sans contrôle de ma part et avec mon soutien pour favoriser son déploiement en jeu. Je ne conçois pas ce logiciel pour que l'on me fasse des faveurs en jeu (c'est arrivé qu'on me le propose, je refuserai). 
+
+En revanche, je souhaite que ce logiciel se développe et perdure. De plus, j'aime collectionner les moments où mon travail a été utile à un jeu. Ainsi, si vous souhaitez utiliser mon logiciel, je vous demande les choses suivantes :
+\begin{enumerate}
+\item partagez vos animations et leur contenu (fichiers de configuration et de ressource)
+\item donnez-moi une trace de son utilisation : une photo de l'implémentation de l'animation en jeu, la manière dont elle a été utilisée, ce qui a bien marché, comment perfectionner LAnimaRP pour la suite
+\item faites un peu de publicité : une référence dans la liste des partenaires du jeu, un post sur les médias utilisés pour interagir avec les joueurs
+\item optionnel : un goodies du jeu, un remerciement personnel
+\end{enumerate}
+\end{document}

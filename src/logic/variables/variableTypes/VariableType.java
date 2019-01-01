@@ -3,7 +3,7 @@ package logic.variables.variableTypes;
 import input.configuration.XMLKeywords;
 
 public enum VariableType {
-	BOUNDED_INT, BOOLEAN, STRING, PATH
+	BOUNDED_INT, BOOLEAN, STRING, PATH, ENUM
 	;
 
 	public static VariableType parseFromXML(final String attributeValue) {
@@ -15,6 +15,8 @@ public enum VariableType {
 			return STRING;
 		if(attributeValue.equals(XMLKeywords.PATH_VARIABLE_TYPE.getName()))
 			return PATH;
+		if(attributeValue.equals(XMLKeywords.ENUM.getName()))
+			return ENUM;
 		
 		throw new Error("Unknown variable type:"+attributeValue);
 	}

@@ -1,13 +1,14 @@
 package input.configuration;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.jdom2.Element;
 
 import logic.data.Range;
 import logic.variables.actuators.VariableActuator;
-import logic.variables.management.VariableManager;
 import logic.variables.variableTypes.BooleanVariable;
 import logic.variables.variableTypes.BoundedIntegerVariable;
 import logic.variables.variableTypes.PathVariable;
@@ -21,10 +22,12 @@ public class XMLVariableBuilder
 	private Range range;
 	private String initialValue;
 	private VariableType type;
-	private Collection<VariableActuator> actuators= new LinkedList<VariableActuator>();
+	private Set<VariableActuator> actuators= new HashSet<VariableActuator>();
 
-	public XMLVariableBuilder(String parseVariableName) {
+	public XMLVariableBuilder(String parseVariableName, VariableType type, String name) {
 		this.variableName = parseVariableName;
+		
+		this.type = type;
 	}
 
 	public String getInitialValue() {
@@ -54,13 +57,13 @@ public class XMLVariableBuilder
 		case BOOLEAN: newVariable = BooleanVariable.newInstance(this);break;
 		case STRING: newVariable = StringVariable.newInstance(this);break;
 		case PATH: newVariable = PathVariable.newInstance(this); break;
+		case ENUM: newVariable = EnumVariable.newInstance(this);break;
 		default: throw new Error("No builder for:"+type);
 		}
 				 
 		 for(VariableActuator va: actuators)
 			 va.setVariable(newVariable);
 		 
-		 VariableManager.add(newVariable);
 		 
 		return newVariable;
 	}
@@ -84,12 +87,14 @@ public class XMLVariableBuilder
 			if(initialValue==null)throw new Error("Path variables should have an initial value");
 			else return;
 		
+		if(type.equals(VariableType.ENUM))
+			if(initialValue==null)throw new Error("Enum variables must have an initial value");
+			else return;
+		
 		throw new Error();
 	}
 
 	public XMLVariableBuilder set(String name, Element e) {
-		if(name.equals(XMLKeywords.VARIABLE_TYPE.getName())){ type = XMLParser.getVariableType(e); return this;}
-		if(name.equals(XMLKeywords.VARIABLE_NAME.getName())){ variableName = XMLParser.parseVariableName(e); return this;}
 		if(name.equals(XMLKeywords.RANGE.getName())){ range = XMLParser.parseRange(e); return this;}
 		if(name.equals(XMLKeywords.INITIAL_VALUE.getName())){initialValue = XMLParser.parseInitialValue(e); return this;}
 		if(name.equals(XMLKeywords.VARIABLE_ACTUATORS.getName())){actuators=XMLParser.parseActuators(e);return this;}
@@ -98,6 +103,15 @@ public class XMLVariableBuilder
 
 	public boolean isInitialized() {
 		return initialValue != null;
+	}
+
+	public Set<VariableActuator> getActuators() {
+		return actuators;
+	}
+
+	public XMLVariableBuilder setInitialValue(String attributeValue) {
+		this.initialValue = attributeValue;
+		return this;
 	}
 
 }

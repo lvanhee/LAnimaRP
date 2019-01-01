@@ -10,15 +10,7 @@
 				<position x="0" y="0"></position>
 				<dimensions width="1170" height="700"></dimensions>	
 			</image>
-			<sound>
-				<file_location>
-					<hard_path path="input/sound/alerte.wav"></hard_path>
-				</file_location>
-				<sound_mode value = "repeat_forever_when_visible">
-				</sound_mode>
-				<position x="200" y="90"></position>
-				<dimensions width="400" height="380"></dimensions>	
-			</sound>
+           
 		</displayed_animations>
 		
 		<animation_specific_variable_actuator>
@@ -29,11 +21,11 @@
 		<initial_display_time value = "0"></initial_display_time>
 			
 		<period_on>
-			<periodic_refresh period = "6000"></periodic_refresh>
+			<periodic_refresh period = "4000"></periodic_refresh>
 		</period_on>	
 		
 		<period_off>
-			<periodic_refresh period = "10000"></periodic_refresh>
+			<periodic_refresh period = "20000"></periodic_refresh>
 		</period_off>		
 	</popup>
 	

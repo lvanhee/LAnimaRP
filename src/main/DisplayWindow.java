@@ -16,7 +16,11 @@ import java.io.StringWriter;
 import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import com.sun.jna.platform.win32.SetupApi;
+
 import draw.displayItems.DisplayableItem;
+import input.configuration.DisplayParameters;
 import input.configuration.DisplaySetupParameters;
 import input.configuration.ProcessXML;
 import input.events.publishers.KeyMonitorer;
@@ -24,7 +28,6 @@ import logic.data.fileLocators.FileManagerUtils;
 
 public class DisplayWindow {
 	
-	private static final Dimension INITIAL_WINDOW_DIMENSIONS = new Dimension((int)(1.6*700),700);
 	private static final Canvas canvas = new Canvas();
 	private static JFrame app=null;
 
@@ -38,7 +41,7 @@ public class DisplayWindow {
 	}
 
 	private static double getScalingY() {
-		return (double)getWindowHeight()/(double)INITIAL_WINDOW_DIMENSIONS.getHeight();
+		return (double)getWindowHeight()/(double)PARAMETERS.getDimensions().getHeight();
 	}
 
 	private static double getScalingX() {
@@ -64,7 +67,7 @@ public class DisplayWindow {
 
 
 	public static int getWindowUntransformedWidth() {
-			return (int) INITIAL_WINDOW_DIMENSIONS.getWidth();
+			return (int) PARAMETERS.getDimensions().getWidth();
 	}
 
 
@@ -74,12 +77,15 @@ public class DisplayWindow {
 		at.scale(getScalingX(), getScalingY());
 		return at;
 	}
-
+	
+	private static DisplayParameters PARAMETERS = null;
+	
 	public static void newDisplay(File inputFile) {
 		try
 		{
 			DisplaySetupParameters setupParameters = ProcessXML.loadXML(inputFile);
-			Collection<DisplayableItem>itemsToDisplay = setupParameters.getItemsToDisplay();
+			PARAMETERS = setupParameters.getParameters();
+			DisplayableItem itemsToDisplay = setupParameters.getItemsToDisplay();
 			app = new JFrame();
 			app.setLocationRelativeTo(null);
 			
@@ -111,7 +117,7 @@ public class DisplayWindow {
 			
 			canvas.addKeyListener(KeyMonitorer.getInstance());
 			canvas.setIgnoreRepaint( true );
-			canvas.setSize(INITIAL_WINDOW_DIMENSIONS);
+			canvas.setSize(setupParameters.getParameters().getDimensions());
 
 			app.add( canvas );
 			app.setVisible( true );
@@ -143,10 +149,8 @@ public class DisplayWindow {
 							do {
 								g2d = (Graphics2D) buffer.getDrawGraphics();
 								g2d.setTransform(AffineTransform.getScaleInstance(getScalingX(),getScalingY()));
-								for(DisplayableItem di:itemsToDisplay)
-								{
-									di.drawMe(g2d);
-								}
+								
+								itemsToDisplay.drawMe(g2d);
 								g2d.dispose();
 							}
 							while(buffer.contentsRestored());

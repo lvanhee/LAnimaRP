@@ -13,6 +13,7 @@ import java.util.Random;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 
 public class DNASCA implements DisplayableItem {
@@ -302,7 +303,7 @@ public class DNASCA implements DisplayableItem {
 	}
 
 
-	public static DNASCA newInstance(Element e) {
+	public static DNASCA newInstance(Element e, LAnimaRPContext context) {
 		return new DNASCA(
 				XMLParser.parseRectangle(e.getChild("dna_basis")), 
 				XMLParser.parseRectangle(e.getChild("sample_dna")));

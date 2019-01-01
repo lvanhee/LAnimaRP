@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jdom2.Element;
 
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.StringEvolvedEvent;
@@ -34,7 +35,7 @@ implements VariableActuator<StringUpdatableVariable<Variable<T>,T>, T>, LAnimaRP
 	}
 
 	public static SynchronizeFromFileVariableActuator newInstance(Element modifier) {
-		FileLocator fileToObserve= XMLParser.parseFileLocator(modifier);
+		FileLocator fileToObserve= XMLParser.parseFileLocator(modifier, null );
 		PeriodicRefreshInfo pr = XMLParser.parsePeriodicRefresh(modifier);
 		return new SynchronizeFromFileVariableActuator(fileToObserve, pr);
 	}
@@ -53,7 +54,7 @@ implements VariableActuator<StringUpdatableVariable<Variable<T>,T>, T>, LAnimaRP
 	@Override
 	public void handleEvent(StringEvolvedEvent event) {
 		if(v!= null)
-			v.updateFrom(event.toString());
+			v.updateFrom(event.getStrings());
 	}
 
 }

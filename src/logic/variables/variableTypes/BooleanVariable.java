@@ -3,6 +3,7 @@ package logic.variables.variableTypes;
 import java.util.Map;
 
 import input.configuration.XMLVariableBuilder;
+import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.VariableEvolvedEvent;
 import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.GenericPublisher;
@@ -10,22 +11,24 @@ import input.events.publishers.LAnimaRPEventPublisher;
 import logic.data.string.EvolvingString;
 import logic.data.string.UpdatableWithString;
 
-public class BooleanVariable implements DisplayableVariable<Boolean>{
+public class BooleanVariable implements DisplayableVariable<Boolean>, StringUpdatableVariable<Variable<Boolean>,Boolean>{
 	private static final boolean DEFAULT_VALUE = false;
 	
 	private boolean currentValue;
-	private String name;
+	private final String name;
+	private final GenericPublisher<VariableEvolvedEvent> publisher= GenericPublisher.newInstance();
 
-	public BooleanVariable(boolean parseBoolean, String name) {
+	private BooleanVariable(boolean parseBoolean, String name) {
 		currentValue = parseBoolean;
 		this.name = name;
 	}
 
-	public BooleanVariable(XMLVariableBuilder xmlVariableBuilder) {
+	private BooleanVariable(XMLVariableBuilder xmlVariableBuilder) {
 		name = xmlVariableBuilder.getVariableName();
 		if(xmlVariableBuilder.isInitialized())
 			currentValue = Boolean.parseBoolean(xmlVariableBuilder.getInitialValue());
 		else currentValue = DEFAULT_VALUE;
+		xmlVariableBuilder.getActuators().stream().forEach(x-> x.setVariable(this));
 	}
 
 	public static Variable newInstance(Map<String, String> parameters) {
@@ -64,7 +67,6 @@ public class BooleanVariable implements DisplayableVariable<Boolean>{
 		publisher.publish(VariableEvolvedEvent.newInstance());
 	}
 
-	private final GenericPublisher<VariableEvolvedEvent> publisher= GenericPublisher.newInstance();
 	@Override
 	public void subscribe(LAnimaRPEventListener<VariableEvolvedEvent> el) {
 		publisher.subscribe(el);
@@ -79,5 +81,12 @@ public class BooleanVariable implements DisplayableVariable<Boolean>{
 	public void unsubscribe(LAnimaRPEventListener<VariableEvolvedEvent> el) {
 		publisher.unsubscribe(el);
 	}
+
+	@Override
+	public void updateFrom(String s) {
+		setValue(Boolean.parseBoolean(s));
+	}
+
+	
 
 }

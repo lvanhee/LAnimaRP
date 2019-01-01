@@ -7,13 +7,13 @@ import org.jdom2.Element;
 
 import draw.displayItems.advanced.Popup;
 import draw.displayItems.advanced.dnasca.DNASCA;
-import draw.displayItems.advanced.dnasca.GenericDisplayer;
+import draw.displayItems.advanced.dnasca.DynamicallyUpdatableDisplayer;
 import draw.displayItems.advanced.dnasca.HeartBeatMonitor;
-import draw.displayItems.images.EventAdaptiveImageDisplayer;
+import draw.displayItems.images.ImageDisplayer;
 import draw.displayItems.images.SlideShow;
 import draw.displayItems.shapes.BlinkingShape;
 import draw.displayItems.shapes.bars.BarDisplayer;
-import draw.displayItems.sound.SoundPlayer;
+import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
 import draw.displayItems.text.TextTyper;

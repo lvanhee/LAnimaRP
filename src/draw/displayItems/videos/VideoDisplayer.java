@@ -10,6 +10,7 @@ import java.util.List;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 import input.events.triggers.PauseTrigger;
 import logic.data.fileLocators.FileLocator;
@@ -18,7 +19,8 @@ import logic.data.fileLocators.InputFileProvider;
 
 public class VideoDisplayer implements DisplayableItem {
 
-	private PassiveVideoDisplayer vd;
+	//do not de-allocate this variable, else the program dies
+	private final PassiveVideoDisplayer vd;
 	private boolean isTerminating = false;
 	private VideoDisplayer(
 			Rectangle localisation, 
@@ -56,7 +58,7 @@ public class VideoDisplayer implements DisplayableItem {
 				).start();
 	}
 
-	public static DisplayableItem newInstance(Element e) {
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 			FileLocator fl = XMLParser.parsePathLocator(e);
 			Rectangle r = XMLParser.parseRectangle(e);
 			

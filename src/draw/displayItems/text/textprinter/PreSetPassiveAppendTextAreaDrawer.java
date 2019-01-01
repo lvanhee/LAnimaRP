@@ -8,11 +8,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.ReadPendingException;
+import java.util.Optional;
 
 import com.sun.jna.platform.FileUtils;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.sound.GenericSoundPlayer;
+import draw.displayItems.sound.SoundPlayerDisplayableItem;
+import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import input.configuration.TextParameters;
 import logic.data.fileLocators.FileLocator;
 
 public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
@@ -25,22 +30,30 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	
 	public enum RepetitionMode
 	{
-		REPEAT_FOREVER
+		REPEAT_FOREVER,
+		ONCE
 	}
 	private final PassiveAppendTextAreaDrawer drawer;
 	private String text="";	
 	private final FileLocator resetter;
-	private final RepetitionMode repetition=RepetitionMode.REPEAT_FOREVER;
+	private final RepetitionMode repetition;
 	private final AppendTypes at;
+	private final Optional<FileLocator> soundWhenTyping;
+	
+	private Optional<GenericSoundPlayer> typingSoundPlayer = Optional.empty(); 
+
 	
 
 	
-	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl, Color c, AppendTypes at)
+	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl, TextParameters tp, AppendTypes at,
+			RepetitionMode repetitionMode, Optional<FileLocator> soundWhenTyping)
 	{
-		drawer = PassiveAppendTextAreaDrawer.newInstance(r, c);
+		drawer = PassiveAppendTextAreaDrawer.newInstance(r, tp);
 		resetter = fl;
 		this.at = at;
 		text = readText(fl.getFile());
+		this.repetition = repetitionMode;
+		this.soundWhenTyping = soundWhenTyping;
 	}
 	
 	@Override
@@ -73,13 +86,16 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			}
 	}
 
-	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, FileLocator textFile, Color c, AppendTypes at) {
-		return new PreSetPassiveAppendTextAreaDrawer(r,textFile, c, at);
+	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, FileLocator textFile, TextParameters tp, 
+			AppendTypes at, RepetitionMode repetitionMode, Optional<FileLocator> soundWhenTyping) {
+		return new PreSetPassiveAppendTextAreaDrawer(r,textFile, tp, at, repetitionMode, soundWhenTyping);
 	}
 
 	public void append(AppendTypes type) {
+		if(text.isEmpty() && repetition==RepetitionMode.ONCE) return;
 		if(text.isEmpty()&&repetition==RepetitionMode.REPEAT_FOREVER)
 			text = readText(resetter.getFile());
+		
 		switch (type) {
 		case ONE_CHAR:
 			drawer.append(""+text.substring(0,1));
@@ -94,8 +110,22 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 
 		default: throw new Error();
 		}
-		
+		if(soundWhenTyping.isPresent()
+				&&(!typingSoundPlayer.isPresent() || !typingSoundPlayer.get().isPlaying())
+				)
+		{
+			typingSoundPlayer = Optional.of(GenericSoundPlayer.newInstance(soundWhenTyping.get()));
+			typingSoundPlayer.get().playAndDie();
+		}
 	}
-	
+
+	public boolean isOver() {
+		return text.isEmpty() && repetition==RepetitionMode.ONCE;
+	}
+
+	public boolean hasJustEndedALine() {
+		return drawer.hasHustEndedALine();
+	}
+
 
 }

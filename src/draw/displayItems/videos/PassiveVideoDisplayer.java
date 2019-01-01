@@ -26,7 +26,7 @@ public class PassiveVideoDisplayer implements DisplayableItem {
     private final BufferedImage currentImageToDisplay;
 
     //NEVER DEALLOCATE THIS VARIABLE ELSE VLC CRASHES!!! 
-    private DirectMediaPlayer mediaPlayer;
+    private final DirectMediaPlayer mediaPlayer;
     
     private final Rectangle localisation;    
     private MediaPlayerFactory factory = null;
@@ -57,9 +57,10 @@ public class PassiveVideoDisplayer implements DisplayableItem {
 			System.out.println(videoFile);
 			e.printStackTrace();
 		mediaPlayer.release();
+		throw new Error();
 			//factory.release();
 			//factory = new MediaPlayerFactory();
-			mediaPlayer = factory.newDirectMediaPlayer(new TestBufferFormatCallback(), new TestRenderCallback());
+		//	mediaPlayer = factory.newDirectMediaPlayer(new TestBufferFormatCallback(), new TestRenderCallback());
 		}
         try {
 			Thread.sleep(100);

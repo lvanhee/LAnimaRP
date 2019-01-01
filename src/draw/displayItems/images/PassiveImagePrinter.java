@@ -4,9 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.File;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.swing.ImageIcon;
+
+import com.ibm.media.bean.multiplayer.DTWinAdapter;
+
 import draw.displayItems.DisplayableItem;
 import draw.utils.DrawingUtils;
 import logic.data.drawing.StretchingType;
@@ -90,6 +94,16 @@ public class PassiveImagePrinter implements DisplayableItem {
 
 	public static PassiveImagePrinter newInstance(String string, Rectangle bounds, StretchingType stretch, GenericParameters gp) {
 		return newInstance(DrawingUtils.loadImage(string), bounds, stretch, gp);
+	}
+	
+	public String toString()
+	{
+		return this.getClass().getSimpleName()+":"+displayZone;
+	}
+
+	public static DisplayableItem newInstance(File x, Rectangle displayZone2, StretchingType st,
+			GenericParameters parameters) {
+		return newInstance(DrawingUtils.loadImage(x), displayZone2, st, parameters);
 	}
 
 }

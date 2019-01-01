@@ -17,6 +17,7 @@ import draw.displayItems.images.GenericParameters;
 import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import input.events.eventTypes.LAnimaRPEvent;
@@ -74,15 +75,15 @@ public class TextTyper implements DisplayableItem {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static DisplayableItem newInstance(Element e) {
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		Rectangle r = XMLParser.parseRectangle(e);
-		FileLocator f = XMLParser.parseFileLocator(e);
+		FileLocator f = XMLParser.parseFileLocator(e,context);
 		LAnimaRPEventPublisher<? extends LAnimaRPKeyEvent> um = 
 				XMLParser.parseKeyboardUpdateMechanism(e);
 		
 		Color c = XMLParser.parseColor(e);
 		
-		GenericParameters gp = XMLParser.parseGenericParameters(e);
+		GenericParameters gp = XMLParser.parseGenericParameters(e,context);
 		
 		AppendTypes at = XMLParser.parseTextTypingSpeed(e);
 		

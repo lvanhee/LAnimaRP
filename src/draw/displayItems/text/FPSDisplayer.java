@@ -8,6 +8,7 @@ import javax.swing.text.Position;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 
 public class FPSDisplayer implements DisplayableItem {
@@ -39,7 +40,7 @@ public class FPSDisplayer implements DisplayableItem {
 			}
 		}).start();
 	}
-	public static DisplayableItem newInstance(Element e) {
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		return new FPSDisplayer(XMLParser.parsePosition(e));
 	}
 	

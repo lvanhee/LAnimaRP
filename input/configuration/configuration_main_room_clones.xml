@@ -27,30 +27,28 @@
      
     <displayed_animations>
     
-        <image>
+  		<image>
+				<display_area x="0" y="0" width = "1600" height = "900"></display_area>
+			        
 				<file_location>
 					<hard_path path="input/images/background_clones.jpg"></hard_path>
 				</file_location>
 				<stretching>
 					<mode value = "stretch"></mode>
 				</stretching>
-				<position x="0" y="0"></position>
-				<dimensions width="1120" height="700"></dimensions>	
 		</image>   
  
-        <slideshow>
+        <slideshow refresh_period = "4000">
+        <display_area x="100" y="100" width = "800" height = "500" ></display_area>
             <folder_location>
-                <hard_link path = "input/images"></hard_link>
+                <hard_path path = "input/images"></hard_path>
             </folder_location>
-            <periodic_refresh period = "4000">
-            </periodic_refresh>
             <position x="50" y = "50"></position>
             <dimensions width="450" height="450"></dimensions>
             <stretching>
 					<mode value = "scale_no_stretch_no_bands"></mode>
 			</stretching>
-        </slideshow>
-         
+        </slideshow>		
       
          
         <news_ticker>
@@ -79,14 +77,14 @@
             </pause_trigger>
         </video>
         
-       <generic_displayer>
+       <dynamic_animation_displayer>
             <file_location>
                 <hard_path path= "input/text/popup_parameters.xml">
                             </hard_path>
             </file_location>
             <periodic_refresh period = "1000">
             </periodic_refresh>
-        </generic_displayer>
+        </dynamic_animation_displayer>
 
 
     </displayed_animations>

@@ -1,7 +1,10 @@
 package input.events.publishers;
 
+import java.util.List;
+
 import org.jdom2.Element;
 
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 import input.events.eventTypes.StringEvolvedEvent;
 import input.events.eventTypes.StringEvolvedEventImpl;
@@ -27,8 +30,6 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 		{
 			
 			new Thread(new Runnable() {
-				
-				
 				@Override
 				public void run() {
 					Thread.currentThread().setName("FileBasedEvolvingString"+fl+":"+pri);
@@ -52,11 +53,11 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 		}
 	}
 
-	public static FileBasedEvolvingString newInstance(Element e) {
+	public static FileBasedEvolvingString newInstance(Element e, LAnimaRPContext context) {
 		PeriodicRefreshInfo pri = PeriodicRefreshInfo.NEVER;
 		if(XMLParser.hasPeriodicRefreshInfos(e))
 			pri = XMLParser.parsePeriodicRefresh(e);
-		FileLocator fl = XMLParser.parseFileLocator(e);
+		FileLocator fl = XMLParser.parseFileLocator(e, context);
 		return new FileBasedEvolvingString(pri,fl);
 	}
 	

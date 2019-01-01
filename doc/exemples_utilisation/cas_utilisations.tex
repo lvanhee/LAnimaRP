@@ -1,0 +1,281 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+%\usepackage[T1]{fontenc}
+\usepackage{fourier}
+\usepackage[latin1]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}													% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+\usepackage{verbatim}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{LAnimaRP -- Exemples d'utilisation} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge {Exemples d'utilisation de LAnimaRP} \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont
+        Loïs Vanhée\\[-3pt]		\normalsize
+}
+
+\begin{document}
+\maketitle
+
+Ce document liste les déploiements de LAnimaRP en grandeur nature, les animations proposées, leur fonctionnement et leur intégration dans le jeu dans les espaces diégétiques, ludiques et physiques.
+
+\newpage
+\section{De Charybde de Cylon\\2015, GNiarcGNiarc, Pierreo Glyphe}
+
+L'association GNiarcGNarc\footnote{\url{http://gniarc.canalblog.com/}} a mis en place GN dans l'univers de Battlestar Galactica. Afin de soutenir leur événementiel et la transmission d'information aux joueurs, ils ont commandé deux animations : un système d'alerte qui indique les zones où se déroulent des événements urgents et une base de donnée qui permet une transmission d'information descendante, de l'organisation vers les joueurs.
+
+C'est la première organisation à avoir fait confiance à LAnimaRP, merci à eux pour leur intérêt !
+
+\subsection{Système d'alerte}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.45\linewidth]{images/background}
+	\includegraphics[width=0.45\linewidth]{images/charybde}
+\caption{Affichage des salles en état d'alerte, déploiement en jeu (rétroprojeté au dessus d'une scène dans la pièce commune, l'affichage, très visible en jeu, est occulté par a luminosité ambiante au moment de la photo)}
+	\label{figure:alerte_charybde}
+\end{figure}
+
+\textbf{Présentation :} Cette animation est une carte du vaisseau dans lequel les joueurs se trouvent. L'utilisateur peut changer l'état d'une pièce de ``normal/safe" à ``dangereux", en appuyant sur un bouton prédéfini au clavier. Alors, quand une pièce est reconnue comme dangereuse, elle se met à clignoter en rouge.
+
+Un screenshot de animation est disponible en Figure \ref{figure:alerte_charybde} et une vidéo démonstrative est disponible ici\footnote{\url{https://www.youtube.com/watch?v=MQtKcjKdw_Y}}.
+
+\textbf{Intégration dans l'espace de jeu :} l'animation a été projetée sur un écran de la salle principale, visible par une grande majorité des joueurs. 
+
+\textbf{Intégration diégétique :} l'animation correspond à un système de sécurité du vaisseau.
+
+\textbf{Bénéfice pour le jeu :} l'animation a été utilisée pour soutenir l'événementiel : indiquer qu'il y a un danger et où il se trouve, afin d'attirer les joueurs concernés et faire fuir les autres. Elle a notamment permis aux joueurs d'être informés, d'officialiser les informations pour éviter la confusion et le doute et globalement de mieux se coordonner pour résoudre les problèmes du vaisseau.
+
+\textbf{Technique :} cette animation combine l'affichage d'une image de fond, une zone clignotante par pièce possible, dont l'état peut être changé par des variables LAnimaRP. Ces variables évoluent quand on joue avec le clavier.
+
+\subsection{Base de connaissance}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.45\linewidth]{images/base_de_donnee_charybde}
+	\includegraphics[width=0.45\linewidth]{images/hack}
+	\caption{Base de donnée et système de hack (De Charybde en Cylon)}
+	\label{figure:base_de_donnees_charybde}
+\end{figure}
+
+
+\textbf{Présentation :} cette animation représente une base de connaissance accessible aux joueurs. Ces connaissances peuvent être des images, du son et du texte. 
+
+Les joueurs peuvent accéder à leurs données personnelles en suivant la séquence d'étapes suivante :
+\begin{enumerate}
+	\item Taper le login et mot de passe. Si valide, les joueurs voient un second écran expliquant que la base est corrompue et qu'ils doivent entre le nom du fichier à récupérer.
+	\item Entrer le nom du fichier à récupérer. Si ce nom n'est pas correct, ils reçoivent un message d'erreur. S'il est correct, ils passent à la première étape suivante applicable
+	\item (Optionnel) Le fichier est crypté : il faut alors le décrypter le fichier, en entrant un mot de passe de décryptage spécifique au fichier.
+	\item (Optionnel) Le fichier est corrompu : un message d'erreur s'affiche pour leur dire que le fichier est corrompu et en cours de réparation. Ils doivent revenir plus tard afin d'accéder à ce fichier.
+	\item Le fichier s'affiche (texte ou image) ou se joue (son, vidéo).
+\end{enumerate} 
+Les joueurs peuvent abandonner à tout moment en appuyant sur echap.
+
+Les personnages munis d'une compétence de hack peuvent entrer un mot de passe spécial. Ce mot de passe lance le mini-jeu de hack et leur permet de passer outre la phase de mot de passe. Le mini-jeu de hack consiste à frapper aussi vite que possible sur le clavier pendant environ une minute (plus ou moins), avec un petit test régulier pour vérifier qu'ils sont bien concentrés sur leur tâche (une lettre rouge s'affiche dans un coin, ils doivent la rentrer sous cinq secondes). L'animation affiche des commandes shell (un mot chaque fois que l'utilisateur appuie sur une touche), qui ne fait aucun doute quant au fait qu'un hack est en cours.
+
+L'organisation peut : définir les utilisateurs (login/mot de passe), les fichiers accessibles pour chaque utilisateur, les fichiers cryptés et le mot de passe de décryptage, les fichiers corrompus et la date à laquelle le fichier sera réparé.
+
+En jeu, cette base a subi des avaries : la liste de fichiers n'est plus disponible (les personnages doivent se souvenir des fichiers qu'ils ont configurés) et certains fichiers sont inaccessibles pendant un temps donné. De plus, certains fichiers sont cryptés et demandent un mot de passe supplémentaire. Enfin, des personnages disposent d'une compétence de hack, ce qui leur permet, après avoir exécuté un mini-jeu, d'accéder au fichier sans taper de mot de passe (marche pour le login et pour le décryptage).  Un tutoriel de l'animation est disponible ici \url{https://www.youtube.com/watch?v=Fo7fqtNnpPQ}.
+
+\textbf{Intégration dans l'espace de jeu :} déployé sur des PC portables standards.
+
+\textbf{Intégration diégétique :} chaque machine où est déployé cette animation correspond à un terminal relié à une base de donnée, qui a subi des avaries.
+
+\textbf{Bénéfice pour le jeu :} la base de connaissance a servi de medium pour transmettre des données de jeu de l'organisation vers les PJs. Les login/mot de passe ont permis d'associer les fichiers aux personnages qui y ont accès (ce qui a permis de mettre de la pression sur les personnages louches). Les fichiers cryptés et le hack ont permis de forcer la collaboration entre les personnages. Les fichiers corrompus ont permis de temporiser l'accès aux informations ``critiques" de l'événementiel.
+
+\textbf{Technique :} logiciel ad-hoc développé spécifiquement pour ce GN. Il n'est plus partie intégrante de LAnimaRP, mais cela peut être remis à jour au besoin.
+
+\section{Projet La Melusine\\2016, Collectif Melusine, Terry Askavian}
+
+Le collectif ``la mélusine"\footnote{\url{https://www.facebook.com/pages/category/Nonprofit-Organization/Collectif-de-la-m\%C3\%A9lusine-1354922794622342/}} réhabilite une ancienne laiterie en un espace de jeu futuriste (un vaisseau). Afin de remplir cet espace de jeu, Terry m'a contacté pour produire quelques prototypes d'animations qu'ils pensent utiliser dans le projet final.
+
+\subsection{Etat des ressources du vaisseau}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/systemes_support_vie.png}
+%	\includegraphics[width=0.45\linewidth]{images/hack}
+	\caption{Animation : état des ressources du vaisseau. Plus la barre est haute, plus la ressource est sollicitée. Les ressources critiques clignotent en rouge.}
+	\label{figure:etat_variables_du_vaisseau}
+\end{figure}
+
+
+\textbf{Présentation :} cette animation affiche l'état des différentes ressources du vaisseau, sous la forme de barres (air, eau, systèmes de survie, etc). Si une ressource est très sollicitée, elle se met à clignoter en rouge.
+L'organisateur peut changer la valeur des barres en agissant sur le clavier.
+Une vidéo démonstrative est disponible ici : \url{https://www.youtube.com/watch?v=gf2rTQEe8ic&index=4&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze} et en Figure \ref{figure:etat_variables_du_vaisseau}
+
+\textbf{Bénéfice pour le jeu :} l'animation sert à indiquer aux joueurs l'état du vaisseau et les points critiques sur lesquels se concentrer. Il est possible de laisser la main aux joueurs sur ces variables, auquel cas, l'animation permet d'officialiser l'action des joueurs (ex : je veux monter la production d'air). L'organisation, voyant l'animation, peut alors décider d'agir sur la simulation du jeu qu'elle maintien en interne (ex : faire baisser l'énergie, faire monter l'air).
+
+\textbf{Technique :} cette animation combine 1) l'affichage d'une image de fond, 2) une zone clignotante par par texte (panel de gauche et juste en dessous de ligne horizontale centrale) 3) une barre verticale par ressource (en dessous de la ligne horizontale centrale). De plus, ces zones clignotantes et ces barres verticales sont rattachées à des variables entières, qui sont elle-mêmes rattachées à une entrée clavier. En appuyant sur un bouton, on peut faire monter (ou descendre) la variable entière, ce qui va influencer la hauteur de la barre et le fait de signaler par des zones clignotantes qu'une ressources se fait rare.
+
+\subsection{Baie médicale}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/baie_soins.png}
+	%	\includegraphics[width=0.45\linewidth]{images/hack}
+\caption{Animation : baie médicale du vaisseau. L'animation affiche le rythme cardiaque. On peut changer ce rythme cardiaque (entre 60 et 200 pulsations par minute), créer une arythmie (danger) et la faire tomber à zero (mort)}
+	\label{figure:baie_medicale}
+\end{figure}
+
+\textbf{Présentation :} Cette animation permet d'afficher l'état de santé d'un patient : calme, stressé, en danger, mort.
+Une vidéo démonstrative est disponible ici : 
+\url{https://www.youtube.com/watch?v=Fv-8ma9jrGE&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze&index=6} et en Figure \ref{figure:baie_medicale}.
+
+Le joueur peut altérer l'état ``vivant/mort" à l'aide d'une touche, l'état ``calme/arythmique" à l'aide d'une autre touche et faire monter/descendre le rythme cardiaque à l'aide de deux autres souches.
+
+\textbf{Bénéfice pour le jeu :} l'animation permet au médecin de soutenir ses propos à l'aide d'une animation et d'augmenter l'implication émotionnelle du patient rattaché à la machine.
+
+\textbf{Technique :} cette animation est standalone. Elle s'appuie sur un ensemble de variables, qui sont elles-mêmes altérables via des entrées clavier.
+
+\section{Etat de santé de l'équipe\\ 2017, démonstration technique}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/sante_equipe.png}
+	%	\includegraphics[width=0.45\linewidth]{images/hack}
+	\caption{Animation : état de santé d'une équipe}
+	\label{figure:sante_equipe}
+\end{figure}
+
+\textbf{Présentation :} Cette animation permet d'afficher l'état de santé d'une équipe opérationnelle : calme, stressé, en danger, mort. Une vidéo démonstrative est disponible ici\footnote{
+\url{https://www.youtube.com/watch?v=wce8xvXvFiQ&index=19&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze}} et en Figure \ref{figure:sante_equipe}.
+
+L'organisateur peut altérer l'état de santé de chaque membre de l'équipe, en changeant le contenu d'un fichier.
+
+
+\textbf{Bénéfice pour le jeu :} l'animation permet à l'organisation d'afficher l'état de l'équipe, d'indiquer la présence de blessés, de morts et de soldats en situation de panique. Cela peut aussi servir pour signifier l'état d'une équipe d'intervention simulée (par exemple comme dans la scène d'Aliens 2 où des marines se battent hors camera).
+
+\textbf{Technique :} cette animation étend l'animation de l'état de santé de la baie médicale.
+
+
+\section{GN Clones: Echo\\2017, GAROU, Gilles Cruyplants}
+
+Le GN Clones\footnote{\url{www.clones.be}} est un GN en campagne de science fiction réalisé par l'association GAROU. Trois animations ont été réalisées : un écran multimédia en accès libre aux joueurs placé dans la salle principale et deux animations sur PC afin de simuler le travail réalisé.
+
+L'une des spécificités de Clones est de laisser autant que possible les joueurs en charge de la gestion du fonctionnement du site de jeu. Cela a permis de réaliser des simulations plus ouverte à l'action des joueurs.
+
+\subsection{Écran multimédia}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/salle_principale_clones}
+	%	\includegraphics[width=0.45\linewidth]{images/hack}
+\caption{Écran multimédia. La version finale de cette animation ne nous a pas été proposée.}
+	\label{figure:salle_principale}
+\end{figure}
+
+\textbf{Présentation :} l'écran multimédia est un système d'affichage ouvert à de nombreux joueurs. Dans sa fonction de base, il affiche les images et les vidéos prises et partagées par les joueurs, ainsi qu'un bandeau déroulant, avec un accès préférentiel pour les personnages journalistes. Ensuite, il permet l'affichage d'alertes, sous le contrôle des personnages en charges de la sécurité : présence de ``virus" ou de menaces (avec une photo des personnes menaçantes).
+Des vidéos de la version pré-finale du logiciel, sans les atouts graphiques sont disponibles ici\footnote{\url{https://www.youtube.com/watch?v=w2kbjPmg6eE&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze&index=2}}.
+	
+\textbf{Intégration dans l'espace de jeu :} déployé sur l'écran géant de la salle principale.
+
+\textbf{Intégration diégétique :} l'objet de jeu est le même que l'objet réel : c'est un écran multimédia.
+
+\textbf{Bénéfice pour le jeu :} l'animation a servi de medium d'interaction entre les joueurs, notamment pour lancer des alertes en cas de danger et pour diffuser les informations acquises pendant le GN.
+
+\textbf{Technique :} composition de plusieurs panneaux développés spécifiquement pour Clones : affichage de vidéos, bandeau déroulant, animations génériques qui peuvent être modifiées à la volée pour afficher les messages d'alerte.
+
+\subsection{Animation analyse biologique}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/dnasca}
+	%	\includegraphics[width=0.45\linewidth]{images/hack}
+	\caption{Logiciel de simulation de l'analyse biologique}
+	\label{figure:dnasca}
+\end{figure}
+
+\textbf{Présentation :} l'animation représente une analyse biologique par comparaison de chaines d'ADN. Cette animation peut raconter une histoire technique assez riche, si on prend la peine de regarder dans les détails. Une vidéo de l'animation en opération est disponible ici : \footnote{\url{https://www.youtube.com/watch?v=HWo9_hVASLY&index=4&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze}} et illustrée en Figure \ref{figure:dnasca}.
+	
+\textbf{Intégration dans l'espace de jeu :} déployé sur un PC situé dans le laboratoire.
+	
+\textbf{Intégration diégétique :} c'est un système d'analyse biologique.
+	
+\textbf{Bénéfice pour le jeu :} l'animation permet de représenter qu'une analyse est en cours.
+	
+\textbf{Technique :} Animation dédiée.
+
+
+
+
+\section{Warhammer 40.000: Inquisitor\\Warhammer 40.000: Operation Ventor\\2018, Akim Rhallab}
+
+
+
+\url{http://www.fedegn.org/calendrier-detail?event_id=789}
+
+L'organisation 40K inquisitor propose un jeu simulationniste dans l'univers de Warhammer 40.000. L'animation vise à représenter un ordinateur de cet univers servant de point d'information et de communication dans la base des PJ.
+
+\textbf{Présentation :} Cette animation combine trois onglets, qui correspondent à trois modes : le mode \emph{communication}, le mode \emph{état du complexe} et le mode \emph{archive}. En plus de cela, un fond sonore d'ambiance a été ajouté.
+
+Le mode communication se compose d'une animation de démarrage (un son d'alerte et une animation gif), puis une animation gif est affichée tout au long de la communication. En arrière-plan, l'organisateur entre en communication avec le joueur via discord.
+
+Le mode ``état du complexe" se compose d'une image statique sur laquelle sont affichés les différents modules du complexe. L'organisation peut changer l'état de chaque modules de ``actif/normal", à ``zone menacée" (le module clignote en rouge), à ``conquis" (le module clignote plus vite et reste relativement rouge).
+
+Le mode ``archive" permet d'accéder aux archives du complexe, pour obtenir des informations. L'utilisateur entre un code (qu'il obtient ailleurs, notamment via des tests de compétence). Si ce code est bon, l'archive correspondante est affichée (son, image, texte).
+
+Une vidéo démonstrative est disponible ici\footnote{
+\url{https://www.youtube.com/watch?v=QxLHXPmMpXo&list=PLcULZgrd6hEhADfZHlT56b6kupb3WUxze}} et une illustration est fournie en Figure \ref{figure:wh40k}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/wh40k}
+	%	\includegraphics[width=0.45\linewidth]{images/hack}
+	\caption{Animation de l'état de la mission}
+	\label{figure:wh40k}
+\end{figure}
+
+Le style graphique met en avant le style retro-futuriste gothique spécifique à l'univers de Warhammer 40.000 (un ordinateur des années 80 muni de technologie futuriste que personne ne comprend plus).
+
+\textbf{Fonctionnement :} L'organisateur peut forcer l'animation à entrer en mode ``communication" en altérant le fichier texte situé dans ``wh40k/is\_communication\_active.txt". Si ce dernier contient la valeur ``communication", alors le mode communication est activé. S'il contient la valeur ``communication\_off", alors le mode communication est désactivé. Les animations sont remises à zéro à chaque fois que le mode change (donc, l'animation de démarrage de la communication est affichée à chaque fois). Quand la communication est désactivée, le joueur peut switcher du mode ``état du complexe" au mode ``archive" en appuyant sur la touche ``control".
+
+Pour l'onglet ``état du complexe", l'organisateur peut changer l'état des modules en altérant les fichiers ``value\_XYZ.txt", situés dans le répertoire ``wh40k" selon trois états : ``off" (pas d'animation), ``damaged" (clignotement léger) et ``destroyed" (clignotement soutenu). Par exemple, en changeant le fichier wh40k/value\_armurerie à blinking, la zone relative à l'armurerie se mettra à clignoter à l'écran (si l'animation affiche l'onglet ``état du complexe").
+
+Pour l'onglet ``archive", le contenu des fichiers accessibles est situé dans le répertoire ``wh40k/filesystem". N'importe quel fichier dans filesystem peut être référencé par les joueurs. Si les joueurs entrent ``terminator" et que le répertoire contient un fichier ``terminator.txt" (qui contient un texte sur les terminators) et ``terminator.gif" (qui contient une animation sur les terminator) sont affichés les uns à côté des autres dans l'espace de sortie. Un répertoire ``wh40k/filesystem\_undisplayed" est disponible pour stocker les éléments du système de fichier qui ne sont pas accessibles au joueur en début de partie. Ces fichiers peuvent être rendus accessibles aux joueurs en déplaçant des fichiers de ``wh40k/filesystem\_undisplayed" vers ``wh40k/filesystem".
+
+En plus de cela, une alarme peut être activée à distance, afin d'attirer les joueurs ou les mettre sous pression. On peut la changer en changeant le fichier de configuration \``wh40k/value\_alarm.txt", avec les valeurs ``off", ``minor" (pour l'alarme douce) et ``major", pour l'alarme plus puissante.
+
+La synchronisation des fichiers se fait par dropbox. N'importe quelle personne ayant accès au répertoire dropbox peut altérer l'animation en changeant le contenu des fichiers. Cela permet à l'organisation de facilement changer l'état de la simulation depuis son poste de commande. Possiblement, un organisateur peut gérer l'animation depuis chez lui.
+
+\textbf{Intégration dans l'espace de jeu :} Au sein de la base des PJ.
+
+\textbf{Intégration diégétique :} c'est un système donné par le commandement pour communiquer avec les personnages présents sur place.
+
+\textbf{Bénéfice pour le jeu :} L'animation permet de matérialiser de manière diégétique une communication entre l'organisation et les joueurs à l'initiative de l'organisation, via l'onglet ``communication". Elle permet de matérialiser l'état du complexe pour les joueurs et de permettre à l'organisation de mettre à jour cet état à distance, via l'onglet ``état du complexe". Enfin, elle permet à l'organisation de se décharger d'opérations de transmission d'information vers les joueurs, via l'onglet ``archives".
+
+\textbf{Technique :} L'animation combine un multi-tab dont l'affichage est synchronisé avec un fichier texte (activation du mode communication), un multi-tab mis à jour quand un utilisateur appuie sur un bouton, des animations sonores, des animations type ``zone clignotantes" qui sont synchronisées vis à vis du contenu d'un fichier, un afficheur multi-média (image, son, texte), un afficheur pour animer plusieurs médias en parallèle, un fond d'écran.
+
+\textbf{Crédits :} visuels Bertrand Challet
+\end{document}

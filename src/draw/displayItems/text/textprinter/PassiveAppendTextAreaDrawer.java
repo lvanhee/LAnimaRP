@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
 import draw.SmartScroller;
 import draw.displayItems.DisplayableItem;
+import input.configuration.TextParameters;
 import main.DisplayWindow;
 
 public class PassiveAppendTextAreaDrawer implements DisplayableItem{
@@ -34,19 +35,19 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	
 	private List<String>stringPerLine = new LinkedList<>();	
 	
-	private final Color c;
+	private final TextParameters tp;
 
-	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle, Color c) {
+	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle, TextParameters textParameters) {
 		this.drawingRectangle = drawingRectangle;
 		stringPerLine.add("");
-		this.c = c;
+		this.tp = textParameters;
 	}
 
 	@Override
 	public synchronized void drawMe(Graphics2D g) {
 		g.setFont(myFont);
-		int i = 0;
-		g.setColor(c);
+		int i = 1;
+		g.setColor(tp.getColor());
 		for(String s: stringPerLine)
 		{
 			g.drawString(s, drawingRectangle.x, drawingRectangle.y+getHeightPerLine()*i);
@@ -156,8 +157,38 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	
     
 
-	public static PassiveAppendTextAreaDrawer newInstance(Rectangle r, Color c) {
-		return new PassiveAppendTextAreaDrawer(r,c);
+	public static PassiveAppendTextAreaDrawer newInstance(Rectangle r, TextParameters failureTextParameters) {
+		return new PassiveAppendTextAreaDrawer(r,failureTextParameters);
 	}
+	
+	public synchronized void setString(String s)
+	{
+		clear();
+		append(s);
+		/*for(int i =0; i < s.length();i++)
+			append(s.charAt(""+i));*/
+	}
+
+	public void clear() {
+		stringPerLine.clear();
+		stringPerLine.add("");
+	}
+
+	public Rectangle getDrawingRectangle() {
+		return drawingRectangle;
+	}
+
+	public Color getColor() {
+		return tp.getColor();
+	}
+
+	public void setColor(Color color) {
+		this.tp.setColor(color);
+	}
+
+	public boolean hasHustEndedALine() {
+		return stringPerLine.get(stringPerLine.size()-1).equals("");
+	}
+
 
 }

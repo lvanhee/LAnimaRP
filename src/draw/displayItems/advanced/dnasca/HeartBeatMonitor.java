@@ -13,6 +13,8 @@ import java.util.Random;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import input.configuration.LAnimaRPContext;
+import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import logic.variables.variableTypes.BooleanVariable;
 import logic.variables.variableTypes.BoundedIntegerVariable;
@@ -144,9 +146,9 @@ public class HeartBeatMonitor implements DisplayableItem {
 		}).start();;
 	}
 
-	public static DisplayableItem newInstance(Element e) {
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		Rectangle r = XMLParser.parseRectangle(e);
-		BoundedIntegerVariable pace = XMLParser.getParseBIV(e);
+		BoundedIntegerVariable pace = (BoundedIntegerVariable) XMLParser.parseVariable(e.getChild(XMLKeywords.VARIABLE),context);
 		BooleanVariable isIrregular = XMLParser.getParseBooleanVariable(e,REGULARITY_VARIABLE_NAME);
 		Color c = XMLParser.parseColor(e);
 		return new HeartBeatMonitor(r,pace,isIrregular,c);

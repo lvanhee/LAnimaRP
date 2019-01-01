@@ -1,30 +1,33 @@
 package draw.displayItems.images;
 
-import logic.variables.management.VariableManager;
+import input.configuration.LAnimaRPContext;
 import logic.variables.variableTypes.BooleanVariable;
 
 public class GenericParameters {
 
 	private final String displayVariableName;
-	private GenericParameters(String displayVariableName) {
+	private final LAnimaRPContext context;
+	private GenericParameters(String displayVariableName, LAnimaRPContext context) {
 		this.displayVariableName = displayVariableName;
+		this.context = context;
 	}
 
-	private GenericParameters() {
+	private GenericParameters(LAnimaRPContext context) {
 		displayVariableName = null;
+		this.context = context;
 	}
 
 	public boolean isDisplayed() {
 		if(displayVariableName==null)return true;
-		return ((BooleanVariable)VariableManager.get(displayVariableName)).getValue();
+		return ((BooleanVariable)context.getVariable(displayVariableName)).getValue();
 	}
 
-	public static GenericParameters newInstance(String displayVariableName) {
-		return new GenericParameters(displayVariableName);
+	public static GenericParameters newInstance(String displayVariableName, LAnimaRPContext context) {
+		return new GenericParameters(displayVariableName, context);
 	}
 
-	public static GenericParameters newInstance() {
-		return new GenericParameters();
+	public static GenericParameters newInstance( LAnimaRPContext context) {
+		return new GenericParameters(context);
 	}
 	
 	public String toString()

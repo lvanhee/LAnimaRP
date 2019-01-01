@@ -16,7 +16,7 @@ public class FullScreenFiller implements DisplayableItem {
 		this.c = c;
 	}
 
-	public static FullScreenFiller newInstance(Element e)
+	public static FullScreenFiller newInstance(Element e, LAnimaRPContext context)
 	{
 		Color c = XMLParser.parseColor(e);
 		return new FullScreenFiller(c);		

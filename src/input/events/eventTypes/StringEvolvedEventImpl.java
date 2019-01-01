@@ -1,5 +1,7 @@
 package input.events.eventTypes;
 
+import java.util.List;
+
 public final class StringEvolvedEventImpl implements StringEvolvedEvent {
 
 	private final String newVal;
@@ -11,14 +13,14 @@ public final class StringEvolvedEventImpl implements StringEvolvedEvent {
 		return new StringEvolvedEventImpl(newVal);
 	}
 	
-	public String getString()
+	public String getStrings()
 	{
 		return newVal;
 	}
 	
 	public String toString()
 	{
-		return newVal;
+		return newVal.toString();
 	}
 
 }

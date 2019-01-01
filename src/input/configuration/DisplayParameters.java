@@ -1,10 +1,12 @@
 package input.configuration;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 public class DisplayParameters {
 
 	private Rectangle screenSize;
+	private boolean fullScreen;
 	
 	public void setScreenSize(Rectangle parseRectangle) {
 		screenSize = parseRectangle;
@@ -23,7 +25,7 @@ public class DisplayParameters {
 	}
 
 	public boolean isFullScreen() {
-		return screenSize==null;
+		return fullScreen;
 	}
 
 	public int getPositionX() {
@@ -32,6 +34,14 @@ public class DisplayParameters {
 
 	public int getPositionY() {
 		return screenSize.y;
+	}
+
+	public void setFullScreen(boolean parseFullScreen) {
+		fullScreen = parseFullScreen;
+	}
+
+	public Dimension getDimensions() {
+		return new Dimension(screenSize.width, screenSize.height);
 	}
 
 }

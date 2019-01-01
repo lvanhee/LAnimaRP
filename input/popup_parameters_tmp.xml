@@ -1,0 +1,11 @@
+<configuration>	
+	<displayed_animations>
+		<image>
+				<file_location>
+					<hard_path path="input/images/yellow-alert.gif"></hard_path>
+				</file_location>
+				<position x="0" y="0"></position>
+				<dimensions width="1170" height="700"></dimensions>	
+		</image>
+	</displayed_animations>
+</configuration>

@@ -7,6 +7,7 @@ import java.util.concurrent.CountDownLatch;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import logic.data.PeriodicRefreshInfo;
@@ -19,7 +20,7 @@ import logic.variables.variableTypes.Variable;
 
 public class Popup implements DisplayableItem {
 	
-	private final Collection<DisplayableItem>itemsToDisplay;
+	private final DisplayableItem itemsToDisplay;
 	private final long initialDisplayTime;
 	private final PeriodicRefreshInfo periodOn;
 	private final PeriodicRefreshInfo periodOff;
@@ -31,7 +32,7 @@ public class Popup implements DisplayableItem {
 	
 	private final ValueSetterActuator<BooleanVariable, Boolean> actuatorWhenDisplayed;
 
-	public Popup(Collection<DisplayableItem> di, long initialDisplayTime, PeriodicRefreshInfo periodOn, PeriodicRefreshInfo periodOff, 
+	public Popup(DisplayableItem di, long initialDisplayTime, PeriodicRefreshInfo periodOn, PeriodicRefreshInfo periodOff, 
 			AnimationSpecificVariableActuator<BooleanVariable, Boolean> vm) {
 		if(vm.getCause()!= AnimationSpecificVariableActuatorCause.IS_VISIBLE)
 			throw new Error("Forbidden cause:"+vm.getCause());
@@ -99,8 +100,8 @@ public class Popup implements DisplayableItem {
 		}
 	}
 
-	public static DisplayableItem newInstance(Element e) {
-		Collection<DisplayableItem> di = XMLParser.parseAnimations(e);
+	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
+		DisplayableItem di = XMLParser.parseDisplayableItem(e, context);
 		long initialDisplayTime = XMLParser.parseInitialDisplayTime(e);
 		PeriodicRefreshInfo periodOn = XMLParser.parsePeriodicRefresh(e.getChild(XMLKeywords.PERIOD_ON.getName()));
 		PeriodicRefreshInfo periodOff = XMLParser.parsePeriodicRefresh(e.getChild(XMLKeywords.PERIOD_OFF.getName()));

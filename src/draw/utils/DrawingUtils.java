@@ -51,17 +51,17 @@ public class DrawingUtils {
 	}
 
 	public static ImageIcon loadImage(File f) {
-		FileInputStream fis;
+		FileInputStream fis=null;
 		Image res;
 		try {
 			fis = new FileInputStream(f);
 			res = new ImageIcon(f.toURL()).getImage();
+			fis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
-
 			String message = sw.toString();
 			JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
 					JOptionPane.ERROR_MESSAGE);
