@@ -11,7 +11,7 @@ import org.jdom2.Element;
 import draw.displayItems.DisplayableItem;
 import draw.displayItems.images.ImageDisplayer;
 import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
 import logic.variables.variableTypes.BooleanVariable;
 
 public class BooleanAnimationDisplayer implements DisplayableItem {

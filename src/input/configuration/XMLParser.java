@@ -49,8 +49,8 @@ import input.events.triggers.PauseTrigger;
 import logic.data.PeriodicRefreshInfo;
 import logic.data.Range;
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.StaticFileLocator;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.StaticURLPathLocator;
 import logic.data.fileLocators.VariableBasedFileLocator;
 import logic.data.string.TextSource;
 import logic.variables.actuators.AnimationSpecificVariableActuator;
@@ -148,7 +148,7 @@ public class XMLParser {
 		return e.getChild(PRE_TEXT_NAME).getAttributeValue(VALUE_NAME);
 	}
 
-	public static FileLocator parseFileLocator(Element e, LAnimaRPContext context) {
+	public static URLLocator parseFileLocator(Element e, LAnimaRPContext context) {
 		Element fileLoc = e.getChild("file_location");
 		if(fileLoc==null)
 			throw new Error("Expecting a \"file_location\" field");
@@ -166,7 +166,7 @@ public class XMLParser {
 		}
 			
 		else if(fileLoc.getChild(XMLKeywords.HARD_PATH.getName())!= null)
-			return StaticFileLocator.newInstance(fileLoc.getChild(XMLKeywords.HARD_PATH.getName()).getAttributeValue("path"));
+			return StaticURLPathLocator.newInstance(fileLoc.getChild(XMLKeywords.HARD_PATH.getName()).getAttributeValue("path"));
 		else throw new Error("Missing adequate file location for: "+e);
 	}
 
@@ -227,7 +227,7 @@ public class XMLParser {
 				.getChild(XMLKeywords.SPEED.getName()).getAttributeValue(XMLKeywords.VALUE.getName()));
 	}
 
-	public static FileLocator getFolder(Element e, LAnimaRPContext context) {
+	public static URLLocator getFolder(Element e, LAnimaRPContext context) {
 		Element fileLoc = e.getChild("folder_location");
 		if(fileLoc==null)throw new Error("Expecting a \"folder_location\" field");
 		
@@ -241,12 +241,12 @@ public class XMLParser {
 		}
 			
 		else if(fileLoc.getChild(XMLKeywords.HARD_PATH.getName())!= null)
-			return StaticFileLocator.newInstance(fileLoc.getChild(XMLKeywords.HARD_PATH.getName()).getAttributeValue("path"));
+			return StaticURLPathLocator.newInstance(fileLoc.getChild(XMLKeywords.HARD_PATH.getName()).getAttributeValue("path"));
 		else 
 			throw new Error();
 	}
 
-	public static FileLocator parsePathLocator(Element e, LAnimaRPContext c) {
+	public static URLLocator parsePathLocator(Element e, LAnimaRPContext c) {
 		if(e.getChild("folder_location")!= null)return getFolder(e,c);
 		else if(e.getChild("file_location")!= null)return parseFileLocator(e,c);
 		else throw new Error();

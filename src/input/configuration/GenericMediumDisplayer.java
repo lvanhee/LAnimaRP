@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.io.File;
+import java.net.URL;
 import java.util.Optional;
 
 import org.jdom2.Element;
@@ -23,30 +24,32 @@ import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.Appe
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.RepetitionMode;
 import input.events.eventTypes.LAnimaRPEvent;
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
-import logic.data.fileLocators.StaticFileLocator;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
+import logic.data.fileLocators.StaticURLPathLocator;
 import logic.variables.variableTypes.BooleanVariable;
 
 public class GenericMediumDisplayer implements DisplayableItem {
 	private final Rectangle displayZone;
 	private DisplayableItem currentItemToDisplay;
 	private final LAnimaRPContext context;
-	private final Optional<FileLocator> soundWhenTyping;
+	private final Optional<URLLocator> soundWhenTyping;
 	private final TextParameters tp;
-	private GenericMediumDisplayer(Rectangle displayZone, FileLocator fl, TextParameters tp, Optional<FileLocator> soundWhenTyping, LAnimaRPContext context, GenericEventPublisher<FileUpdatedEvent> event) {
+	private GenericMediumDisplayer(Rectangle displayZone, 
+			URLLocator fl, TextParameters tp, Optional<URLLocator> soundWhenTyping, 
+			LAnimaRPContext context, GenericEventPublisher<FileUpdatedEvent> event) {
 		this.displayZone = displayZone;
 		this.context = context;
 		this.tp = tp;
 		this.soundWhenTyping = soundWhenTyping;
 		
-		updateDisplay(fl.getFile());
+		updateDisplay(fl);
 		event.subscribe(x->updateDisplay(x.getFile()));
 	}
 
-	private void updateDisplay(File x) {
+	private void updateDisplay(URLLocator x) {
 		if(currentItemToDisplay!= null) currentItemToDisplay.terminate();
-		switch (FileManagerUtils.getTypeOf(x))
+		switch (URLManagerUtils.getTypeOf(x.getURL()))
 		{
 		case IMAGE: currentItemToDisplay = PassiveImagePrinter.newInstance(
 				x,
@@ -64,8 +67,8 @@ public class GenericMediumDisplayer implements DisplayableItem {
 		break;
 
 		case SOUND: currentItemToDisplay = 
-				SoundPlayerDisplayableItem.newInstance(x, Mode.ONE_SHOT,
-						displayZone
+				SoundPlayerDisplayableItem.newInstance(x, Mode.ONE_SHOT
+						
 						);break;
 		default:
 			throw new Error();
@@ -74,7 +77,7 @@ public class GenericMediumDisplayer implements DisplayableItem {
 
 	public static GenericMediumDisplayer newInstance(Element e, LAnimaRPContext context) {		
 		Rectangle displayZone = XMLParser.parseRectangle(e);
-		FileLocator fl = XMLParser.parseFileLocator(e, context);
+		URLLocator fl = XMLParser.parseFileLocator(e, context);
 		
 
 		
@@ -91,7 +94,7 @@ public class GenericMediumDisplayer implements DisplayableItem {
 		currentItemToDisplay.terminate();
 	}
 
-	public static GenericMediumDisplayer newInstance(Rectangle displayZone, File f, TextParameters tp, LAnimaRPContext context, Optional<FileLocator> soundWhenTyping) {
-		return new GenericMediumDisplayer(displayZone, StaticFileLocator.newInstance(f), tp,soundWhenTyping, context, new GenericEventPublisher<>());
+	public static GenericMediumDisplayer newInstance(Rectangle displayZone, URL f, TextParameters tp, LAnimaRPContext context, Optional<URLLocator> soundWhenTyping) {
+		return new GenericMediumDisplayer(displayZone, StaticURLPathLocator.newInstance(f), tp,soundWhenTyping, context, new GenericEventPublisher<>());
 	}
 }

@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,7 @@ import javax.swing.ImageIcon;
 import org.jdom2.Element;
 
 import com.sun.jna.platform.FileUtils;
+import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 
 import draw.displayItems.DisplayableItem;
 import draw.displayItems.images.ImageDisplayer;
@@ -22,10 +25,10 @@ import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
 import input.events.eventTypes.LAnimaRPKeyEventImpl;
 import input.events.listeners.GenericLAnimaRPEventListener;
 import input.events.publishers.KeyMonitorer;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
-import logic.data.fileLocators.StaticFileLocator;
-import logic.data.fileLocators.FileManagerUtils.FileType;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
+import logic.data.fileLocators.StaticURLPathLocator;
+import logic.data.fileLocators.URLManagerUtils.FileType;
 
 public class FileSystem implements DisplayableItem{
 	private enum Status{
@@ -34,15 +37,15 @@ public class FileSystem implements DisplayableItem{
 		SHOWING_FAILURE_MESSAGE}
 	
 	
-	private List<GenericMediumDisplayer> gmd=new LinkedList<>();
+	private GenericMediumDisplayer gmd=null;
 	private final Rectangle displayBox;
 	private final LAnimaRPContext context;
 	
-	private final FileLocator folderOnHardDrive;
+	private final URLLocator folderURL;
 	
 	private Status currentStatus = Status.WAITING_FOR_FILENAME;
 	private String currentString = "";
-	private final Optional<FileLocator>soundWhenTyping;
+	private final Optional<URLLocator>soundWhenTyping;
 	
 	private final Optional<ImageDisplayer> backgroundWhenWaitingforFilename;
 	private final PassiveAppendTextAreaDrawer queryDrawer;
@@ -54,15 +57,15 @@ public class FileSystem implements DisplayableItem{
 	
 	
 	private FileSystem(Rectangle displayBox,
-			FileLocator folderOnHardDrive, 
+			URLLocator folderOnHardDrive, 
 			Optional<ImageDisplayer> backgroundWhenWaitingforFilename2,
 			PassiveAppendTextAreaDrawer queryDrawer, 
 			TextParameters failureTextParameters, 
 			LAnimaRPContext context,
-			Optional<FileLocator> soundWhenTyping) {
+			Optional<URLLocator> soundWhenTyping) {
 		this.displayBox = displayBox;
 		this.context = context;
-		this.folderOnHardDrive = folderOnHardDrive;
+		this.folderURL = folderOnHardDrive;
 		this.backgroundWhenWaitingforFilename = backgroundWhenWaitingforFilename2;
 		this.queryDrawer = queryDrawer;
 		errorMessageDrawer= PassiveAppendTextAreaDrawer.newInstance(this.queryDrawer.getDrawingRectangle(), failureTextParameters);
@@ -106,32 +109,46 @@ public class FileSystem implements DisplayableItem{
 		{
 		case DISPLAYING_FILE:
 			currentStatus =  Status.WAITING_FOR_FILENAME;
-			gmd.stream().forEach(x->x.terminate());
+			gmd.terminate();
 			gmd = null;
 			break;
 
 		case WAITING_FOR_FILENAME:
-			Set<File> files = FileManagerUtils.getAllFilesMatchingNameWithoutExtension(folderOnHardDrive.getFile(),currentString);
-			if(files.size()==0)
+			URL current = folderURL.getURL();
+			URL target;
+			String additions = "";
+			if(current.getHost().contains("www.dropbox.com"))
+				additions = "?dl=1";
+			try {
+				target = new URL(current.getProtocol(), current.getHost(), current.getPort(), current.getFile() + currentString+additions, null);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				throw new Error();
+			}
+
+			if(!URLManagerUtils.exists(target))
 			{
 				setToFailureMode();
 			}
-			else if(files.size()>=1)
+			else
 			{
-				int nbDisplayedItems = (int) (files.size() - files.stream().filter(x->FileManagerUtils.getTypeOf(x)==FileType.SOUND).count());
+				gmd = GenericMediumDisplayer.newInstance(
+						displayBox, target, printingTextParameters, context, soundWhenTyping);
+				
+			/*	int nbDisplayedItems = (int) (files.size() - files.stream().filter(x->URLManagerUtils.getTypeOf(x)==FileType.SOUND).count());
 				int widthPerSplit = displayBox.width/nbDisplayedItems;
 				int currentX = displayBox.x;
 				gmd = new LinkedList<>();
 				
-				for(File f: files){
+				for(URL f: files){
 					Rectangle displayRectangle = new Rectangle(currentX, displayBox.y, widthPerSplit, displayBox.height);
-					if(files.size() > 1 && FileManagerUtils.getTypeOf(f)==FileType.SOUND)
+					if(files.size() > 1 && URLManagerUtils.getTypeOf(f)==FileType.SOUND)
 						displayRectangle=new Rectangle(0, 0, 0, 0);
 					
 					gmd.add(GenericMediumDisplayer.newInstance(
 							displayRectangle, f, printingTextParameters, context, soundWhenTyping));
 					currentX+=displayRectangle.width;
-				}
+				}*/
 				currentStatus = Status.DISPLAYING_FILE;
 			}
 			clearText();
@@ -173,12 +190,12 @@ public class FileSystem implements DisplayableItem{
 	public static FileSystem newInstance(Element e, LAnimaRPContext context) {
 		Rectangle displayBox = XMLParser.parseRectangle(e);
 		
-		Optional<FileLocator> soundWhenTyping = Optional.empty();
+		Optional<URLLocator> soundWhenTyping = Optional.empty();
 		if(e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName())!=null)
-			soundWhenTyping = Optional.of(StaticFileLocator.newInstance(e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName())
+			soundWhenTyping = Optional.of(StaticURLPathLocator.newInstance(e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName())
 					.getAttributeValue(XMLKeywords.SOUND_ON_TYPE.getName())));
 			
-			FileLocator fl = XMLParser.parsePathLocator(e, context);
+			URLLocator fl = XMLParser.parsePathLocator(e, context);
 		
 		PassiveAppendTextAreaDrawer queryDrawer= PassiveAppendTextAreaDrawer.newInstance(
 				XMLParser.parseRectangle(e.getChild(XMLKeywords.FILENAME_QUERY_AREA.getName()))
@@ -211,7 +228,7 @@ public class FileSystem implements DisplayableItem{
 			errorMessageDrawer.drawMe(g);
 			break;
 		case DISPLAYING_FILE:
-			gmd.stream().forEach(x->x.drawMe(g));
+			gmd.drawMe(g);
 			break;
 		default: throw new Error();
 		}
@@ -219,6 +236,6 @@ public class FileSystem implements DisplayableItem{
 
 	@Override
 	public void terminate() {
-		gmd.stream().forEach(x->x.terminate());
+		gmd.terminate();
 	}
 }

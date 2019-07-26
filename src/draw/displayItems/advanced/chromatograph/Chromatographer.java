@@ -16,9 +16,9 @@ import draw.displayItems.text.TextTyper;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import input.configuration.LAnimaRPContext;
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
-import logic.data.fileLocators.StaticFileLocator;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
+import logic.data.fileLocators.StaticURLPathLocator;
 import main.DisplayWindow;
 
 public class Chromatographer implements DisplayableItem {
@@ -36,13 +36,13 @@ public class Chromatographer implements DisplayableItem {
 	
 	private TextTyper textTyper = TextTyper.newInstance(
 			new Rectangle(500, 200, 100, 100),
-			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
+			StaticURLPathLocator.newInstance(URLManagerUtils.getLocalURLFor("input/text/hack.java")),
 			AppendTypes.ONE_CHAR
 			);
 	
 	private TextPrompt tp = TextPrompt.newInstance(
 			new Rectangle(10, 200, 100, 100),
-			StaticFileLocator.newInstance(FileManagerUtils.getLocalFileFor("input/text/hack.java")),
+			StaticURLPathLocator.newInstance(URLManagerUtils.getLocalURLFor("input/text/hack.java")),
 			20,
 			AppendTypes.ONE_CHAR			
 			);

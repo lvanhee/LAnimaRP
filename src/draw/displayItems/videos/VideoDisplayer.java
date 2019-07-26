@@ -13,7 +13,7 @@ import draw.displayItems.DisplayableItem;
 import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
 import input.events.triggers.PauseTrigger;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
 import logic.data.fileLocators.FileLocatorInputFileProvider;
 import logic.data.fileLocators.InputFileProvider;
 
@@ -59,7 +59,7 @@ public class VideoDisplayer implements DisplayableItem {
 	}
 
 	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
-			FileLocator fl = XMLParser.parsePathLocator(e);
+			URLLocator fl = XMLParser.parsePathLocator(e);
 			Rectangle r = XMLParser.parseRectangle(e);
 			
 			PauseTrigger trigger = XMLParser.parsePauseTrigger(e);

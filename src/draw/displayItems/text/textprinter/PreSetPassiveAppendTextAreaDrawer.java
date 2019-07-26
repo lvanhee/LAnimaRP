@@ -18,7 +18,8 @@ import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import input.configuration.TextParameters;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
 
 public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	
@@ -35,23 +36,23 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	}
 	private final PassiveAppendTextAreaDrawer drawer;
 	private String text="";	
-	private final FileLocator resetter;
+	private final URLLocator resetter;
 	private final RepetitionMode repetition;
 	private final AppendTypes at;
-	private final Optional<FileLocator> soundWhenTyping;
+	private final Optional<URLLocator> soundWhenTyping;
 	
 	private Optional<GenericSoundPlayer> typingSoundPlayer = Optional.empty(); 
 
 	
 
 	
-	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, FileLocator fl, TextParameters tp, AppendTypes at,
-			RepetitionMode repetitionMode, Optional<FileLocator> soundWhenTyping)
+	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, URLLocator fl, TextParameters tp, AppendTypes at,
+			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping)
 	{
 		drawer = PassiveAppendTextAreaDrawer.newInstance(r, tp);
 		resetter = fl;
 		this.at = at;
-		text = readText(fl.getFile());
+		text = URLManagerUtils.getContentsAsStringFrom(fl);
 		this.repetition = repetitionMode;
 		this.soundWhenTyping = soundWhenTyping;
 	}
@@ -86,15 +87,15 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			}
 	}
 
-	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, FileLocator textFile, TextParameters tp, 
-			AppendTypes at, RepetitionMode repetitionMode, Optional<FileLocator> soundWhenTyping) {
+	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, URLLocator textFile, TextParameters tp, 
+			AppendTypes at, RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping) {
 		return new PreSetPassiveAppendTextAreaDrawer(r,textFile, tp, at, repetitionMode, soundWhenTyping);
 	}
 
 	public void append(AppendTypes type) {
 		if(text.isEmpty() && repetition==RepetitionMode.ONCE) return;
 		if(text.isEmpty()&&repetition==RepetitionMode.REPEAT_FOREVER)
-			text = readText(resetter.getFile());
+			text = URLManagerUtils.getContentsAsStringFrom(resetter);
 		
 		switch (type) {
 		case ONE_CHAR:

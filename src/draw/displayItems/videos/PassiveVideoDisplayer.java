@@ -12,7 +12,7 @@ import org.jdom2.Element;
 import draw.displayItems.DisplayableItem;
 import input.configuration.XMLParser;
 import input.events.triggers.PauseTrigger;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.direct.BufferFormat;

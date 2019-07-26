@@ -26,7 +26,7 @@ import input.events.listeners.GenericLAnimaRPEventListener;
 import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.KeyMonitorer;
 import input.events.publishers.LAnimaRPEventPublisher;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
 import logic.variables.variableTypes.BooleanVariable;
 import main.DisplayWindow;
 
@@ -49,7 +49,7 @@ public class TextTyper implements DisplayableItem {
 	private final GenericParameters gp;
 	
 	private TextTyper(Rectangle r, 
-			FileLocator textFile, 
+			URLLocator textFile, 
 			Color c,
 			LAnimaRPEventPublisher<?> um, 
 			AppendTypes oneChar,
@@ -77,7 +77,7 @@ public class TextTyper implements DisplayableItem {
 	@SuppressWarnings("unchecked")
 	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		Rectangle r = XMLParser.parseRectangle(e);
-		FileLocator f = XMLParser.parseFileLocator(e,context);
+		URLLocator f = XMLParser.parseFileLocator(e,context);
 		LAnimaRPEventPublisher<? extends LAnimaRPKeyEvent> um = 
 				XMLParser.parseKeyboardUpdateMechanism(e);
 		
@@ -106,7 +106,7 @@ public class TextTyper implements DisplayableItem {
 	}
 
 
-	public static TextTyper newInstance(Rectangle rectangle, FileLocator newInstance, AppendTypes oneChar, GenericParameters gp) {
+	public static TextTyper newInstance(Rectangle rectangle, URLLocator newInstance, AppendTypes oneChar, GenericParameters gp) {
 		return new TextTyper(
 				rectangle, 
 				newInstance, 

@@ -10,20 +10,20 @@ import input.events.eventTypes.StringEvolvedEvent;
 import input.events.eventTypes.StringEvolvedEventImpl;
 import input.events.listeners.LAnimaRPEventListener;
 import logic.data.PeriodicRefreshInfo;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
 import logic.data.string.EvolvingString;
 
 public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPublisher<StringEvolvedEvent>
 {
 
 	private final PeriodicRefreshInfo pri;
-	private final FileLocator fl;
+	private final URLLocator fl;
 	private String lastString;
-	private FileBasedEvolvingString(PeriodicRefreshInfo pri, FileLocator fl) {
+	private FileBasedEvolvingString(PeriodicRefreshInfo pri, URLLocator fl) {
 		this.pri = pri;
 		this.fl = fl;
-		lastString = FileManagerUtils.getContentsAsStringFrom(fl);
+		lastString = URLManagerUtils.getContentsAsStringFrom(fl);
 
 		
 		if(pri != PeriodicRefreshInfo.NEVER)
@@ -40,7 +40,7 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						String temp = FileManagerUtils.getContentsAsStringFrom(fl);
+						String temp = URLManagerUtils.getContentsAsStringFrom(fl);
 						if(!temp.equals(lastString))
 							{
 							 lastString = temp;
@@ -57,7 +57,7 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 		PeriodicRefreshInfo pri = PeriodicRefreshInfo.NEVER;
 		if(XMLParser.hasPeriodicRefreshInfos(e))
 			pri = XMLParser.parsePeriodicRefresh(e);
-		FileLocator fl = XMLParser.parseFileLocator(e, context);
+		URLLocator fl = XMLParser.parseFileLocator(e, context);
 		return new FileBasedEvolvingString(pri,fl);
 	}
 	
@@ -91,11 +91,11 @@ public class FileBasedEvolvingString implements EvolvingString, LAnimaRPEventPub
 		subscriber.publish(newInstance);
 	}
 
-	public static FileBasedEvolvingString newInstance(FileLocator fileToObserve, PeriodicRefreshInfo pr) {
+	public static FileBasedEvolvingString newInstance(URLLocator fileToObserve, PeriodicRefreshInfo pr) {
 		return new FileBasedEvolvingString(pr, fileToObserve);
 	}
 
-	public FileLocator getFile() {
+	public URLLocator getFile() {
 		return fl;
 	}
 

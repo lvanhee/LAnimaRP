@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,20 +48,20 @@ import logic.variables.variableTypes.VariableType;
 
 public class ProcessXML {
 
-	public static DisplaySetupParameters loadXML(File configFile){
+	public static DisplaySetupParameters loadXML(URL inputFile){
 		Document document=null;
 		SAXBuilder sxb = new SAXBuilder();
 		
 		try
 		{
-			document = sxb.build(configFile);
+			document = sxb.build(inputFile);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
-			throw new Error(sw.toString()+"\n"+"Erreur au chargement de "+configFile);
+			throw new Error(sw.toString()+"\n"+"Erreur au chargement de "+inputFile);
 
 		}
 

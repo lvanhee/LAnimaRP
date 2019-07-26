@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLManagerUtils;
 
 public class DrawingUtils {
 
@@ -45,28 +46,11 @@ public class DrawingUtils {
 
 	}
 
-	public static ImageIcon loadImage(String fileName) {
-		File file = FileManagerUtils.getLocalFileFor(fileName);  
-		return loadImage(file);
-	}
-
-	public static ImageIcon loadImage(File f) {
-		FileInputStream fis=null;
+	public static ImageIcon loadImage(URL url) {		
 		Image res;
-		try {
-			fis = new FileInputStream(f);
-			res = new ImageIcon(f.toURL()).getImage();
-			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			String message = sw.toString();
-			JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
-					JOptionPane.ERROR_MESSAGE);
-			throw new Error(message);
-		}
+
+		res = new ImageIcon(url).getImage();
+
 		return new ImageIcon(res);
 	}
 

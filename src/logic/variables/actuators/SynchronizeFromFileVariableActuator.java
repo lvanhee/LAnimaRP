@@ -15,7 +15,7 @@ import input.events.eventTypes.StringEvolvedEvent;
 import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.FileBasedEvolvingString;
 import logic.data.PeriodicRefreshInfo;
-import logic.data.fileLocators.FileLocator;
+import logic.data.fileLocators.URLLocator;
 import logic.data.string.UpdatableWithString;
 import logic.variables.variableTypes.StringUpdatableVariable;
 import logic.variables.variableTypes.StringVariable;
@@ -28,14 +28,14 @@ implements VariableActuator<StringUpdatableVariable<Variable<T>,T>, T>, LAnimaRP
 	
 	private UpdatableWithString v;
 
-	private SynchronizeFromFileVariableActuator(FileLocator fileToObserve, PeriodicRefreshInfo pr) {
+	private SynchronizeFromFileVariableActuator(URLLocator fileToObserve, PeriodicRefreshInfo pr) {
 		stringToObserve = FileBasedEvolvingString.newInstance(fileToObserve, pr);
 		stringToObserve.subscribe(this);
 		
 	}
 
 	public static SynchronizeFromFileVariableActuator newInstance(Element modifier) {
-		FileLocator fileToObserve= XMLParser.parseFileLocator(modifier, null );
+		URLLocator fileToObserve= XMLParser.parseFileLocator(modifier, null );
 		PeriodicRefreshInfo pr = XMLParser.parsePeriodicRefresh(modifier);
 		return new SynchronizeFromFileVariableActuator(fileToObserve, pr);
 	}

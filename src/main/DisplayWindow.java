@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,7 +25,7 @@ import input.configuration.DisplayParameters;
 import input.configuration.DisplaySetupParameters;
 import input.configuration.ProcessXML;
 import input.events.publishers.KeyMonitorer;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLManagerUtils;
 
 public class DisplayWindow {
 	
@@ -37,7 +38,7 @@ public class DisplayWindow {
 	 * @param args
 	 */
 	public static void main( String[] args ){
-		newDisplay(FileManagerUtils.getLocalFileFor("configuration.xml"));
+		newDisplay(URLManagerUtils.getLocalURLFor("configuration.xml"));
 	}
 
 	private static double getScalingY() {
@@ -80,7 +81,7 @@ public class DisplayWindow {
 	
 	private static DisplayParameters PARAMETERS = null;
 	
-	public static void newDisplay(File inputFile) {
+	public static void newDisplay(URL inputFile) {
 		try
 		{
 			DisplaySetupParameters setupParameters = ProcessXML.loadXML(inputFile);

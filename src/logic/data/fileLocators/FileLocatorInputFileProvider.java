@@ -16,14 +16,14 @@ public class FileLocatorInputFileProvider implements InputFileProvider {
 	public enum Repetition{ONE_SHOT,ENDLESS}
 	public enum OrderingForFolders{ORDERED, RANDOM}
 	
-	private final FileLocator input;
+	private final URLLocator input;
 	private final Repetition repeatMode;
 	private final OrderingForFolders orderingMode;
 	
 	private final List<File>nextFiles = new LinkedList<File>();
 	private final Predicate<File> isAcceptableFile;
 	
-	private FileLocatorInputFileProvider(FileLocator input, 
+	private FileLocatorInputFileProvider(URLLocator input, 
 			Repetition repeatMode,
 			OrderingForFolders orderingMode,
 			Predicate<File> isAcceptableFile
@@ -35,7 +35,7 @@ public class FileLocatorInputFileProvider implements InputFileProvider {
 		this.isAcceptableFile = isAcceptableFile;
 	}
 	
-	public static InputFileProvider newInstance(FileLocator fl, Repetition endless, 
+	public static InputFileProvider newInstance(URLLocator fl, Repetition endless, 
 			OrderingForFolders random,
 			Predicate<File> isAcceptableFile)
 	{
@@ -55,7 +55,7 @@ public class FileLocatorInputFileProvider implements InputFileProvider {
 	public File next() {
 		while(nextFiles.isEmpty())
 		{
-			File next = input.getFile();
+			File next = input.getURL();
 			if(!next.exists()) throw new Error();
 			if(next.isDirectory())
 			{

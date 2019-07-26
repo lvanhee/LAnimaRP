@@ -1,7 +1,7 @@
 package draw.displayItems.sound;
 
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
 
 public interface GenericSoundPlayer {
 
@@ -17,14 +17,14 @@ public interface GenericSoundPlayer {
 
 	boolean isPlaying();
 
-	static GenericSoundPlayer newInstance(FileLocator fl) {
-		if(FileManagerUtils.isWavFile(fl.getFile()))
+	static GenericSoundPlayer newInstance(URLLocator fl) {
+		if(URLManagerUtils.isWavFile(fl.getURL()))
 		{
-			return WavFilePlayer.newInstance(fl.getFile());
+			return WavFilePlayer.newInstance(fl.getURL());
 		}
-		else if(FileManagerUtils.isMP3File(fl.getFile()))
+		else if(URLManagerUtils.isMP3File(fl.getURL()))
 		{
-			return MP3FilePlayer.newInstance(fl.getFile());
+			return MP3FilePlayer.newInstance(fl.getURL());
 		}else throw new Error();
 	}
 

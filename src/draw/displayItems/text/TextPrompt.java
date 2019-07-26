@@ -12,8 +12,8 @@ import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.RepetitionMode;
 import input.configuration.TextParameters;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.StaticFileLocator;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.StaticURLPathLocator;
 
 public class TextPrompt implements DisplayableItem {
 	
@@ -21,10 +21,10 @@ public class TextPrompt implements DisplayableItem {
 	private boolean keepTyping = true;
 
 	private TextPrompt(Rectangle rectangle,
-			FileLocator localFileFor, int millisBetweenActions, 
+			URLLocator localFileFor, int millisBetweenActions, 
 			TextParameters textP,
 			PreSetPassiveAppendTextAreaDrawer.AppendTypes te, 
-			RepetitionMode repetitionMode, Optional<FileLocator> soundWhenTyping) {
+			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping) {
 		tp = PreSetPassiveAppendTextAreaDrawer.newInstance(rectangle, localFileFor, textP,te, repetitionMode, soundWhenTyping);
 		
 		new Thread(
@@ -60,16 +60,16 @@ public class TextPrompt implements DisplayableItem {
 
 	public static TextPrompt newInstance(
 			Rectangle rectangle, 
-			FileLocator localFileFor, 
+			URLLocator localFileFor, 
 			int millisBetweenActions,
-			PreSetPassiveAppendTextAreaDrawer.AppendTypes te, RepetitionMode repetitionMode, TextParameters yp, Optional<FileLocator> soundWhenTyping) {
+			PreSetPassiveAppendTextAreaDrawer.AppendTypes te, RepetitionMode repetitionMode, TextParameters yp, Optional<URLLocator> soundWhenTyping) {
 		return new TextPrompt(rectangle, localFileFor, millisBetweenActions, yp,te, repetitionMode, soundWhenTyping);
 	}
 
 	public static DisplayableItem newInstance(Rectangle displayZone, File x, int millisBetweenActions,
 			AppendTypes oneChar, RepetitionMode repetitionMode, TextParameters tp, 
-			Optional<FileLocator> soundWhenTyping) {
-		return newInstance(displayZone, StaticFileLocator.newInstance(x), millisBetweenActions, oneChar, repetitionMode, tp, soundWhenTyping);
+			Optional<URLLocator> soundWhenTyping) {
+		return newInstance(displayZone, StaticURLPathLocator.newInstance(x), millisBetweenActions, oneChar, repetitionMode, tp, soundWhenTyping);
 	}
 
 }

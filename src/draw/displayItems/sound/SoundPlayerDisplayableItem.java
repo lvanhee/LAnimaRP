@@ -1,7 +1,9 @@
 package draw.displayItems.sound;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.io.File;
+import java.net.URL;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
@@ -11,12 +13,13 @@ import javax.sound.sampled.LineUnavailableException;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
-import draw.utils.SoundUtils;
+import input.configuration.LAnimaRPContext;
 import input.configuration.XMLParser;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.StaticFileLocator;
+import input.sound.SoundUtils;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.StaticURLPathLocator;
 
-public class SoundPlayer implements DisplayableItem {
+public class SoundPlayerDisplayableItem implements DisplayableItem {
 	
 	public static enum Mode {
 		ONE_SHOT,
@@ -31,12 +34,12 @@ public class SoundPlayer implements DisplayableItem {
 	private boolean terminating = false;
 	private boolean isSoundStoppedBecauseNotDrawn = false;
 
-	private final FileLocator fl;
-	private SoundPlayer(FileLocator parseFile, Mode m) {
+	private final URLLocator fl;
+	private SoundPlayerDisplayableItem(URLLocator parseFile, Mode m) {
 		this.m =m;
 		fl = parseFile;
 		
-		File soundFile = parseFile.getFile();
+		URL soundFile = parseFile.getURL();
 		clip = SoundUtils.loadSound(soundFile);
 		
 		
@@ -83,9 +86,9 @@ public class SoundPlayer implements DisplayableItem {
 	}
 	
 
-	public static SoundPlayer newInstance(Element e) {
+	public static SoundPlayerDisplayableItem newInstance(Element e, LAnimaRPContext c) {
 		Mode m = XMLParser.parseSoundMode(e);
-		return new SoundPlayer(XMLParser.parseFileLocator(e),m);
+		return new SoundPlayerDisplayableItem(XMLParser.parseFileLocator(e,c),m);
 	}
 
 	@Override
@@ -97,10 +100,9 @@ public class SoundPlayer implements DisplayableItem {
 		if(m == Mode.FOREVER_WHEN_DRAWN && isSoundStoppedBecauseNotDrawn)
 		{
 			isSoundStoppedBecauseNotDrawn = false;
-			File soundFile = fl.getFile();
 			clip.stop();
 			clip.close();
-			clip = SoundUtils.loadSound(soundFile);
+			clip = SoundUtils.loadSound(fl.getURL());
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			while(! clip.isRunning())
 			{
@@ -136,12 +138,12 @@ public class SoundPlayer implements DisplayableItem {
 		clip.close();
 	}
 
-	public static SoundPlayer newInstance(String string) {
-		return newInstance(StaticFileLocator.newInstance(string));
+	public static SoundPlayerDisplayableItem newInstance(String string) {
+		return newInstance(StaticURLPathLocator.newInstance(string));
 	}
 
-	public static SoundPlayer newInstance(FileLocator newInstance) {
-		return new SoundPlayer(newInstance);
+	public static SoundPlayerDisplayableItem newInstance(URLLocator newInstance, Mode mode) {
+		return new SoundPlayerDisplayableItem(newInstance, mode);
 	}
 
 }

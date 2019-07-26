@@ -1,11 +1,16 @@
 package input.sound;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,21 +20,35 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
+import logic.data.fileLocators.URLManagerUtils;
 
 public class SoundUtils {
 	
 	private static int pausedOnFrame=0;
 
-	public static void main(String[] args) throws FileNotFoundException, JavaLayerException
+	public static void main(String[] args) throws JavaLayerException, LineUnavailableException, UnsupportedAudioFileException, IOException
 	{
-		File f = new File("input/filesystem/test_son.mp3");
+		URL u = new URL("https://www.dropbox.com/s/uqm81qa10825da8?dl=1");
+		/*File f = new File("/media/vanhee/e3672a0d-4cc9-4c8f-95b0-0e8d5e9368e2/Dropbox/Perso/projets/Informatique/code/LAnimaRP-wh40k/input/sound/alerte.wav");
+		URL u = f.toURI().toURL();*/
+        Clip clip = loadSound(u);
+        		/*
+        		AudioSystem.getClip();*/
 		
+		//AudioInputStream inputStream = AudioSystem.getAudioInputStream(u);
+       // clip.open(inputStream);
+        
+        clip.start();
+        clip.start();
+		/*
 		AdvancedPlayer p = new AdvancedPlayer(new FileInputStream(f));
 		
 		p.setPlayBackListener(new PlaybackListener() {
@@ -55,7 +74,7 @@ public class SoundUtils {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} p.play(pausedOnFrame);
+		} p.play(pausedOnFrame);*/
 	}
 
 	private static final Map<File, Clip> loadedSounds = new HashMap<File, Clip>(); 
@@ -77,9 +96,17 @@ public class SoundUtils {
 		}).start();
 	}
 
-	public static synchronized Clip loadSound(File soundFile) {
+	public static synchronized Clip loadSound(URL soundFile) {
 		try{
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(soundFile));
+			BufferedInputStream in = null;
+			
+		
+			if(URLManagerUtils.isLocalFile(soundFile))
+				in = new BufferedInputStream(new FileInputStream(soundFile.getFile()));
+			else 
+				in = new BufferedInputStream(URLManagerUtils.loadFromFile(soundFile));
+			
+			
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(in);
 			DataLine.Info info = new DataLine.Info(Clip.class, audioStream.getFormat());
 

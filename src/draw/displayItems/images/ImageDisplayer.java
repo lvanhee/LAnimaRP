@@ -18,17 +18,17 @@ import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.LAnimaRPEventPublisher;
 import logic.data.PeriodicRefreshInfo;
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
 import logic.data.string.EvolvingString;
 
 public class ImageDisplayer implements DisplayableItem,
 LAnimaRPEventListener<LAnimaRPEvent>{
 	
 	private PassiveImagePrinter id;
-	private final FileLocator fileToDisplay;
+	private final URLLocator fileToDisplay;
 		
-	private ImageDisplayer(final FileLocator f, Rectangle displayZone, 
+	private ImageDisplayer(final URLLocator f, Rectangle displayZone, 
 			StretchingType dt,
 			GenericParameters gp
 			) {
@@ -44,7 +44,7 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 	public static ImageDisplayer newInstance(Element e, LAnimaRPContext context) {
 
 		Rectangle displayZone = XMLParser.parseRectangle(e);
-		FileLocator f = XMLParser.parseFileLocator(e, context);
+		URLLocator f = XMLParser.parseFileLocator(e, context);
 		StretchingType dt = XMLParser.parseStrechtingType(e);
 		
 		GenericParameters gp = XMLParser.parseGenericParameters(e, context);
@@ -74,6 +74,6 @@ LAnimaRPEventListener<LAnimaRPEvent>{
 
 	private void updateFile()
 	{
-		id.setImage(DrawingUtils.loadImage(FileManagerUtils.getLocalFileFor(fileToDisplay.toString())));
+		id.setImage(DrawingUtils.loadImage(fileToDisplay.getURL()));
 	}
 }

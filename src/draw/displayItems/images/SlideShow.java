@@ -15,25 +15,25 @@ import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import logic.data.PeriodicRefreshInfo;
 import logic.data.drawing.StretchingType;
-import logic.data.fileLocators.FileLocator;
-import logic.data.fileLocators.FileManagerUtils;
+import logic.data.fileLocators.URLLocator;
+import logic.data.fileLocators.URLManagerUtils;
 
 public class SlideShow implements DisplayableItem {
 	
 	private final PassiveImagePrinter imagePrinter;
 	private boolean isTerminationRequested = false;
 	
-	private SlideShow(final FileLocator imageFolder,
+	private SlideShow(final URLLocator imageFolder,
 			Rectangle pos, 
 			PeriodicRefreshInfo period, 
 			StretchingType st,
 			GenericParameters gp
 			) {
 		
-		if(!imageFolder.getFile().isDirectory()) 
+		if(!imageFolder.getURL().isDirectory()) 
 			throw new Error("The image folder given to a slideshow should be a folder. However, the file given in parameter is not a folder:"+imageFolder);
 		
-		Optional<File> firstImage = FileManagerUtils.getFirstImageFrom(imageFolder);
+		Optional<File> firstImage = URLManagerUtils.getFirstImageFrom(imageFolder);
 		if(!firstImage.isPresent())
 			throw new Error("The image folder given to a slideshow should contain at least one image, but"
 					+ "it does not contain any: "+imageFolder);
@@ -47,7 +47,7 @@ public class SlideShow implements DisplayableItem {
 				Thread.currentThread().setName("Slideshow updater");
 				while(!isTerminationRequested && period.isRefreshActive())
 				{
-					for(File f: imageFolder.getFile().listFiles())
+					for(File f: imageFolder.getURL().listFiles())
 					{
 						if(f.isFile())
 						{
@@ -66,7 +66,7 @@ public class SlideShow implements DisplayableItem {
 
 	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		
-		FileLocator imageFolder = XMLParser.getFolder(e, context);
+		URLLocator imageFolder = XMLParser.getFolder(e, context);
 		Rectangle pos= XMLParser.parseRectangle(e);
 		PeriodicRefreshInfo period = XMLParser.parsePeriodicRefresh(e);
 		StretchingType st = XMLParser.parseStrechtingType(e);

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.net.URL;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.swing.ImageIcon;
@@ -14,6 +15,7 @@ import com.ibm.media.bean.multiplayer.DTWinAdapter;
 import draw.displayItems.DisplayableItem;
 import draw.utils.DrawingUtils;
 import logic.data.drawing.StretchingType;
+import logic.data.fileLocators.URLLocator;
 import main.DisplayWindow;
 
 public class PassiveImagePrinter implements DisplayableItem {
@@ -101,9 +103,9 @@ public class PassiveImagePrinter implements DisplayableItem {
 		return this.getClass().getSimpleName()+":"+displayZone;
 	}
 
-	public static DisplayableItem newInstance(File x, Rectangle displayZone2, StretchingType st,
+	public static DisplayableItem newInstance(URLLocator x, Rectangle displayZone2, StretchingType st,
 			GenericParameters parameters) {
-		return newInstance(DrawingUtils.loadImage(x), displayZone2, st, parameters);
+		return newInstance(DrawingUtils.loadImage(x.getURL()), displayZone2, st, parameters);
 	}
 
 }
