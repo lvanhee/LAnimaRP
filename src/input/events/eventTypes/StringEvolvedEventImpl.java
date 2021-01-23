@@ -13,7 +13,7 @@ public final class StringEvolvedEventImpl implements StringEvolvedEvent {
 		return new StringEvolvedEventImpl(newVal);
 	}
 	
-	public String getStrings()
+	public String getString()
 	{
 		return newVal;
 	}

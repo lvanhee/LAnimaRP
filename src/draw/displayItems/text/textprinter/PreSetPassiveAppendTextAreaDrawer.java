@@ -16,17 +16,23 @@ import draw.displayItems.DisplayableItem;
 import draw.displayItems.sound.GenericSoundPlayer;
 import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
-import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
 import input.configuration.TextParameters;
+import input.events.eventTypes.LAnimaRPEvent;
+import input.events.eventTypes.StringEvolvedEvent;
+import input.events.listeners.LAnimaRPEventListener;
 import logic.data.fileLocators.URLLocator;
 import logic.data.fileLocators.URLManagerUtils;
+import logic.data.string.EvolvingString;
+import logic.data.string.TextSource;
 
 public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	
-	public enum AppendTypes
+	public enum AppendMethods
 	{
-		ONE_CHAR, 
-		ONE_WORD_PER_PRESS
+		ONE_CHAR_PER_ACTION, 
+		ONE_WORD_PER_PRESS,
+		WHOLE_TEXT_UPDATE
 	}
 	
 	public enum RepetitionMode
@@ -35,28 +41,39 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 		ONCE
 	}
 	private final PassiveAppendTextAreaDrawer drawer;
-	private String text="";	
-	private final URLLocator resetter;
+	private String textToBePrinted="";	
 	private final RepetitionMode repetition;
-	private final AppendTypes at;
+	private final AppendMethods at;
 	private final Optional<URLLocator> soundWhenTyping;
 	
 	private Optional<GenericSoundPlayer> typingSoundPlayer = Optional.empty(); 
+	
+	private String origianlString;
+
+	private final boolean fastForwardToLastPage;
 
 	
 
 	
-	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, URLLocator fl, TextParameters tp, AppendTypes at,
-			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping)
+	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, String originalString, TextParameters tp, AppendMethods at,
+			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping, boolean fastForward)
 	{
 		drawer = PassiveAppendTextAreaDrawer.newInstance(r, tp);
-		resetter = fl;
 		this.at = at;
-		text = URLManagerUtils.getContentsAsStringFrom(fl);
+		textToBePrinted = originalString;
+		this.origianlString = originalString;
+		fastForwardToLastPage = fastForward;
+		
+		
+		
 		this.repetition = repetitionMode;
 		this.soundWhenTyping = soundWhenTyping;
 	}
 	
+	private void resetPrintedText() {
+		drawer.clear();
+	}
+
 	@Override
 	public void drawMe(Graphics2D g) {
 		drawer.drawMe(g);
@@ -87,28 +104,35 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			}
 	}
 
-	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, URLLocator textFile, TextParameters tp, 
-			AppendTypes at, RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping) {
-		return new PreSetPassiveAppendTextAreaDrawer(r,textFile, tp, at, repetitionMode, soundWhenTyping);
+	public static PreSetPassiveAppendTextAreaDrawer newInstance(Rectangle r, String originalString, TextParameters tp, 
+			AppendMethods at, RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping, boolean fastForward) {
+		return new PreSetPassiveAppendTextAreaDrawer(r,originalString, tp, at, repetitionMode, soundWhenTyping, fastForward);
 	}
 
-	public void append(AppendTypes type) {
-		if(text.isEmpty() && repetition==RepetitionMode.ONCE) return;
-		if(text.isEmpty()&&repetition==RepetitionMode.REPEAT_FOREVER)
-			text = URLManagerUtils.getContentsAsStringFrom(resetter);
+	
+	public void unfoldSomeTextToBeWritten(AppendMethods type) {
+		if(textToBePrinted.isEmpty() &&repetition==RepetitionMode.ONCE)
+			return;
+		
+		if(textToBePrinted.isEmpty()&&repetition==RepetitionMode.REPEAT_FOREVER)
+			textToBePrinted = origianlString;
 		
 		switch (type) {
-		case ONE_CHAR:
-			drawer.append(""+text.substring(0,1));
-			text = text.substring(1);
+		case ONE_CHAR_PER_ACTION:
+			drawer.append(""+textToBePrinted.substring(0,1));
+			textToBePrinted = textToBePrinted.substring(1);
 			break;
 			
 		case ONE_WORD_PER_PRESS:
-			int nextIndex = text.indexOf(" ")+1;
-			drawer.append(text.substring(0,nextIndex));
-			text = text.substring(nextIndex);
-		break;
-
+			int nextIndex = textToBePrinted.indexOf(" ")+1;
+			drawer.append(textToBePrinted.substring(0,nextIndex));
+			textToBePrinted = textToBePrinted.substring(nextIndex);
+			break;
+		case WHOLE_TEXT_UPDATE:
+		//	drawer.clear();
+			drawer.append(textToBePrinted);
+			textToBePrinted = "";
+			break;
 		default: throw new Error();
 		}
 		if(soundWhenTyping.isPresent()
@@ -119,14 +143,33 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			typingSoundPlayer.get().playAndDie();
 		}
 	}
-
-	public boolean isOver() {
-		return text.isEmpty() && repetition==RepetitionMode.ONCE;
+	
+	public boolean isTypingOver() {
+		return textToBePrinted.isEmpty() && repetition==RepetitionMode.ONCE;
 	}
 
 	public boolean hasJustEndedALine() {
 		return drawer.hasHustEndedALine();
 	}
 
+	public String getAlreadyDrawnString() {
+		return drawer.getDrawnString();
+	}
 
+	public void setStringToDraw(String string) {
+		String updatedString = string;
+		String drawnText = drawer.getDrawnString();
+		if(updatedString.startsWith(drawnText))
+		{
+			textToBePrinted = updatedString.substring(drawnText.length());
+		}
+		else {
+			resetPrintedText();
+			textToBePrinted = updatedString;
+		}
+	}
+
+	public double getRatioBetweenScreenSizeAndAmountToType() {
+		return drawer.getRatioStringOverScreenSize(textToBePrinted);
+	}
 }

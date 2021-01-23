@@ -20,7 +20,7 @@ import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
 import draw.displayItems.text.TextPrompt;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
-import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.RepetitionMode;
 import input.events.eventTypes.LAnimaRPEvent;
 import logic.data.drawing.StretchingType;
@@ -60,7 +60,7 @@ public class GenericMediumDisplayer implements DisplayableItem {
 		case TEXT: currentItemToDisplay = 
 				currentItemToDisplay= TextPrompt.newInstance(displayZone, x, 
 						75,
-						PreSetPassiveAppendTextAreaDrawer.AppendTypes.ONE_CHAR,
+						PreSetPassiveAppendTextAreaDrawer.AppendMethods.ONE_CHAR_PER_ACTION,
 						RepetitionMode.ONCE, tp,
 						soundWhenTyping
 						);

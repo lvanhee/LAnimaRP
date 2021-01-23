@@ -5,16 +5,22 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.event.KeyEvent;
 import java.awt.geom.GeneralPath;
 import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -37,15 +43,18 @@ import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
 import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
-import draw.displayItems.text.TextTyper;
-import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import draw.displayItems.text.TextPrompt;
+import draw.displayItems.text.UserTextTyper;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
 import draw.displayItems.videos.VariableBasedPauseTrigger;
 import draw.displayItems.videos.VideoDisplayer;
 import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.LAnimaRPKeyEvent;
+import input.events.publishers.FileBasedEvolvingString;
 import input.events.publishers.KeyMonitorer;
 import input.events.publishers.LAnimaRPEventPublisher;
 import input.events.triggers.PauseTrigger;
+import input.online.google.GoogleDocsUtils;
 import logic.data.PeriodicRefreshInfo;
 import logic.data.Range;
 import logic.data.drawing.StretchingType;
@@ -87,10 +96,22 @@ public class XMLParser {
 	}
 
 	public static Color parseColor(String s) {
+		
+		//hex
+		if(!s.contains(","))
+			return new Color(
+					Integer.valueOf( s.substring( 1, 3 ), 16 ),
+					Integer.valueOf( s.substring( 3, 5 ), 16 ),
+					Integer.valueOf( s.substring( 5, 7 ), 16 ) );
+		
+		String[] split = s.split(",");
+		int r = Integer.valueOf( split[0] );
+		int g = Integer.valueOf( split[1] );
+		int b = Integer.valueOf( split[2] );
 		return new Color(
-				Integer.valueOf( s.substring( 1, 3 ), 16 ),
-				Integer.valueOf( s.substring( 3, 5 ), 16 ),
-				Integer.valueOf( s.substring( 5, 7 ), 16 ) );
+				r,
+				g,
+				b);
 	}
 
 	public static Rectangle parseRectangle(Element e) {
@@ -98,7 +119,8 @@ public class XMLParser {
 			throw new Error();
 		if(e.getChild("full_screen")!=null)
 			return new Rectangle(0, 0, DisplayWindow.getWindowWidth(), DisplayWindow.getWindowHeight());
-		e = e.getChild(XMLKeywords.DISPLAY_AREA.getName());
+		if(!e.getName().equals(XMLKeywords.DISPLAY_AREA.getName()))
+			e = e.getChild(XMLKeywords.DISPLAY_AREA.getName());
 		if(e==null)
 			throw new Error("Missing a "+XMLKeywords.DISPLAY_AREA.getName()+" field");
 		int x = Integer.parseInt(e.getAttributeValue(XMLKeywords.X.getName()));
@@ -198,6 +220,8 @@ public class XMLParser {
 	}
 
 	public static PeriodicRefreshInfo parsePeriodicRefresh(Element modifier) {
+		if(modifier.getAttributeValue(XMLKeywords.REFRESH_PERIOD.getName())==null)
+			modifier = modifier.getChild(XMLKeywords.REFRESH_PERIOD.getName());
 		String refreshPeriod = modifier.getAttributeValue(XMLKeywords.REFRESH_PERIOD.getName());
 		if(refreshPeriod == null)
 			throw new Error("Please indicate a \""+XMLKeywords.REFRESH_PERIOD+"\" field for:"+ modifier);
@@ -210,15 +234,33 @@ public class XMLParser {
 		return Integer.parseInt(e.getChild("height").getAttributeValue("y"));
 	}
 
-	public static TextSource getTextSource(Element e) {
-		Element child= e.getChild("text_source");
+	public static TextSource getTextSource(Element e, LAnimaRPContext c) {
+		
+		Element child= e;
+		if(!e.getName().equals(XMLKeywords.TEXT_SOURCE.getName())) child = e.getChild("text_source");
+		
+		
+			
+		if(child.getChild(XMLKeywords.FILE_LOCATION.getName())!= null)
+		{
+			URLLocator loc = parsePathLocator(child, c);
+			
+			if(isUpdateable(child))
+				return FileBasedEvolvingString.newInstance(child, c);
+			else throw new Error();
+		}
 		Element variableBasedTextSource = child.getChild("variable_based_text_source");
 		if(variableBasedTextSource != null)
 		{
-			Element variable = variableBasedTextSource.getChild("variable");
-			return (TextSource) VariableManager.get(variable.getAttributeValue("name"));
+			
+			Element variable = variableBasedTextSource.getChild(XMLKeywords.VARIABLE.getName());
+			return (TextSource) c.getVariable(variable.getAttributeValue(XMLKeywords.NAME.getName()));
 		}
 		throw new Error();
+	}
+
+	private static boolean isUpdateable(Element child) {
+		return child.getChild(XMLKeywords.REFRESH_PERIOD.getName())!= null;
 	}
 
 	public static int getScrollingSpeed(Element e) 
@@ -309,7 +351,11 @@ public class XMLParser {
 
 	private static int parseKeyOnKeyboardIntoKeycode(Element e2) {
 		if(e2.getAttributeValue(XMLKeywords.KEY.getName())!= null)
+		{
+			String s = e2.getAttributeValue(XMLKeywords.KEY.getName());
+			if(s.equals("control"))return KeyEvent.VK_CONTROL;
 			return java.awt.event.KeyEvent.getExtendedKeyCodeForChar(e2.getAttributeValue(XMLKeywords.KEY.getName()).charAt(0));
+			}
 		
 		if(e2.getAttributeValue(XMLKeywords.KEYCODE.getName())!= null)
 			return Integer.parseInt(e2.getAttributeValue(XMLKeywords.KEYCODE.getName()));
@@ -320,7 +366,7 @@ public class XMLParser {
 	}
 
 	public static boolean hasPeriodicRefreshInfos(Element e) {
-		return e.getChild("periodic_refresh")!= null;
+		return e.getChild(XMLKeywords.REFRESH_PERIOD.getName())!= null;
 	}
 
 	public static boolean isVariableBasedParameter() {
@@ -371,7 +417,7 @@ public class XMLParser {
 		displayableItemFromKeywordGenerator.put(XMLKeywords.NEWS_TICKER, NewsTicker::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.VIDEO_ANIMATION, VideoDisplayer::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.FPS, FPSDisplayer::newInstance);
-		displayableItemFromKeywordGenerator.put(XMLKeywords.TEXT_TYPER, TextTyper::newInstance);
+		displayableItemFromKeywordGenerator.put(XMLKeywords.TEXT_TYPER, UserTextTyper::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.POPUP, Popup::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.SOUND, SoundPlayerDisplayableItem::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.HEARTBEAT_MONITOR, HeartBeatMonitor::newInstance);
@@ -391,6 +437,10 @@ public class XMLParser {
 		
 		displayableItemFromKeywordGenerator.put(XMLKeywords.VARIABLE_BASED_SWITCHEABLE_ANIMATION,
 				VariableBasedSwitcheableAnimation::newInstance);
+		displayableItemFromKeywordGenerator.put(XMLKeywords.TEXT_PROMPT,
+				TextPrompt::newInstance);
+		displayableItemFromKeywordGenerator.put(XMLKeywords.USER_TEXT_TYPER,
+				UserTextTyper::newInstance);
 		
 		
 		/*
@@ -458,17 +508,17 @@ public class XMLParser {
 		return GenericParameters.newInstance(context);
 	}
 
-	public static AppendTypes parseTextTypingSpeed(Element e) {
+	public static AppendMethods parseTextTypingSpeed(Element e) {
 		if(e.getChild(XMLKeywords.TEXT_TYPING_SPEED.getName())!=null)
 		{
 			Element tts = e.getChild(XMLKeywords.TEXT_TYPING_SPEED.getName());
 			
 			if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
 					.equals(XMLKeywords.ONE_WORD_PER_PRESS.getName()))
-				return AppendTypes.ONE_WORD_PER_PRESS;
+				return AppendMethods.ONE_WORD_PER_PRESS;
 			else throw new Error();
 		}
-		return AppendTypes.ONE_CHAR;
+		return AppendMethods.ONE_CHAR_PER_ACTION;
 		
 	}
 
@@ -526,6 +576,35 @@ public class XMLParser {
 
 	public static String getName(Element x) {
 		return x.getAttributeValue(XMLKeywords.NAME.getName());
+	}
+
+	public static Consumer<String> parseActionTrigger(Element e, LAnimaRPContext context) {
+		Element child = e.getChild(XMLKeywords.ACTION_TRIGGER.getName());
+		if(child.getAttribute(XMLKeywords.ACTION.getName())!=null)
+		{
+			if(child.getChild(XMLKeywords.FILE_LOCATION.getName())!=null)
+			{
+				URLLocator loc = parseFileLocator(child, context);
+				if(URLLocator.isGoogleDocsURL(loc))
+				{
+					return x->{
+						try {
+							GoogleDocsUtils.printNewParagraphAtStartOfDocumentWithTimestamp(loc, x);
+						} catch (GeneralSecurityException | IOException e1) {
+							e1.printStackTrace();
+						}
+					};
+				}
+			}
+		}
+		throw new Error();
+	}
+
+	public static List<String> parseEnum(Element e) {
+		List<String>res = new ArrayList<>();
+		for(Element e2:e.getChildren())
+			res.add(e2.getAttributeValue(XMLKeywords.VALUE.getName()));
+		return res;
 	}
 
 

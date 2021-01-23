@@ -34,7 +34,7 @@ import draw.displayItems.shapes.bars.BarDisplayer;
 import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
-import draw.displayItems.text.TextTyper;
+import draw.displayItems.text.UserTextTyper;
 import draw.displayItems.text.VariablePrinter;
 import draw.displayItems.videos.PassiveVideoDisplayer;
 import draw.displayItems.videos.VideoDisplayer;
@@ -94,7 +94,7 @@ public class ProcessXML {
 		if(root.getChild(XMLKeywords.DISPLAY_PARAMETERS.getName())== null) return res;
 		
 		Element head = root.getChild(XMLKeywords.DISPLAY_PARAMETERS.getName());
-		Element screenSize = head.getChild(XMLKeywords.SCREEN_SIZE.getName());
+		Element screenSize = head.getChild(XMLKeywords.DISPLAY_AREA.getName());
 
 		res.setFullScreen(XMLParser.parseFullScreen(head));
 		if(screenSize==null)

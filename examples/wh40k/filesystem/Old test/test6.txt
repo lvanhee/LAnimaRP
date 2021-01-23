@@ -1,0 +1,20 @@
+Personnages :
+- Nimm Primoria, acolyte de l'Inquisition
+- Sergent Vexalus, membre de la garde de P411   
+
+N : Bonjour Sergent Vexalus, je suis Nimm Primoria, acolyte de l'Inquisition.
+    Nos services s'intéressent aux récents événements du complexe P411, nous avons décidé qu'il était temps de mener une enquête.
+V : Vous voulez parler de la mutinerie des prisonniers, acolyte ? Elle nous occupe en ce moment, le Lieutenant-Colonel Marneus vient de prendre la tête des opérations.
+N : Précisemment, cette affaire s'éternise et nous aurions voulu savoir pourquoi.
+V : Hé bien, nous avons été surpris au début de la mutinerie.
+N : Surpris ? Ils étaient nombreux ? Bien équipés ?
+V : Non, pas plus nombreux que nous nous y attendions... même s'ils avaient quelques contrebandiers avec eux.
+N : Et donc ? Pourquoi cette simple mutinerie met-elle en échec des troupes de l'empire commandées par un haut gradé ?
+    En tant que fidèles serviteurs de l'Empire, vous auriez dû écraser cette mutinerie depuis longtemps ! Êtes-vous si incompétents que vous n'arrivez même pas à gérer une bande de prisonniers ? 
+    Ou alors... y a-t-il quelque chose que vous n'auriez pas mentionné dans vos rapports ? Vous imaginez bien que si vous ne répondez pas aux questions de la très sainte Inquisition, la sanction pourrait être pire qu'une mutation sur un monde frontière...
+V : (impressionné) Nous... nous avons été surpris par leur défense, elle était très bien organisée.
+    Et ils ont même utilisé les systèmes de défense du complexe que nous avions pourtant désactivés à distance pour nous repousser !
+N : Vous voulez dire que ces malfrats auraient réussi à réactiver et détourner l'Esprit Machine du complexe ?
+V : Oui, au moins dans une bonne partie de la mine.
+N : Bien, on dirait que nous avions raison de nous inquiéter de la situation, attendez-vous à notre arrivée prochainement.
+

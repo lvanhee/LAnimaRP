@@ -35,7 +35,7 @@ public enum XMLKeywords {
 	HARD_PATH("hard_path"),
 	FILE_LOCATION("file_location"), 
 	NAME("name"), 
-	DYNAMICALLY_UPDATABLE_ANIMATION("dynamically_updatable_animation_displayer"),
+	DYNAMICALLY_UPDATABLE_ANIMATION("xml_textsource_animation"),
 	//Animation keywords
 	BOOLEAN_ANIMATION_DISPLAYER("boolean_animation_displayer"),
 	BLINKING_SHAPE("blinking_shape"),
@@ -62,7 +62,7 @@ public enum XMLKeywords {
 	STRETCH("stretch"), 
 	FPS("fps"), 
 	POSITION("position"),
-	TEXT_TYPER("text_typer"), 
+	TEXT_TYPER("user_text_typer"), 
 	INCREASE_ACTUATOR("increase_actuator"),
 	ANIMATION_SPECIFIC_VARIABLE_ACTUATOR("animation_specific_variable_actuator"), 
 	ANIMATION_TRIGGER("animation_trigger"), 
@@ -79,6 +79,7 @@ public enum XMLKeywords {
 	ANYKEY_INCREASE_ACTUATOR("anykey_increase_actuator"),
 	KEYCODE("keycode"), 
 	TEXT_TYPING_SPEED("text_typing_speed"),
+	TEXT_PROMPT("text_prompt"),
 	ONE_WORD_PER_PRESS("one_word_per_event"), 
 	SOUND_MODE("sound_mode"),
 	REPEAT_FORVER_WHEN_VISIBLE("repeat_forever_when_visible"),
@@ -105,7 +106,9 @@ public enum XMLKeywords {
 	TEMPORARILY_DISPLAYED_ANIMATION("temporarily_displayed_animation"),
 	DURATION("duration"), 
 	BLINKING("blinking"), 
-	SOLID("solid")
+	SOLID("solid"), TEXT_SOURCE("text_source"),
+	USER_TEXT_TYPER("user_text_typer"), ACTION_TRIGGER("action_trigger"), ACTION("action"), VALUES("values"),
+	FAST_FORWARD_TO_LAST_PAGE("fast_forward_to_last_page")
 	;
 	
 	private final String keyName;
@@ -127,7 +130,7 @@ public enum XMLKeywords {
 		case BOOLEAN: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS,INITIAL_VALUE);
 		case STRING: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS, INITIAL_VALUE);
 		case PATH: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME,VARIABLE_ACTUATORS, INITIAL_VALUE);
-		case ENUM: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME, VARIABLE_ACTUATORS, INITIAL_VALUE);
+		case ENUM: return Arrays.asList(VARIABLE_TYPE, VARIABLE_NAME, VARIABLE_ACTUATORS, INITIAL_VALUE, VALUES);
 		default: throw new Error();
 		}
 	}

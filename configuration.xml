@@ -1,26 +1,63 @@
 <configuration>
 
+<variables>
+<variable type="enum" name="active_tab">
+<values> 
+<value value = "https://docs.google.com/document/d/1ad-9ITRxdkJG8lix_vYAm1b2ll33W-OiCo9feXlsLGY/edit"></value>
+<value value = "https://docs.google.com/document/d/1OXwK_fHgxcPm5TInW24Qqcv7C4anjRPHzUXy0grxpOQ/edit"></value>
+<value value = "https://docs.google.com/document/d/1zvqk8Lye_iaQNT23UzQ0D3P7YSvOfU2xz1zHgJTKr6k/edit"></value>
+</values>
+<initial_value value="1"> </initial_value>
+<variable_actuators><key_switch_actuator key="control"/></variable_actuators>
+</variable>
+</variables>
+
 	<display_parameters>
-		<fullscreen value="true"></fullscreen>
-		<screen_size><display_area x="0" y="0" width = "1600" height = "900"></display_area></screen_size>
+		<fullscreen value="false"></fullscreen>
+		<display_area x="000" y="000" width = "1600" height = "900"></display_area>
 	</display_parameters>
+	
+	<event_publishers>
+		<key_pressed_event_publisher name = "change_tab_button_pressed" value = "control"></key_pressed_event_publisher>
+	</event_publishers>
 	
 	
     <displayed_animations>		
     	<image>
-    		<file_location><hard_path path="https://www.dropbox.com/s/1fnmqu99u4w3ytj?dl=1"></hard_path></file_location>
-			<stretching><mode value = "stretch"></mode></stretching>
+			<file_location><hard_path path="examples/images/warhammer_systeme_gestion_fichier.png"></hard_path></file_location>
+			<stretching><mode value = "stretch"></mode>	</stretching>
 			<display_area x="0" y="0" width = "1600" height = "900"></display_area>
 		</image>
 		
-		<filesystem_displayer>
-							<display_area x="350" y="270" width = "900" height = "390"></display_area>
-							<folder_location><hard_path path="https://www.dropbox.com/s/"></hard_path></folder_location>
-							<filename_query_area>
-								<display_area x="800" y="200" width = "900" height = "100"></display_area>
-							</filename_query_area>
-							<failure_text_parameters color = "#FF0000">	</failure_text_parameters>
-		</filesystem_displayer>
-
+		
+						
+		<switcheable_animation>
+			<trigger event_producer="change_tab_button_pressed"></trigger>
+			
+			<displayed_animations>
+				<xml_textsource_animation>
+					<file_location><hard_path path="examples/configuration_file_examples/config_database_40k_on_dropbox.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
+		
+			<displayed_animations>
+				<xml_textsource_animation>
+					<file_location><hard_path path="examples/configuration_file_examples/chat_1.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
+			
+			<displayed_animations>
+				<xml_textsource_animation>
+					<file_location><hard_path path="examples/configuration_file_examples/chat_2.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
+			
+			<displayed_animations>
+				<xml_textsource_animation>
+					<file_location><hard_path path="examples/configuration_file_examples/chat_3.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
+		</switcheable_animation>
+		
      </displayed_animations> 
 </configuration>

@@ -54,7 +54,7 @@ implements VariableActuator<StringUpdatableVariable<Variable<T>,T>, T>, LAnimaRP
 	@Override
 	public void handleEvent(StringEvolvedEvent event) {
 		if(v!= null)
-			v.updateFrom(event.getStrings());
+			v.updateFrom(event.getString());
 	}
 
 }

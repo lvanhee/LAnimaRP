@@ -22,8 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
-import draw.SmartScroller;
 import draw.displayItems.DisplayableItem;
+import draw.utils.TextUtils;
 import input.configuration.TextParameters;
 import main.DisplayWindow;
 
@@ -36,6 +36,8 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	private List<String>stringPerLine = new LinkedList<>();	
 	
 	private final TextParameters tp;
+	
+	private String originalTextBeingPrinted="";
 
 	private PassiveAppendTextAreaDrawer(Rectangle drawingRectangle, TextParameters textParameters) {
 		this.drawingRectangle = drawingRectangle;
@@ -57,19 +59,24 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 
 	public synchronized void append(String s)
 	{
+		originalTextBeingPrinted+=s;
+		appendInternal(s);
+	}
+
+	private void appendInternal(String s) {
 		if(s.isEmpty())return;
 		if(s.startsWith("\n"))
 		{
 			toNewLine();
-			append(s.substring(1));
+			appendInternal(s.substring(1));
 			return;
 		}
-		if(getLineWidth(getCurrentLine()+s.charAt(0))>drawingRectangle.getWidth())
+		if(TextUtils.getWidthOf(getCurrentLine()+s.charAt(0),myFont)>drawingRectangle.getWidth())
 		{
 			if(isSplittableCharacter(s.charAt(0)))
 			{
 				toNewLine();
-				append(s);
+				appendInternal(s);
 				return;
 			}
 			else
@@ -80,22 +87,21 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 				{
 					setCurrentLine(current+lastSplit);
 					toNewLine();
-					append(s);
+					appendInternal(s);
 					return;
 				}
 				setCurrentLine(lastSplit);
 				toNewLine();
 				if(lastSplit.equals(current))
-					append(s);
+					appendInternal(s);
 				else
-					append(current.substring(lastSplit.length())+s);
+					appendInternal(current.substring(lastSplit.length())+s);
 				return;
 			}
 		}
 		addToCurrentLine(s.charAt(0));
-		append(s.substring(1));
+		appendInternal(s.substring(1));
 		return;
-		
 	}
 
 	private void setCurrentLine(String lastSplit) {
@@ -118,11 +124,6 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 		return charAt==' ';
 	}
 
-	private double getLineWidth(String string) {
-		AffineTransform affinetransform = new AffineTransform();
-		FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
-		return (int)((myFont.getStringBounds(getCurrentLine(), frc).getWidth()));
-	}
 
 	private String getCurrentLine() {
 		return stringPerLine.get(stringPerLine.size()-1);
@@ -169,9 +170,10 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 			append(s.charAt(""+i));*/
 	}
 
-	public void clear() {
+	public synchronized void clear() {
 		stringPerLine.clear();
 		stringPerLine.add("");
+		originalTextBeingPrinted = "";
 	}
 
 	public Rectangle getDrawingRectangle() {
@@ -188,6 +190,16 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 
 	public boolean hasHustEndedALine() {
 		return stringPerLine.get(stringPerLine.size()-1).equals("");
+	}
+
+	public String getDrawnString() {
+		return originalTextBeingPrinted;
+	}
+
+	public double getRatioStringOverScreenSize(String s) {
+		double requiredHeight = TextUtils.getRequiredHeightForPrinting(s,drawingRectangle.width, myFont);
+		
+		return requiredHeight/drawingRectangle.height;
 	}
 
 

@@ -13,7 +13,7 @@ import input.events.publishers.LAnimaRPEventPublisher;
 
 public class KeyPressedEventPublisher implements LAnimaRPEventPublisher<LAnimaRPKeyEvent> {
 	
-	private final GenericEventPublisher<LAnimaRPKeyEvent> eventPublisher= 
+	private final GenericEventPublisher eventPublisher= 
 			GenericEventPublisher.newInstance();
 		
 	private final Set<Integer>validKeycodes = new HashSet<>();
@@ -43,7 +43,7 @@ public class KeyPressedEventPublisher implements LAnimaRPEventPublisher<LAnimaRP
 
 	@Override
 	public void subscribe(LAnimaRPEventListener<LAnimaRPKeyEvent> el) {
-		eventPublisher.subscribe(el);
+		eventPublisher.subscribe((LAnimaRPEventListener)el);
 	}
 
 	@Override
@@ -53,6 +53,6 @@ public class KeyPressedEventPublisher implements LAnimaRPEventPublisher<LAnimaRP
 
 	@Override
 	public void unsubscribe(LAnimaRPEventListener<LAnimaRPKeyEvent> el) {
-		eventPublisher.unsubscribe(el);
+		eventPublisher.unsubscribe((LAnimaRPEventListener)el);
 	}
 }

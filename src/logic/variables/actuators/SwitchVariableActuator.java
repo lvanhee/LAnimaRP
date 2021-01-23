@@ -8,10 +8,10 @@ import input.events.publishers.KeyMonitorer;
 import logic.variables.variableTypes.BooleanVariable;
 import logic.variables.variableTypes.Variable;
 
-public class SwitchVariableActuator 
-implements VariableActuator<BooleanVariable, Boolean>, LAnimaRPEventListener<LAnimaRPKeyEvent> {
+public class SwitchVariableActuator<T>
+implements VariableActuator<SwitcheableVariable<T>, T>, LAnimaRPEventListener<LAnimaRPKeyEvent> {
 	
-	private BooleanVariable bv;
+	private SwitcheableVariable<T> bv;
 	private int activationKeyCode;
 	
 	private SwitchVariableActuator(int keyCodeTyped) {
@@ -20,8 +20,8 @@ implements VariableActuator<BooleanVariable, Boolean>, LAnimaRPEventListener<LAn
 	}
 
 	@Override
-	public void setVariable(BooleanVariable res) {
-		bv = (BooleanVariable)res;
+	public void setVariable(SwitcheableVariable<T> res) {
+		bv = res;
 	}
 
 	public static SwitchVariableActuator newInstance(int keyCode) {

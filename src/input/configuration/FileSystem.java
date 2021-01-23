@@ -236,6 +236,7 @@ public class FileSystem implements DisplayableItem{
 
 	@Override
 	public void terminate() {
-		gmd.terminate();
+		if(gmd!= null)
+			gmd.terminate();
 	}
 }

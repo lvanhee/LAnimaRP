@@ -1,0 +1,39 @@
+ <configuration>
+	<display_parameters>
+		<fullscreen value="false"></fullscreen>
+		<display_area x="000" y="000" width = "1600" height = "900"></display_area>
+	</display_parameters>
+	
+    <displayed_animations>		
+    	<image>
+			<file_location><hard_path path="examples/images/warhammer_chat.png"></hard_path></file_location>
+			<stretching><mode value = "stretch"></mode>	</stretching>
+			<display_area x="0" y="0" width = "1600" height = "900"></display_area>
+		</image>
+		
+		
+				
+    	<text_prompt name="chat2" fast_forward_to_last_page="true">
+    		<text_source>
+				<file_location><hard_path path="https://docs.google.com/document/d/1OXwK_fHgxcPm5TInW24Qqcv7C4anjRPHzUXy0grxpOQ/edit"></hard_path></file_location>
+				<refresh_period refresh_period="5000"></refresh_period>
+			</text_source>
+			<display_area x="320" y="280" width = "1100" height = "380"></display_area>
+		</text_prompt>
+		
+		<user_text_typer>
+			<display_area x="20" y="840" width = "600" height = "100"></display_area>
+			<action_trigger action = "update">
+			<file_location><hard_path path="https://docs.google.com/document/d/1OXwK_fHgxcPm5TInW24Qqcv7C4anjRPHzUXy0grxpOQ/edit"></hard_path></file_location>
+			</action_trigger>
+			
+		</user_text_typer>
+		
+				 <image>
+			<file_location><hard_path path="examples/images/pixelface.gif"></hard_path></file_location>
+			<stretching><mode value = "stretch"></mode>	</stretching>
+			<display_area x="50" y="50" width = "240" height = "240"></display_area>
+		</image>
+		
+     </displayed_animations> 
+</configuration>

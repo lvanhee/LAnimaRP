@@ -12,8 +12,8 @@ import draw.displayItems.images.PassiveImagePrinter;
 import draw.displayItems.shapes.bars.PassiveBar;
 import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.text.TextPrompt;
-import draw.displayItems.text.TextTyper;
-import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendTypes;
+import draw.displayItems.text.UserTextTyper;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
 import input.configuration.LAnimaRPContext;
 import logic.data.drawing.StretchingType;
 import logic.data.fileLocators.URLLocator;
@@ -34,17 +34,17 @@ public class Chromatographer implements DisplayableItem {
 	private PassiveBar passiveBar = PassiveBar.newInstance(0, new Rectangle(10, 10, 100, 30), Color.GREEN,
 			PassiveBar.FillDirection.HORIZONTAL);
 	
-	private TextTyper textTyper = TextTyper.newInstance(
+	private UserTextTyper textTyper = UserTextTyper.newInstance(
 			new Rectangle(500, 200, 100, 100),
 			StaticURLPathLocator.newInstance(URLManagerUtils.getLocalURLFor("input/text/hack.java")),
-			AppendTypes.ONE_CHAR
+			AppendMethods.ONE_CHAR_PER_ACTION
 			);
 	
 	private TextPrompt tp = TextPrompt.newInstance(
 			new Rectangle(10, 200, 100, 100),
 			StaticURLPathLocator.newInstance(URLManagerUtils.getLocalURLFor("input/text/hack.java")),
 			20,
-			AppendTypes.ONE_CHAR			
+			AppendMethods.ONE_CHAR_PER_ACTION			
 			);
 	
 	private SoundPlayerDisplayableItem sp = SoundPlayerDisplayableItem.newInstance("input/sound/alerte_insurge.wav");

@@ -8,28 +8,29 @@ import input.events.eventTypes.LAnimaRPKeyEvent;
 import input.events.listeners.LAnimaRPEventListener;
 import input.events.publishers.LAnimaRPEventPublisher;
 
-public class GenericEventPublisher<T extends LAnimaRPEvent> implements LAnimaRPEventPublisher<T> 
+public class GenericEventPublisher implements LAnimaRPEventPublisher<LAnimaRPEvent> 
 {
 	
-	private final Set<LAnimaRPEventListener<T>> listeners = new HashSet<>();
+	private final Set<LAnimaRPEventListener<LAnimaRPEvent>> listeners = new HashSet<>();
 
 	@Override
-	public void subscribe(LAnimaRPEventListener<T> el) {
+	public void subscribe(LAnimaRPEventListener<LAnimaRPEvent> el) {
 		listeners.add(el);
 	}
 
 	@Override
-	public void publish(T newInstance) {
+	public void publish(LAnimaRPEvent newInstance) {
 		listeners.stream().forEach(x->x.handleEvent(newInstance));
 	}
 
 	@Override
-	public void unsubscribe(LAnimaRPEventListener<T> el) {
+	public void unsubscribe(LAnimaRPEventListener<LAnimaRPEvent> el) {
 		listeners.remove(el);
 	}
 
-	public static GenericEventPublisher<LAnimaRPKeyEvent> newInstance() {
-		return new GenericEventPublisher<>();
+	public static GenericEventPublisher newInstance() {
+		return new GenericEventPublisher();
 	}
+
 
 }

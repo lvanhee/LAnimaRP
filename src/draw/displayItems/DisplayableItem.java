@@ -16,7 +16,7 @@ import draw.displayItems.shapes.bars.BarDisplayer;
 import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.text.FPSDisplayer;
 import draw.displayItems.text.NewsTicker;
-import draw.displayItems.text.TextTyper;
+import draw.displayItems.text.UserTextTyper;
 import draw.displayItems.text.VariablePrinter;
 import draw.displayItems.videos.VideoDisplayer;
 import input.configuration.XMLKeywords;

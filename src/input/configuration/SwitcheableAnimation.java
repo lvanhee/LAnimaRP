@@ -3,6 +3,8 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.jdom2.Element;
@@ -15,18 +17,47 @@ public class SwitcheableAnimation implements DisplayableItem {
 	
 	private final List<DisplayableItem> subAnimations;
 	private int currentlyDisplayed = 0;
-	private SwitcheableAnimation(List<DisplayableItem> subAnimations,
+	
+	private final boolean killWhenHidden = true;
+	
+	private final List<Supplier<DisplayableItem>> animationBuilder;
+	
+	private DisplayableItem currentAnimation = null;
+	
+	
+	private SwitcheableAnimation(
+			List<Supplier<DisplayableItem>> displayableBuilders,
 			Set<LAnimaRPEventPublisher<? extends LAnimaRPEvent>> eventPublishers) {
-		this.subAnimations = subAnimations;
-		eventPublishers.stream().forEach(x-> x.subscribe(y-> currentlyDisplayed= (currentlyDisplayed + 1)%subAnimations.size()));
+		
+		this.animationBuilder = displayableBuilders;
+		
+		if(killWhenHidden) subAnimations = null;
+		else subAnimations = animationBuilder.stream().map(x->x.get()).collect(Collectors.toList());
+
+		currentAnimation = animationBuilder.get(currentlyDisplayed).get();
+		if(killWhenHidden)
+			eventPublishers.stream().forEach(x-> x.subscribe(y->
+			{
+				currentAnimation.terminate();
+				currentlyDisplayed= (currentlyDisplayed + 1)%animationBuilder.size();
+				currentAnimation = animationBuilder.get(currentlyDisplayed).get();
+			}));
+
+		else		
+			eventPublishers.stream().forEach(x-> x.subscribe(y->
+			currentlyDisplayed= (currentlyDisplayed + 1)%animationBuilder.size()));
 	}
 
 	public static SwitcheableAnimation newInstance(Element e, LAnimaRPContext context)
 	{
-		List<DisplayableItem> subAnimations = 
-		e.getChildren(XMLKeywords.DISPLAYED_ANIMATIONS.getName())
-		.stream()
-		.map(x->XMLParser.parseDisplayableItem(x, context))
+		List<Supplier<DisplayableItem>> subAnimations = 
+				e.getChildren(XMLKeywords.DISPLAYED_ANIMATIONS.getName())
+				.stream()
+				.map(x->
+		{
+			Supplier<DisplayableItem> res = ()->XMLParser.parseDisplayableItem(x, context);
+		return res;
+		})
 		.collect(Collectors.toList());
 		
 		Set<LAnimaRPEventPublisher<? extends LAnimaRPEvent>> eventPublishers =
@@ -41,12 +72,13 @@ public class SwitcheableAnimation implements DisplayableItem {
 	}
 
 	@Override
-	public void drawMe(Graphics2D g) {
-		subAnimations.get(currentlyDisplayed).drawMe(g);
+	public synchronized void drawMe(Graphics2D g) {
+		if(killWhenHidden)currentAnimation.drawMe(g);
+		else subAnimations.get(currentlyDisplayed).drawMe(g);
 	}
 
 	@Override
-	public void terminate() {
+	public synchronized void terminate() {
 		subAnimations.stream().forEach(x->x.terminate());
 	}
 

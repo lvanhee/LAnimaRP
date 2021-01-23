@@ -25,7 +25,7 @@ public class StaticURLPathLocator implements URLLocator {
 	
 	public String toString()
 	{
-		return f.getAbsolutePath();
+		return f.toExternalForm();
 	}
 
 	public static URLLocator newInstance(URL localFileFor) {
@@ -35,6 +35,14 @@ public class StaticURLPathLocator implements URLLocator {
 	@Override
 	public GenericEventPublisher<FileUpdatedEvent> getEventPublisher() {
 		return new GenericEventPublisher<>();
+	}
+	
+	public int hashCode() {return f.hashCode();}
+	
+	public boolean equals(Object o)
+	{
+		StaticURLPathLocator s = (StaticURLPathLocator)o;
+		return s.f.equals(f);
 	}
 
 }

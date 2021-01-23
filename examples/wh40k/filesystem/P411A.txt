@@ -1,0 +1,14 @@
+Index : P411A
++++ Début transmission fréquence cryptée +++
+
+
+Cellule [+ACCÈS INTERDIT +]
+Dossier : Complexe P411
+
+Les dernières investigations de l’agent Anvil semble nous mener droit vers le complexe P411. Il est géré depuis longue date par le prefectus Gaius Caligula. Nous avons pu détecter des incohérences récurrences dans ses rapports, particulièrement sur les résultats de la production. Nous avons pu observer des fluctuations importantes, comme si le complexe industriel consommait ce qu’il produisait. 
+
+Le prefectus Navapo a été détaché mener l’enquête sur ce complexe et y déterminer l’ampleur de la mauvaise gestion du site. 
+L’agent Anvil semble nous indiquer qu’il s’agit aussi de la source du trafic de technologie circulant dans la ruche principal.
+
+Agent Raven,
++++ Transmission terminée +++

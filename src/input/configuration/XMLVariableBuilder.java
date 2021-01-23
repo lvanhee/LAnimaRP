@@ -3,6 +3,7 @@ package input.configuration;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.jdom2.Element;
@@ -23,6 +24,7 @@ public class XMLVariableBuilder
 	private String initialValue;
 	private VariableType type;
 	private Set<VariableActuator> actuators= new HashSet<VariableActuator>();
+	private List<String> enumeratedValues;
 
 	public XMLVariableBuilder(String parseVariableName, VariableType type, String name) {
 		this.variableName = parseVariableName;
@@ -98,6 +100,7 @@ public class XMLVariableBuilder
 		if(name.equals(XMLKeywords.RANGE.getName())){ range = XMLParser.parseRange(e); return this;}
 		if(name.equals(XMLKeywords.INITIAL_VALUE.getName())){initialValue = XMLParser.parseInitialValue(e); return this;}
 		if(name.equals(XMLKeywords.VARIABLE_ACTUATORS.getName())){actuators=XMLParser.parseActuators(e);return this;}
+		if(name.equals(XMLKeywords.VALUES.getName())) {enumeratedValues=XMLParser.parseEnum(e); return this;}
 		throw new Error();
 	}
 
@@ -112,6 +115,10 @@ public class XMLVariableBuilder
 	public XMLVariableBuilder setInitialValue(String attributeValue) {
 		this.initialValue = attributeValue;
 		return this;
+	}
+
+	public List<String> getEnumValues() {
+		return enumeratedValues;
 	}
 
 }

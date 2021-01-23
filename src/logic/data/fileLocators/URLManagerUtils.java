@@ -25,6 +25,7 @@ import javax.swing.WindowConstants;
 
 import draw.utils.TextUtils;
 import input.configuration.ProcessXML;
+import input.online.google.GoogleDocsUtils;
 
 public class URLManagerUtils {
 
@@ -85,6 +86,8 @@ public class URLManagerUtils {
 	}
 
 	public static String getContentsAsStringFrom(URLLocator fl) {
+		if(URLLocator.isGoogleDocsURL(fl))
+			return GoogleDocsUtils.getAllText(fl);
 		String res = "";
 		try {
 
