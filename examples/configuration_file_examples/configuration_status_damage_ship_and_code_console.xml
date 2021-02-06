@@ -10,7 +10,7 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-					<hard_path path= "wh40k/is_communication_active.txt"></hard_path>
+					<hard_path path= "examples/wh40k/is_communication_active.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -20,7 +20,7 @@
 			<variable_actuators>
 				<synchronize_from_file_actuator refresh_period = "1000">
 					<file_location>
-							<hard_path path= "wh40k/value_armurerie.txt"></hard_path>
+							<hard_path path= "examples/wh40k/value_armurerie.txt"></hard_path>
 					</file_location>
 				</synchronize_from_file_actuator>
 			</variable_actuators>
@@ -30,7 +30,7 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_commandement.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_commandement.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -41,7 +41,7 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_generateur.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_generateur.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -50,7 +50,7 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_medicae.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_medicae.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -59,7 +59,7 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_mystere.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_mystere.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -68,18 +68,16 @@
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_raffinage.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_raffinage.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
 	</variable>
-	
-
-		<variable name = "reparation" type = "string" initial_value = "false">
+	<variable name = "reparation" type = "string" initial_value = "false">
 		<variable_actuators>
 			<synchronize_from_file_actuator refresh_period = "1000">
 				<file_location>
-						<hard_path path= "wh40k/value_reparation.txt"></hard_path>
+						<hard_path path= "examples/wh40k/value_reparation.txt"></hard_path>
 				</file_location>
 			</synchronize_from_file_actuator>
 		</variable_actuators>
@@ -88,7 +86,7 @@
 			<variable_actuators>
 				<synchronize_from_file_actuator refresh_period = "1000">
 					<file_location>
-							<hard_path path= "wh40k/value_ventilation.txt"></hard_path>
+							<hard_path path= "examples/wh40k/value_ventilation.txt"></hard_path>
 					</file_location>
 				</synchronize_from_file_actuator>
 			</variable_actuators>

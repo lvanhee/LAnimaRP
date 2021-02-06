@@ -50,6 +50,7 @@ import draw.displayItems.videos.VariableBasedPauseTrigger;
 import draw.displayItems.videos.VideoDisplayer;
 import input.events.eventTypes.LAnimaRPEvent;
 import input.events.eventTypes.LAnimaRPKeyEvent;
+import input.events.eventTypes.StringEvolvedEvent;
 import input.events.publishers.FileBasedEvolvingString;
 import input.events.publishers.KeyMonitorer;
 import input.events.publishers.LAnimaRPEventPublisher;
@@ -209,8 +210,10 @@ public class XMLParser {
 		return Boolean.parseBoolean(e.getChild("fading_away").getAttributeValue("value"));
 	}
 
-	private static int parseDuration(Element e) {
-		return Integer.parseInt(e.getChild("duration").getAttributeValue("value"));
+	public static long parseDuration(Element e) {
+		if(e.getAttributeValue(XMLKeywords.DURATION.getName())!=null)return
+				Long.parseLong(e.getAttributeValue(XMLKeywords.DURATION.getName()));
+		return Long.parseLong(e.getChild(XMLKeywords.DURATION.getName()).getAttributeValue("value"));
 	}
 
 	public static LAnimaRPEventPublisher<LAnimaRPKeyEvent> parseKeyboardUpdateMechanism(Element e) {
@@ -249,6 +252,13 @@ public class XMLParser {
 				return FileBasedEvolvingString.newInstance(child, c);
 			else throw new Error();
 		}
+		
+		if(child.getAttributeValue(XMLKeywords.RAW_TEXT.getName())!= null)
+		{
+			final String res = child.getAttributeValue(XMLKeywords.RAW_TEXT.getName()); 
+			return ()->res;
+		}
+		
 		Element variableBasedTextSource = child.getChild("variable_based_text_source");
 		if(variableBasedTextSource != null)
 		{
@@ -388,6 +398,8 @@ public class XMLParser {
 
 
 	public static long parseInitialDisplayTime(Element e) {
+		if(e.getAttribute(XMLKeywords.INITIAL_DISPLAY_TIME.getName())!= null)
+			return Long.parseLong(e.getAttributeValue(XMLKeywords.INITIAL_DISPLAY_TIME.getName()));
 		return Long.parseLong(e.getChild(XMLKeywords.INITIAL_DISPLAY_TIME.getName()).getAttributeValue(XMLKeywords.VALUE.getName()));
 	}
 
@@ -441,6 +453,9 @@ public class XMLParser {
 				TextPrompt::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.USER_TEXT_TYPER,
 				UserTextTyper::newInstance);
+		
+		displayableItemFromKeywordGenerator.put(XMLKeywords.NOTIFICATION,
+				Notification::newInstance);
 		
 		
 		/*
@@ -523,13 +538,23 @@ public class XMLParser {
 	}
 
 	public static Mode parseSoundMode(Element e) {
+		String value = null;
+		if(e.getAttributeValue(XMLKeywords.SOUND_MODE.getName())!=null)
+		{
+			value = e.getAttributeValue(XMLKeywords.SOUND_MODE.getName());
+		}
+		else
+		{
 			Element tts = e.getChild(XMLKeywords.SOUND_MODE.getName());
-			if(tts.getAttribute(XMLKeywords.VALUE.getName())==null)throw new Error("Missing sound mode for "+e);
+			if(tts==null ||tts.getAttribute(XMLKeywords.VALUE.getName())==null)
+				throw new Error("Missing sound mode for "+e);
+			value =tts.getAttribute(XMLKeywords.VALUE.getName()).getValue(); 
+		}
 			
-			if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
+			if(value
 					.equals(XMLKeywords.REPEAT_FORVER_WHEN_VISIBLE.getName()))
 				return Mode.FOREVER_WHEN_DRAWN;
-			else if(tts.getAttribute(XMLKeywords.VALUE.getName()).getValue()
+			else if(value
 					.equals(XMLKeywords.ONE_SHOT.getName()))
 				return Mode.ONE_SHOT;
 			else throw new Error();		
@@ -607,5 +632,13 @@ public class XMLParser {
 		return res;
 	}
 
-
+	public static LAnimaRPEventPublisher parseTrigger(Element e, LAnimaRPContext context) {
+		if(e.getChild(XMLKeywords.TRIGGER.getName())!= null) e =e.getChild(XMLKeywords.TRIGGER.getName()); 
+		if(e.getAttributeValue(XMLKeywords.EVENT_PRODUCER.getName()).equals(XMLKeywords.UPDATED_VALUE.getName()))
+		{
+			
+			return (LAnimaRPEventPublisher)getTextSource(e, context);
+		}
+		throw new Error();
+	}
 }

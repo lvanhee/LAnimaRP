@@ -1,5 +1,6 @@
 package main;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -138,8 +139,6 @@ public class DisplayWindow {
 					Graphics2D g2d = null;
 					while( app.isShowing() ) {
 						Thread.yield();
-						
-
 						try {
 							Thread.sleep(20);
 						} catch (InterruptedException e) {
@@ -149,14 +148,20 @@ public class DisplayWindow {
 						do{
 							do {
 								g2d = (Graphics2D) buffer.getDrawGraphics();
-								g2d.setTransform(AffineTransform.getScaleInstance(getScalingX(),getScalingY()));
+							//	g2d.setColor(Color.red);
+							//	g2d.fillRect(0, 0, canvas.getWidth()-10, canvas.getHeight()-10);
 								
+								g2d.setTransform(
+										AffineTransform.getScaleInstance(
+												g2d.getTransform().getScaleX()*getScalingX(),
+												g2d.getTransform().getScaleY()*getScalingY()));
+								
+								//g2d.setColor(Color.green);
+								//g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 								itemsToDisplay.drawMe(g2d);
 								g2d.dispose();
 							}
 							while(buffer.contentsRestored());
-
-
 							buffer.show();
 						}while(buffer.contentsLost());
 					}

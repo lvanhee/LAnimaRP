@@ -27,7 +27,7 @@
 		</user_text_typer>
 		
 				 <image>
-			<file_location><hard_path path="examples/images/pixelface2.gif"></hard_path></file_location>
+			<file_location><hard_path path="examples/images/cogitator.gif"></hard_path></file_location>
 			<stretching><mode value = "stretch"></mode>	</stretching>
 			<display_area x="1310" y="590" width = "210" height = "210"></display_area>
 		</image>

@@ -29,11 +29,9 @@
 		 <image>
 			<file_location><hard_path path="examples/images/machine_god.gif"></hard_path></file_location>
 			<stretching><mode value = "stretch"></mode>	</stretching>
-			<display_area x="1150" y="50" width = "400" height = "400"></display_area>
+			<display_area x="1300" y="50" width = "250" height = "220"></display_area>
 		</image>
 		
-		<sound>
-		</sound>
-		
+
      </displayed_animations> 
 </configuration>

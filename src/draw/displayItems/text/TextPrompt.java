@@ -84,8 +84,9 @@ public class TextPrompt implements DisplayableItem {
 			(es).subscribe(el);
 			onTermination = ()->{es.unsubscribe(el);};
 		}
-		new Thread(typer
-				).start();
+		Thread t = new Thread(typer);
+		t.setName(this.getClass().getSimpleName()+" "+name);
+		t.start();
 	}
 
 	@Override
@@ -115,7 +116,6 @@ public class TextPrompt implements DisplayableItem {
 	
 	public static TextPrompt newInstance(Element xmlContents, LAnimaRPContext context)
 	{
-		Element e = xmlContents.getChild(XMLKeywords.TEXT_SOURCE.getName());
 		Rectangle onScreen = XMLParser.parseRectangle(xmlContents);
 		
 		String name = "";
@@ -132,7 +132,7 @@ public class TextPrompt implements DisplayableItem {
 				fastForward = Boolean.parseBoolean(
 						xmlContents.getAttribute(XMLKeywords.FAST_FORWARD_TO_LAST_PAGE.getName()).getValue());
 
-		TextSource source = XMLParser.getTextSource(e, context);
+		TextSource source = XMLParser.getTextSource(xmlContents, context);
 		
 		TextParameters tp = TextParameters.newInstance(color);
 		

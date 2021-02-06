@@ -1,16 +1,97 @@
 <configuration>
 
 <variables>
-<variable type="enum" name="active_tab">
-<values> 
-<value value = "https://docs.google.com/document/d/1ad-9ITRxdkJG8lix_vYAm1b2ll33W-OiCo9feXlsLGY/edit"></value>
-<value value = "https://docs.google.com/document/d/1OXwK_fHgxcPm5TInW24Qqcv7C4anjRPHzUXy0grxpOQ/edit"></value>
-<value value = "https://docs.google.com/document/d/1zvqk8Lye_iaQNT23UzQ0D3P7YSvOfU2xz1zHgJTKr6k/edit"></value>
-</values>
-<initial_value value="1"> </initial_value>
-<variable_actuators><key_switch_actuator key="control"/></variable_actuators>
-</variable>
-</variables>
+
+		<variable name = "armurerie" type = "string" initial_value = "off">
+			<variable_actuators>
+				<synchronize_from_file_actuator refresh_period = "1000">
+					<file_location>
+							<hard_path path= "examples/wh40k/value_armurerie.txt"></hard_path>
+					</file_location>
+				</synchronize_from_file_actuator>
+			</variable_actuators>
+		</variable>
+		
+		<variable name = "commandement" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_commandement.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+		</variable>
+		
+		
+		<variable name = "generateur" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_generateur.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+	</variable>
+		<variable name = "medicae" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_medicae.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+	</variable>
+		<variable name = "mystere" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_mystere.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+	</variable>
+		<variable name = "raffinerie" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_raffinage.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+	</variable>
+	
+
+		<variable name = "reparation" type = "string" initial_value = "false">
+		<variable_actuators>
+			<synchronize_from_file_actuator refresh_period = "1000">
+				<file_location>
+						<hard_path path= "examples/wh40k/value_reparation.txt"></hard_path>
+				</file_location>
+			</synchronize_from_file_actuator>
+		</variable_actuators>
+	</variable>
+		<variable name = "ventilation" type = "string" initial_value = "false">
+			<variable_actuators>
+				<synchronize_from_file_actuator refresh_period = "1000">
+					<file_location>
+							<hard_path path= "examples/wh40k/value_ventilation.txt"></hard_path>
+					</file_location>
+				</synchronize_from_file_actuator>
+			</variable_actuators>
+		</variable>
+		
+		
+		<variable name = "alarm" type = "string" initial_value = "false">
+			<variable_actuators>
+				<synchronize_from_file_actuator refresh_period = "1000">
+					<file_location>
+							<hard_path path= "examples/wh40k/value_alarme.txt"></hard_path>
+					</file_location>
+				</synchronize_from_file_actuator>
+			</variable_actuators>
+		</variable>
+	
+	</variables>
 
 	<display_parameters>
 		<fullscreen value="false"></fullscreen>
@@ -29,10 +110,15 @@
 			<display_area x="0" y="0" width = "1600" height = "900"></display_area>
 		</image>
 		
-		
 						
 		<switcheable_animation>
 			<trigger event_producer="change_tab_button_pressed"></trigger>
+			
+			<displayed_animations>
+				<xml_textsource_animation>
+					<file_location><hard_path path="examples/configuration_file_examples/configuration_ship_damage_status.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
 			
 			<displayed_animations>
 				<xml_textsource_animation>
@@ -59,5 +145,38 @@
 			</displayed_animations>
 		</switcheable_animation>
 		
+		
+		<notification name = "reaction new message chat 1" duration = "10000">
+			<trigger event_producer="updated_value">
+				<text_source>
+					<file_location><hard_path path="https://docs.google.com/document/d/1ad-9ITRxdkJG8lix_vYAm1b2ll33W-OiCo9feXlsLGY/edit"></hard_path></file_location>
+				<refresh_period refresh_period="5000"></refresh_period>
+			</text_source>
+			</trigger>
+		
+     		<displayed_animations>
+     			<image>
+					<file_location><hard_path path="examples/images/machine_god.gif"></hard_path></file_location>
+					<stretching><mode value = "stretch"></mode>	</stretching>
+					<display_area x="60" y="60" width = "170" height = "170"></display_area>
+				</image>
+				
+				<sound sound_mode="one_shot">
+					<file_location><hard_path path="examples/sound/alerte.wav"></hard_path></file_location>
+				</sound>
+				
+			<text_prompt name="notification omnimessie" color = "200,50,50"> 
+			<display_area x="300" y="70" width = "500" height = "40"></display_area>
+			<text_source raw_text="INCOMING COMMUNICATION"></text_source>
+     		</text_prompt>
+		
+     		</displayed_animations>
+     		
+     </notification>
+		
+		     		
      </displayed_animations> 
+     
+     
+
 </configuration>

@@ -1,6 +1,7 @@
 package input.configuration;
 import java.awt.Graphics2D;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -15,7 +16,7 @@ import input.events.publishers.LAnimaRPEventPublisher;
 
 public class SwitcheableAnimation implements DisplayableItem {
 	
-	private final List<DisplayableItem> subAnimations;
+	private final List<DisplayableItem> subAnimationsInBackground;
 	private int currentlyDisplayed = 0;
 	
 	private final boolean killWhenHidden = true;
@@ -31,8 +32,8 @@ public class SwitcheableAnimation implements DisplayableItem {
 		
 		this.animationBuilder = displayableBuilders;
 		
-		if(killWhenHidden) subAnimations = null;
-		else subAnimations = animationBuilder.stream().map(x->x.get()).collect(Collectors.toList());
+		if(killWhenHidden) subAnimationsInBackground = new LinkedList<>();
+		else subAnimationsInBackground = animationBuilder.stream().map(x->x.get()).collect(Collectors.toList());
 
 		currentAnimation = animationBuilder.get(currentlyDisplayed).get();
 		if(killWhenHidden)
@@ -74,12 +75,13 @@ public class SwitcheableAnimation implements DisplayableItem {
 	@Override
 	public synchronized void drawMe(Graphics2D g) {
 		if(killWhenHidden)currentAnimation.drawMe(g);
-		else subAnimations.get(currentlyDisplayed).drawMe(g);
+		else subAnimationsInBackground.get(currentlyDisplayed).drawMe(g);
 	}
 
 	@Override
 	public synchronized void terminate() {
-		subAnimations.stream().forEach(x->x.terminate());
+		subAnimationsInBackground.stream().forEach(x->x.terminate());
+		currentAnimation.terminate();
 	}
 
 }

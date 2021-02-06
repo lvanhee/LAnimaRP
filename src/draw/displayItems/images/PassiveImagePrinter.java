@@ -38,6 +38,10 @@ public class PassiveImagePrinter implements DisplayableItem {
 
 	@Override
 	public void drawMe(Graphics2D g) {
+		g.setColor(Color.blue); 
+		//System.out.println(g.getTransform().getScaleX());
+		//g.fillRect(10, 10, 1590, 890);
+		
 		if(!gp.isDisplayed())return;
 		AffineTransform temp = g.getTransform();
 		AffineTransform at = new AffineTransform();

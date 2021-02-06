@@ -108,7 +108,8 @@ public enum XMLKeywords {
 	BLINKING("blinking"), 
 	SOLID("solid"), TEXT_SOURCE("text_source"),
 	USER_TEXT_TYPER("user_text_typer"), ACTION_TRIGGER("action_trigger"), ACTION("action"), VALUES("values"),
-	FAST_FORWARD_TO_LAST_PAGE("fast_forward_to_last_page")
+	FAST_FORWARD_TO_LAST_PAGE("fast_forward_to_last_page"),
+	NOTIFICATION("notification"), UPDATED_VALUE("updated_value"), RAW_TEXT("raw_text");
 	;
 	
 	private final String keyName;

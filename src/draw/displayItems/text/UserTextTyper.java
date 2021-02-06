@@ -111,7 +111,7 @@ public class UserTextTyper implements DisplayableItem {
 	public static DisplayableItem newInstance(Element e, LAnimaRPContext context) {
 		Rectangle r = XMLParser.parseRectangle(e);
 		Consumer<String> consumer = XMLParser.parseActionTrigger(e,context);
-		return new UserTextTyper(r,TextParameters.DEFAULT.DEFAULT, consumer);
+		return new UserTextTyper(r,TextParameters.DEFAULT, consumer);
 	}
 
 	public synchronized void handleKeyPressedEvent(LAnimaRPEvent event) {
