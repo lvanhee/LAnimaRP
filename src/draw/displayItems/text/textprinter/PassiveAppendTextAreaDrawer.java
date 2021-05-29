@@ -64,7 +64,8 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 	}
 
 	private void appendInternal(String s) {
-		if(s.isEmpty())return;
+		while(!s.isEmpty())
+		{
 		if(s.startsWith("\n"))
 		{
 			toNewLine();
@@ -100,8 +101,8 @@ public class PassiveAppendTextAreaDrawer implements DisplayableItem{
 			}
 		}
 		addToCurrentLine(s.charAt(0));
-		appendInternal(s.substring(1));
-		return;
+		s = s.substring(1);
+		}
 	}
 
 	private void setCurrentLine(String lastSplit) {

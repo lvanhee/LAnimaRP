@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.KeyStroke;
 
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
@@ -35,10 +36,19 @@ import draw.displayItems.advanced.chromatograph.Chromatographer;
 import draw.displayItems.advanced.dnasca.DNASCA;
 import draw.displayItems.advanced.dnasca.DynamicallyUpdatableDisplayer;
 import draw.displayItems.advanced.dnasca.HeartBeatMonitor;
+import draw.displayItems.controlflow.BooleanAnimationDisplayer;
+import draw.displayItems.controlflow.ComboAnimation;
+import draw.displayItems.controlflow.EnumBasedAnimation;
+import draw.displayItems.controlflow.GenericMediumDisplayer;
+import draw.displayItems.controlflow.TemporaryAnimation;
+import draw.displayItems.controlflow.RoundRobinEventFlipAnimation;
+import draw.displayItems.controlflow.TemporarilyDisplayedAnimation;
+import draw.displayItems.controlflow.DynamicallyDefinableAnimation;
 import draw.displayItems.images.ImageDisplayer;
 import draw.displayItems.images.GenericParameters;
 import draw.displayItems.images.SlideShow;
 import draw.displayItems.shapes.BlinkingShape;
+import draw.displayItems.sound.Playlist;
 import draw.displayItems.sound.SoundPlayerDisplayableItem;
 import draw.displayItems.sound.SoundPlayerDisplayableItem.Mode;
 import draw.displayItems.text.FPSDisplayer;
@@ -46,6 +56,7 @@ import draw.displayItems.text.NewsTicker;
 import draw.displayItems.text.TextPrompt;
 import draw.displayItems.text.UserTextTyper;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
+import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.RepetitionMode;
 import draw.displayItems.videos.VariableBasedPauseTrigger;
 import draw.displayItems.videos.VideoDisplayer;
 import input.events.eventTypes.LAnimaRPEvent;
@@ -62,6 +73,7 @@ import logic.data.drawing.StretchingType;
 import logic.data.fileLocators.URLLocator;
 import logic.data.fileLocators.StaticURLPathLocator;
 import logic.data.fileLocators.VariableBasedFileLocator;
+import logic.data.string.EvolvingString;
 import logic.data.string.TextSource;
 import logic.variables.actuators.AnimationSpecificVariableActuator;
 import logic.variables.actuators.AnimationSpecificVariableActuator.AnimationSpecificVariableActuatorCause;
@@ -172,11 +184,13 @@ public class XMLParser {
 	}
 
 	public static URLLocator parseFileLocator(Element e, LAnimaRPContext context) {
-		Element fileLoc = e.getChild("file_location");
+		Element fileLoc = e;
+		if(!e.getName().equals(XMLKeywords.FILE_LOCATION.getName()))
+			fileLoc = e.getChild("file_location");
 		if(fileLoc==null)
 			throw new Error("Expecting a \"file_location\" field");
 		
-		check(fileLoc, XMLKeywords.FILE_LOCATION);
+	//	check(fileLoc, XMLKeywords.FILE_LOCATION);
 
 		
 		if(fileLoc.getChild(XMLKeywords.VARIABLE_NAME.getName())!= null)
@@ -194,6 +208,10 @@ public class XMLParser {
 	}
 
 	private static void check(Element e, XMLKeywords fileLocation) {
+		if(e.getAttributes().stream().map(x->x.getName()).anyMatch(
+				x->x.equals(XMLKeywords.FILE_LOCATION.getName())
+				))
+			return;
 		if(!e.getChildren().stream().map(x->x.getName()).allMatch(
 				x->
 				XMLKeywords.getAllowedChildrenFor(fileLocation).contains(XMLKeywords.fromString(x))))
@@ -436,7 +454,7 @@ public class XMLParser {
 		displayableItemFromKeywordGenerator.put(XMLKeywords.CHROMATOGRAPHER, Chromatographer::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.BACKGROUND, FullScreenFiller::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.DNASCA, DNASCA::newInstance);
-		displayableItemFromKeywordGenerator.put(XMLKeywords.SWITCHEABLE_ANIMATION, SwitcheableAnimation::newInstance);
+		displayableItemFromKeywordGenerator.put(XMLKeywords.SWITCHEABLE_ANIMATION, RoundRobinEventFlipAnimation::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.BLINKING_SHAPE, BlinkingShape::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.GENERIC_MEDIUM_DISPLAYER,
 				GenericMediumDisplayer::newInstance);
@@ -448,14 +466,21 @@ public class XMLParser {
 				TemporarilyDisplayedAnimation::newInstance);
 		
 		displayableItemFromKeywordGenerator.put(XMLKeywords.VARIABLE_BASED_SWITCHEABLE_ANIMATION,
-				VariableBasedSwitcheableAnimation::newInstance);
+				DynamicallyDefinableAnimation::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.TEXT_PROMPT,
 				TextPrompt::newInstance);
 		displayableItemFromKeywordGenerator.put(XMLKeywords.USER_TEXT_TYPER,
 				UserTextTyper::newInstance);
 		
 		displayableItemFromKeywordGenerator.put(XMLKeywords.NOTIFICATION,
-				Notification::newInstance);
+				TemporaryAnimation::newInstance);
+		
+		displayableItemFromKeywordGenerator.put(XMLKeywords.ENUM_ANIMATION,
+				EnumBasedAnimation::newInstance);
+		
+		displayableItemFromKeywordGenerator.put(
+				XMLKeywords.PLAYLIST,
+				Playlist::newInstance);
 		
 		
 		/*
@@ -552,11 +577,15 @@ public class XMLParser {
 		}
 			
 			if(value
-					.equals(XMLKeywords.REPEAT_FORVER_WHEN_VISIBLE.getName()))
+					.equals(XMLKeywords.REPEAT.getName()))
 				return Mode.FOREVER_WHEN_DRAWN;
 			else if(value
 					.equals(XMLKeywords.ONE_SHOT.getName()))
 				return Mode.ONE_SHOT;
+			else if(value
+					.equals(XMLKeywords.SHUFFLE.getName()))
+				return Mode.SHUFFLE;
+			
 			else throw new Error();		
 	}
 
@@ -639,6 +668,31 @@ public class XMLParser {
 			
 			return (LAnimaRPEventPublisher)getTextSource(e, context);
 		}
+		throw new Error();
+	}
+
+	public static AppendMethods parseAppendMethod(String attribute) {
+		if(attribute.equals("already_printed"))
+			return AppendMethods.WHOLE_TEXT_UPDATE;
+		if(attribute.equals(XMLKeywords.WORD.getName()))
+			return AppendMethods.ONE_WORD_PER_PRESS;
+		throw new Error();
+		
+	}
+
+	public static EvolvingString parseTextSource(Element e, LAnimaRPContext context) {
+		Element textSource = e.getChild(XMLKeywords.TEXT_SOURCE.getName());
+		Element fileSource = textSource.getChild(XMLKeywords.FILE_LOCATION.getName());
+		if(fileSource!= null)
+		{
+			return FileBasedEvolvingString.newInstance(fileSource, context);
+		}
+		throw new Error();
+	}
+
+	public static RepetitionMode parseRepetitionMode(String value) {
+		if(value.equals("forever"))
+			return RepetitionMode.REPEAT_FOREVER;
 		throw new Error();
 	}
 }

@@ -75,6 +75,7 @@ public enum XMLKeywords {
 	CHROMATOGRAPHER("chromatographer"), 
 	DISPLAY_PARAMETERS("display_parameters"), 
 	SCREEN_SIZE("screen_size"),
+	PLAYLIST("playlist"),
 	VISIBILITY("visibility"), 
 	ANYKEY_INCREASE_ACTUATOR("anykey_increase_actuator"),
 	KEYCODE("keycode"), 
@@ -82,7 +83,7 @@ public enum XMLKeywords {
 	TEXT_PROMPT("text_prompt"),
 	ONE_WORD_PER_PRESS("one_word_per_event"), 
 	SOUND_MODE("sound_mode"),
-	REPEAT_FORVER_WHEN_VISIBLE("repeat_forever_when_visible"),
+	REPEAT("repeat"),
 	ONE_SHOT("one_shot"),
 	FULLSCREEN("fullscreen"),
 	ENUM("enum"),
@@ -109,7 +110,9 @@ public enum XMLKeywords {
 	SOLID("solid"), TEXT_SOURCE("text_source"),
 	USER_TEXT_TYPER("user_text_typer"), ACTION_TRIGGER("action_trigger"), ACTION("action"), VALUES("values"),
 	FAST_FORWARD_TO_LAST_PAGE("fast_forward_to_last_page"),
-	NOTIFICATION("notification"), UPDATED_VALUE("updated_value"), RAW_TEXT("raw_text");
+	NOTIFICATION("notification"), UPDATED_VALUE("updated_value"), RAW_TEXT("raw_text"), SHUFFLE("shuffle"),
+	ENUM_ANIMATION("enum_animation"),
+	UNFOLDING_MODE("unfolding_mode"), DEFAULT("default"), WORD("word");
 	;
 	
 	private final String keyName;

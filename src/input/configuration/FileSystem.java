@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import com.sun.jna.platform.FileUtils;
 import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.controlflow.GenericMediumDisplayer;
 import draw.displayItems.images.ImageDisplayer;
 import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
 import input.events.eventTypes.LAnimaRPKeyEventImpl;
@@ -37,7 +39,7 @@ public class FileSystem implements DisplayableItem{
 		SHOWING_FAILURE_MESSAGE}
 	
 	
-	private GenericMediumDisplayer gmd=null;
+	private List<GenericMediumDisplayer> gmd=new ArrayList<>(5);
 	private final Rectangle displayBox;
 	private final LAnimaRPContext context;
 	
@@ -109,7 +111,7 @@ public class FileSystem implements DisplayableItem{
 		{
 		case DISPLAYING_FILE:
 			currentStatus =  Status.WAITING_FOR_FILENAME;
-			gmd.terminate();
+			gmd.stream().forEach(x->x.terminate());
 			gmd = null;
 			break;
 
@@ -126,16 +128,17 @@ public class FileSystem implements DisplayableItem{
 				throw new Error();
 			}
 
-			if(!URLManagerUtils.exists(target))
+			if(!URLManagerUtils.existsExcludingExtensionName(target))
 			{
 				setToFailureMode();
 			}
 			else
 			{
-				gmd = GenericMediumDisplayer.newInstance(
-						displayBox, target, printingTextParameters, context, soundWhenTyping);
+				Set<URL> files = URLManagerUtils.getAllFilesMatchingNameWithoutExtension(target);
+				/*gmd = GenericMediumDisplayer.newInstance(
+						displayBox, target, printingTextParameters, context, soundWhenTyping);*/
 				
-			/*	int nbDisplayedItems = (int) (files.size() - files.stream().filter(x->URLManagerUtils.getTypeOf(x)==FileType.SOUND).count());
+				int nbDisplayedItems = (int) (files.size() - files.stream().filter(x->URLManagerUtils.getTypeOf(x)==FileType.SOUND).count());
 				int widthPerSplit = displayBox.width/nbDisplayedItems;
 				int currentX = displayBox.x;
 				gmd = new LinkedList<>();
@@ -148,7 +151,7 @@ public class FileSystem implements DisplayableItem{
 					gmd.add(GenericMediumDisplayer.newInstance(
 							displayRectangle, f, printingTextParameters, context, soundWhenTyping));
 					currentX+=displayRectangle.width;
-				}*/
+				}
 				currentStatus = Status.DISPLAYING_FILE;
 			}
 			clearText();
@@ -192,8 +195,12 @@ public class FileSystem implements DisplayableItem{
 		
 		Optional<URLLocator> soundWhenTyping = Optional.empty();
 		if(e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName())!=null)
-			soundWhenTyping = Optional.of(StaticURLPathLocator.newInstance(e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName())
+		{
+			Element textDisplayerConfiguration = e.getChild(XMLKeywords.TEXT_DISPLAYER_CONFIGURATION.getName());
+			soundWhenTyping = Optional.of(StaticURLPathLocator.newInstance(
+					textDisplayerConfiguration
 					.getAttributeValue(XMLKeywords.SOUND_ON_TYPE.getName())));
+		}
 			
 			URLLocator fl = XMLParser.parsePathLocator(e, context);
 		
@@ -228,7 +235,7 @@ public class FileSystem implements DisplayableItem{
 			errorMessageDrawer.drawMe(g);
 			break;
 		case DISPLAYING_FILE:
-			gmd.drawMe(g);
+			gmd.stream().forEach(x->x.drawMe(g));
 			break;
 		default: throw new Error();
 		}

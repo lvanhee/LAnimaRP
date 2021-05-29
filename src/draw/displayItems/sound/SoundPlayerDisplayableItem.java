@@ -23,7 +23,7 @@ public class SoundPlayerDisplayableItem implements DisplayableItem {
 	
 	public static enum Mode {
 		ONE_SHOT,
-		FOREVER_WHEN_DRAWN
+		FOREVER_WHEN_DRAWN, SHUFFLE
 	}
 	
 	private final Mode m;
@@ -40,6 +40,7 @@ public class SoundPlayerDisplayableItem implements DisplayableItem {
 		fl = parseFile;
 		
 		URL soundFile = parseFile.getURL();
+		
 		clip = SoundUtils.loadSound(soundFile);
 		
 		
@@ -88,7 +89,7 @@ public class SoundPlayerDisplayableItem implements DisplayableItem {
 
 	public static SoundPlayerDisplayableItem newInstance(Element e, LAnimaRPContext c) {
 		Mode m = XMLParser.parseSoundMode(e);
-		return new SoundPlayerDisplayableItem(XMLParser.parseFileLocator(e,c),m);
+		return new SoundPlayerDisplayableItem(XMLParser.parsePathLocator(e,c),m);
 	}
 
 	@Override
@@ -144,6 +145,11 @@ public class SoundPlayerDisplayableItem implements DisplayableItem {
 
 	public static SoundPlayerDisplayableItem newInstance(URLLocator newInstance, Mode mode) {
 		return new SoundPlayerDisplayableItem(newInstance, mode);
+	}
+
+
+	public boolean isPlaying() {
+		return clip.isActive();
 	}
 
 }

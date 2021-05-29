@@ -1,11 +1,17 @@
 package input.online.google;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,20 +37,22 @@ import com.google.api.services.docs.v1.model.ParagraphElement;
 import com.google.api.services.docs.v1.model.Request;
 import com.google.api.services.docs.v1.model.StructuralElement;
 import com.google.api.services.docs.v1.model.TextRun;
+import com.google.common.util.concurrent.Service;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 
 import logic.data.fileLocators.URLLocator;
 
 public class GoogleDocsUtils {
-
-	private static final String APPLICATION_NAME = "Google Docs API Extract Guide";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String TOKENS_DIRECTORY_PATH = "tokens";
+	
 	/**
 	 * Global instance of the scopes required by this quickstart. If modifying these scopes, delete
 	 * your previously saved tokens/ folder.
 	 */
 	private static final List<String> SCOPES =
-			Collections.singletonList(DocsScopes.DOCUMENTS);
+			Arrays.asList(DocsScopes.DOCUMENTS, DriveScopes.DRIVE);
 
 	private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
@@ -58,14 +66,19 @@ public class GoogleDocsUtils {
 	private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
 			throws IOException {
 		// Load client secrets.
-		InputStream in = ExtractText.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+		
+		InputStream in = new FileInputStream(new File("tokens/credentials.json"));
+		//InputStream in = ExtractText.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
 		GoogleClientSecrets clientSecrets =
 				GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
+		File fileCredentials = new java.io.File(TOKENS_DIRECTORY_PATH);
+		//System.out.println("CREDENTIAL FILE:"+fileCredentials.toURI());
+		
 		// Build flow and trigger user authorization request.
 		GoogleAuthorizationCodeFlow flow =
 				new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-				.setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+				.setDataStoreFactory(new FileDataStoreFactory(fileCredentials))
 				.setAccessType("offline")
 				.build();
 		LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
@@ -117,6 +130,7 @@ public class GoogleDocsUtils {
 				.build();
 		service.documents().batchUpdate(documentId,
 		    body.setRequests(requests)).execute();		
+		
 	}
 
 	/**
@@ -159,7 +173,8 @@ public class GoogleDocsUtils {
 
 	public static String getAllText(URLLocator fl) {
 		try {
-			return getAllParagraphs(URLLocator.getGoogleDocID(fl)).stream().reduce("", (x,y)->x+"\n"+y);
+			String res = getAllParagraphs(URLLocator.getGoogleDocID(fl)).stream().reduce((x,y)->x+"\n"+y).get();
+			return res;
 		} catch (IOException | GeneralSecurityException e) {
 			e.printStackTrace();
 			return "connexion broken:"+e.getMessage();
@@ -168,6 +183,30 @@ public class GoogleDocsUtils {
 
 	public static void printNewParagraphAtStartOfDocumentWithTimestamp(URLLocator loc, String x) throws GeneralSecurityException, IOException {
 		printNewParagraphAtEndOfDocumentWithDaylessTimestamp(URLLocator.getGoogleDocID(loc), x);
+	}
+
+	/**Needs to be fixed**/
+	public static void downloadResourceFile() {
+        NetHttpTransport HTTP_TRANSPORT;
+		try {
+			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+		
+        Drive driveService = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+              //  .setApplicationName(APPLICATION_NAME)
+                .build();
+
+        
+		String fileId = "1D9K5Tea0MM1YCsETN0kGpiuc1PVxe8ga";
+
+		OutputStream outputStream = new ByteArrayOutputStream();
+		FileOutputStream res = new FileOutputStream("resources.zip");
+		driveService.files().get(fileId)
+		.executeMediaAndDownloadTo(outputStream);
+		res.close();
+		} catch (GeneralSecurityException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

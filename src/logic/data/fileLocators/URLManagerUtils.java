@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -30,8 +31,6 @@ import input.online.google.GoogleDocsUtils;
 public class URLManagerUtils {
 
 	public static URL getLocalURLFor(String string) {
-		
-		
 		if(isLocalFileURL(string))
 		{
 			File res = new File(string);
@@ -40,9 +39,9 @@ public class URLManagerUtils {
 						(ClassLoader.getSystemClassLoader().getResource(".").getPath()+"/"+string)
 						.replaceAll("%c3%a9","é"));//probl��me caract��res sp��ciaux (quickfix)
 			else
-				res = new File(string);
-
-			System.out.println("Input:"+string+" output:"+res);
+				res = new File(string);			
+ 
+		//	System.out.println("Input:"+string+" output:"+res);
 			while(!res.exists())
 			{
 				JFrame jf = new JFrame();
@@ -141,6 +140,10 @@ public class URLManagerUtils {
 				throw new Error();
 			}
 		}
+		if(url.getProtocol().startsWith("file"))
+		{
+			return getSuffixTypeOf(url.getFile());
+		}
 		else throw new Error();
 	}
 
@@ -159,12 +162,21 @@ public class URLManagerUtils {
 		}
 	}
 
-	public static Set<URL> getAllFilesMatchingNameWithoutExtension(URL folder, String fileName) {
-		folder.
-		if(url.
+	public static Set<URL> getAllFilesMatchingNameWithoutExtension(URL f) {
+		String name = new File(f.getFile()).getName();
+		File folder = new File(f.getFile()).getParentFile();
+		
 		return Arrays.asList(folder.listFiles())
 		.stream()
-		.filter(x->x.getName().startsWith(fileName)&&x.getName().charAt(fileName.length())=='.')
+		.filter(x->x.getName().startsWith(name)&&x.getName().charAt(name.length())=='.')
+		.map(x->{
+			try {
+				return x.toURI().toURL();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				throw new Error();
+			}
+		})
 		.collect(Collectors.toSet());
 	}
 
@@ -177,7 +189,7 @@ public class URLManagerUtils {
 		return (f.getName().endsWith(".mp3"));
 	}
 
-	public static boolean exists(URL u) {
+	public static boolean existsExcludingExtensionName(URL u) {
 		if(u.getProtocol().startsWith("http"))
 		{
 			
@@ -201,6 +213,17 @@ public class URLManagerUtils {
 		      e.printStackTrace();
 		    }
 			return true;
+		}
+		if(u.getProtocol().startsWith("file"))
+		{
+			String s = u.getFile();
+			File f = new File(s);
+			File directory = f.getParentFile();
+			String fileHead = f.getName();
+
+			boolean res =			Arrays.asList(directory.listFiles()).stream()
+			.anyMatch(x->x.getName().startsWith(fileHead));
+			return res;
 		}
 		else
 			throw new Error();

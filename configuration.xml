@@ -1,182 +1,102 @@
 <configuration>
 
-<variables>
-
-		<variable name = "armurerie" type = "string" initial_value = "off">
-			<variable_actuators>
-				<synchronize_from_file_actuator refresh_period = "1000">
-					<file_location>
-							<hard_path path= "examples/wh40k/value_armurerie.txt"></hard_path>
-					</file_location>
-				</synchronize_from_file_actuator>
-			</variable_actuators>
-		</variable>
-		
-		<variable name = "commandement" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_commandement.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-		</variable>
-		
-		
-		<variable name = "generateur" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_generateur.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-	</variable>
-		<variable name = "medicae" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_medicae.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-	</variable>
-		<variable name = "mystere" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_mystere.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-	</variable>
-		<variable name = "raffinerie" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_raffinage.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-	</variable>
-	
-
-		<variable name = "reparation" type = "string" initial_value = "false">
-		<variable_actuators>
-			<synchronize_from_file_actuator refresh_period = "1000">
-				<file_location>
-						<hard_path path= "examples/wh40k/value_reparation.txt"></hard_path>
-				</file_location>
-			</synchronize_from_file_actuator>
-		</variable_actuators>
-	</variable>
-		<variable name = "ventilation" type = "string" initial_value = "false">
-			<variable_actuators>
-				<synchronize_from_file_actuator refresh_period = "1000">
-					<file_location>
-							<hard_path path= "examples/wh40k/value_ventilation.txt"></hard_path>
-					</file_location>
-				</synchronize_from_file_actuator>
-			</variable_actuators>
-		</variable>
-		
-		
-		<variable name = "alarm" type = "string" initial_value = "false">
-			<variable_actuators>
-				<synchronize_from_file_actuator refresh_period = "1000">
-					<file_location>
-							<hard_path path= "examples/wh40k/value_alarme.txt"></hard_path>
-					</file_location>
-				</synchronize_from_file_actuator>
-			</variable_actuators>
-		</variable>
-	
-	</variables>
-
 	<display_parameters>
 		<fullscreen value="false"></fullscreen>
-		<display_area x="000" y="000" width = "1600" height = "900"></display_area>
+		<display_area x="000" y="000" width = "1920" height = "1080"></display_area>
 	</display_parameters>
 	
-	<event_publishers>
-		<key_pressed_event_publisher name = "change_tab_button_pressed" value = "control"></key_pressed_event_publisher>
-	</event_publishers>
-	
-	
-    <displayed_animations>		
-    	<image>
-			<file_location><hard_path path="examples/images/warhammer_systeme_gestion_fichier.png"></hard_path></file_location>
-			<stretching><mode value = "stretch"></mode>	</stretching>
-			<display_area x="0" y="0" width = "1600" height = "900"></display_area>
-		</image>
-		
-						
-		<switcheable_animation>
-			<trigger event_producer="change_tab_button_pressed"></trigger>
-			
-			<displayed_animations>
-				<xml_textsource_animation>
-					<file_location><hard_path path="examples/configuration_file_examples/configuration_ship_damage_status.xml"></hard_path></file_location>
-				</xml_textsource_animation>
-			</displayed_animations>
-			
-			<displayed_animations>
-				<xml_textsource_animation>
-					<file_location><hard_path path="examples/configuration_file_examples/config_database_40k_on_dropbox.xml"></hard_path></file_location>
-				</xml_textsource_animation>
-			</displayed_animations>
-		
-			<displayed_animations>
-				<xml_textsource_animation>
-					<file_location><hard_path path="examples/configuration_file_examples/chat_1.xml"></hard_path></file_location>
-				</xml_textsource_animation>
-			</displayed_animations>
-			
-			<displayed_animations>
-				<xml_textsource_animation>
-					<file_location><hard_path path="examples/configuration_file_examples/chat_2.xml"></hard_path></file_location>
-				</xml_textsource_animation>
-			</displayed_animations>
-			
-			<displayed_animations>
-				<xml_textsource_animation>
-					<file_location><hard_path path="examples/configuration_file_examples/chat_3.xml"></hard_path></file_location>
-				</xml_textsource_animation>
-			</displayed_animations>
-		</switcheable_animation>
-		
-		
-		<notification name = "reaction new message chat 1" duration = "10000">
-			<trigger event_producer="updated_value">
-				<text_source>
-					<file_location><hard_path path="https://docs.google.com/document/d/1ad-9ITRxdkJG8lix_vYAm1b2ll33W-OiCo9feXlsLGY/edit"></hard_path></file_location>
+    <displayed_animations>		     
+		<enum_animation default = "normal">
+    		<text_source>
+				<file_location><hard_path path="https://docs.google.com/document/d/1qGPoIXvh5hGGxzwmAM1Z_QzCJ5slIMoHK1DL4V9x4IU/edit?usp=sharing"></hard_path>
 				<refresh_period refresh_period="5000"></refresh_period>
+				</file_location>
 			</text_source>
-			</trigger>
-		
-     		<displayed_animations>
-     			<image>
-					<file_location><hard_path path="examples/images/machine_god.gif"></hard_path></file_location>
+			
+			<displayed_animations name = "normal">
+			    <image>
+					<file_location><hard_path path="resources/images/hive/planning_avec_icones.png"></hard_path></file_location>
 					<stretching><mode value = "stretch"></mode>	</stretching>
-					<display_area x="60" y="60" width = "170" height = "170"></display_area>
+					<display_area x="0" y="0" width = "1920" height = "1080"></display_area>
 				</image>
+				<text_prompt unfolding_mode = "already_printed" color = "20,20,20">
+    				<text_source>
+						<file_location><hard_path path="https://docs.google.com/document/d/1ad-9ITRxdkJG8lix_vYAm1b2ll33W-OiCo9feXlsLGY/edit"></hard_path></file_location>
+						<refresh_period refresh_period="5000"></refresh_period>
+					</text_source>
+					<display_area x="150" y="200" width = "840" height = "780"></display_area>
+				</text_prompt>
 				
-				<sound sound_mode="one_shot">
-					<file_location><hard_path path="examples/sound/alerte.wav"></hard_path></file_location>
+				<text_prompt unfolding_mode = "already_printed" color = "20,20,20">
+    				<text_source>
+						<file_location><hard_path path="https://docs.google.com/document/d/1kIvF0LnraxWmKk9DCvRRJeatvB-H9DYnm6SKjydGIbM/edit"></hard_path></file_location>
+						<refresh_period refresh_period="5000"></refresh_period>
+					</text_source>
+					<display_area x="920" y="200" width = "840" height = "780"></display_area>
+				</text_prompt>
+				
+				<boolean_animation_displayer>
+				<text_source info="input for boolean value" default="false" name = "print_red_med_bool">
+					<file_location><hard_path path="https://docs.google.com/document/d/1MWNl6jKOhsod0zK7BOZmljSor_yVV7lKMh-UvkVi2u8/edit?usp=sharing"></hard_path>
+					<refresh_period refresh_period="5000"></refresh_period>
+					</file_location>
+				</text_source>
+				<displayed_animations>
+					<image>
+						<file_location><hard_path path="resources/images/hive/gas_mask_red.png"></hard_path></file_location>
+						<stretching><mode value = "stretch"></mode>	</stretching>
+						<display_area x="1605" y="200" width = "160" height = "160"></display_area>
+					</image>
+				</displayed_animations>
+			</boolean_animation_displayer>
+			
+				<boolean_animation_displayer>
+				<text_source info="input for boolean value" default="false" name = "print_red_med_bool">
+					<file_location><hard_path path="https://docs.google.com/document/d/1BChqMpri9sxNXOViQ5-f3PlQtYPerH5Laqwl3rsDhqQ/edit"></hard_path>
+					<refresh_period refresh_period="5000"></refresh_period>
+					</file_location>
+				</text_source>
+				<displayed_animations>
+					<image>
+						<file_location><hard_path path="resources/images/hive/sport_red.png"></hard_path></file_location>
+						<stretching><mode value = "stretch"></mode>	</stretching>
+						<display_area x="1605" y="380" width = "160" height = "160"></display_area>
+					</image>
+				</displayed_animations>
+			</boolean_animation_displayer>
+		
+			<boolean_animation_displayer>
+				<text_source info="input for boolean value" default="false" name = "print_red_med_bool">
+					<file_location><hard_path path="https://docs.google.com/document/d/1nQVWHSD3wzor3SoUT3dFoJgW5VpGrTj3jMNd7_eJA4k/edit"></hard_path>
+					<refresh_period refresh_period="5000"></refresh_period>
+					</file_location>
+				</text_source>
+				<displayed_animations>
+					<image>
+						<file_location><hard_path path="resources/images/hive/med_red.png"></hard_path></file_location>
+						<stretching><mode value = "stretch"></mode>	</stretching>
+						<display_area x="1606" y="563" width = "161" height = "160"></display_area>
+					</image>
+				</displayed_animations>
+			</boolean_animation_displayer>
+			</displayed_animations>
+						
+			<displayed_animations name = "alert">
+				<sound sound_mode="repeat">
+					<file_location><hard_path path="resources/sound/alerte.wav"></hard_path></file_location>
 				</sound>
-				
-			<text_prompt name="notification omnimessie" color = "200,50,50"> 
-			<display_area x="300" y="70" width = "500" height = "40"></display_area>
-			<text_source raw_text="INCOMING COMMUNICATION"></text_source>
-     		</text_prompt>
-		
-     		</displayed_animations>
-     		
-     </notification>
-		
-		     		
+				<image>
+					<file_location><hard_path path="resources/images/gifs/radioactive_alert.gif"></hard_path></file_location>
+					<stretching><mode value = "stretch"></mode>	</stretching>
+					<display_area x="0" y="0" width = "1920" height = "1080"></display_area>
+				</image>
+			</displayed_animations>
+			
+			<displayed_animations name = "hack">
+				<xml_textsource_animation>
+					<file_location><hard_path path="resources/configuration_file_examples/technical_demos/no_action_hack.xml"></hard_path></file_location>
+				</xml_textsource_animation>
+			</displayed_animations>
+		</enum_animation>	
      </displayed_animations> 
-     
-     
-
 </configuration>

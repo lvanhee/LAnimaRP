@@ -11,13 +11,13 @@ import javax.management.modelmbean.XMLParseException;
 import org.jdom2.Element;
 
 import draw.displayItems.DisplayableItem;
+import draw.displayItems.controlflow.DynamicallyDefinableAnimation;
 import draw.displayItems.text.textprinter.PassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.AppendMethods;
 import draw.displayItems.text.textprinter.PreSetPassiveAppendTextAreaDrawer.RepetitionMode;
 import input.configuration.LAnimaRPContext;
 import input.configuration.TextParameters;
-import input.configuration.VariableBasedSwitcheableAnimation;
 import input.configuration.XMLKeywords;
 import input.configuration.XMLParser;
 import input.events.eventTypes.StringEvolvedEvent;
@@ -44,8 +44,10 @@ public class TextPrompt implements DisplayableItem {
 			int millisBetweenActions, 
 			TextParameters textP,
 			PreSetPassiveAppendTextAreaDrawer.AppendMethods te, 
-			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping, 
-			boolean fastForward, String name) {
+			RepetitionMode repetitionMode, 
+			Optional<URLLocator> soundWhenTyping, 
+			boolean fastForward, 
+			String name) {
 		tp = PreSetPassiveAppendTextAreaDrawer.newInstance(
 				rectangle, 
 				inputText.getString(), textP,te, 
@@ -62,11 +64,11 @@ public class TextPrompt implements DisplayableItem {
 					double speedRatio = 1;
 					if(fastForward)
 					{
-						speedRatio = tp.getRatioBetweenScreenSizeAndAmountToType();
+						speedRatio = 10*tp.getRatioBetweenScreenSizeAndAmountToType();
 						if(speedRatio < 1) speedRatio = 1;
 					}
 					if(tp.hasJustEndedALine())
-						Thread.sleep((int)(500/speedRatio));
+						Thread.sleep((int)(300/speedRatio));
 					if(!tp.isTypingOver())
 						tp.unfoldSomeTextToBeWritten(te);
 					Thread.sleep((int)(millisBetweenActions/speedRatio));
@@ -102,14 +104,24 @@ public class TextPrompt implements DisplayableItem {
 
 	public static TextPrompt newInstance(
 			Rectangle rectangle, 
-			URLLocator localFileFor, 
+			TextSource localFileFor, 
 			int millisBetweenActions,
-			PreSetPassiveAppendTextAreaDrawer.AppendTypes te, RepetitionMode repetitionMode, TextParameters yp, Optional<URLLocator> soundWhenTyping) {
-		return new TextPrompt(rectangle, localFileFor, millisBetweenActions, yp,te, repetitionMode, soundWhenTyping);
+			PreSetPassiveAppendTextAreaDrawer.AppendMethods te, RepetitionMode repetitionMode, TextParameters tp, Optional<URLLocator> soundWhenTyping) {
+		return new TextPrompt(
+				rectangle, 
+				localFileFor, 
+				millisBetweenActions,
+				tp,
+				te,
+				repetitionMode, 
+				soundWhenTyping,
+				false,
+				""
+				);
 	}
 
 	public static DisplayableItem newInstance(Rectangle displayZone, File x, int millisBetweenActions,
-			AppendTypes oneChar, RepetitionMode repetitionMode, TextParameters tp, 
+			AppendMethods oneChar, RepetitionMode repetitionMode, TextParameters tp, 
 			Optional<URLLocator> soundWhenTyping) {
 		return newInstance(displayZone, StaticURLPathLocator.newInstance(x), millisBetweenActions, oneChar, repetitionMode, tp, soundWhenTyping);
 	}
@@ -136,8 +148,18 @@ public class TextPrompt implements DisplayableItem {
 		
 		TextParameters tp = TextParameters.newInstance(color);
 		
-		return new TextPrompt(onScreen, source, 10, tp, AppendMethods.ONE_CHAR_PER_ACTION, 
-				RepetitionMode.ONCE, Optional.empty(), fastForward, name);
+		AppendMethods method = AppendMethods.ONE_CHAR_PER_ACTION;
+		if(xmlContents.getAttribute(XMLKeywords.UNFOLDING_MODE.getName())!=null)
+			method = XMLParser.parseAppendMethod(
+					xmlContents.getAttribute(XMLKeywords.UNFOLDING_MODE.getName()).getValue());
+		
+		RepetitionMode rm = RepetitionMode.ONCE;
+		if(xmlContents.getAttribute(XMLKeywords.REPEAT.getName()) != null)
+			rm = XMLParser.parseRepetitionMode(xmlContents.getAttribute(XMLKeywords.REPEAT.getName()).getValue());
+		
+		return new TextPrompt(onScreen, source, 10, tp,
+				method, 
+				rm, Optional.empty(), fastForward, name);
 	}
 
 }

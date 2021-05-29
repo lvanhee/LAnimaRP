@@ -11,10 +11,15 @@ import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.file.Paths;
 import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,6 +31,7 @@ import input.configuration.DisplayParameters;
 import input.configuration.DisplaySetupParameters;
 import input.configuration.ProcessXML;
 import input.events.publishers.KeyMonitorer;
+import input.online.google.GoogleDocsUtils;
 import logic.data.fileLocators.URLManagerUtils;
 
 public class DisplayWindow {
@@ -39,6 +45,12 @@ public class DisplayWindow {
 	 * @param args
 	 */
 	public static void main( String[] args ){
+		if(!Paths.get("resources").toFile().exists())
+		{
+			//FileOutputStream fos
+			//FileOutputStream("example.zip").getChannel().transferFrom(Channels.newChannel(new URL("http://www.example.com/example.zip").openStream()), 0, Long.MAX_VALUE);
+			GoogleDocsUtils.downloadResourceFile();
+		}
 		newDisplay(URLManagerUtils.getLocalURLFor("configuration.xml"));
 	}
 

@@ -55,7 +55,8 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 	
 
 	
-	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, String originalString, TextParameters tp, AppendMethods at,
+	private PreSetPassiveAppendTextAreaDrawer(Rectangle r, String originalString, TextParameters tp, 
+			AppendMethods at,
 			RepetitionMode repetitionMode, Optional<URLLocator> soundWhenTyping, boolean fastForward)
 	{
 		drawer = PassiveAppendTextAreaDrawer.newInstance(r, tp);
@@ -125,6 +126,7 @@ public class PreSetPassiveAppendTextAreaDrawer implements DisplayableItem {
 			
 		case ONE_WORD_PER_PRESS:
 			int nextIndex = textToBePrinted.indexOf(" ")+1;
+			if(nextIndex==0) nextIndex= textToBePrinted.length();
 			drawer.append(textToBePrinted.substring(0,nextIndex));
 			textToBePrinted = textToBePrinted.substring(nextIndex);
 			break;

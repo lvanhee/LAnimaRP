@@ -27,6 +27,7 @@ import draw.displayItems.advanced.Popup;
 import draw.displayItems.advanced.dnasca.DNASCA;
 import draw.displayItems.advanced.dnasca.DynamicallyUpdatableDisplayer;
 import draw.displayItems.advanced.dnasca.HeartBeatMonitor;
+import draw.displayItems.controlflow.NoAnimation;
 import draw.displayItems.images.ImageDisplayer;
 import draw.displayItems.images.SlideShow;
 import draw.displayItems.shapes.BlinkingShape;
